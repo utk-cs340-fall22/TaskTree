@@ -10,6 +10,7 @@
 * Set up routing for the page [Issue #16](https://github.com/scrumzone/tasktree/issues/16)
 * Create an API to authenticate a user [Issue #8](https://github.com/scrumzone/tasktree/issues/8)
 * Create a sign up page [Issue #41](https://github.com/scrumzone/tasktree/issues/41)
+* Add login authentication [Issue #62](https://github.com/scrumzone/tasktree/issues/62)
 
 ### What you did not do
 * Create a sign up page [Issue #41](https://github.com/scrumzone/tasktree/issues/41)
@@ -23,6 +24,7 @@ was a lotof issues that were dependent on other issues. This made it difficult f
 * [#6](https://github.com/scrumzone/tasktree/issues/6)
 * [#16](https://github.com/scrumzone/tasktree/issues/16)
 * [#8](https://github.com/scrumzone/tasktree/issues/8)
+* [62](https://github.com/scrumzone/tasktree/issues/62)
 
 ### Files you worked on
 * frontend/.gitignore
@@ -34,6 +36,8 @@ was a lotof issues that were dependent on other issues. This made it difficult f
 * frontend/src/App.css
 * frontend/src/App.test.tsx
 * frontend/src/App.tsx
+* frontend/src/components/Login/LoginDesktop.tsx
+* frontend/src/services/UserService.ts
 * frontend/src/index.css
 * frontend/src/react-app-env.d.ts
 * frontend/src/reportWebVitals.ts
@@ -49,7 +53,6 @@ was a lotof issues that were dependent on other issues. This made it difficult f
 ### What you accomplished
 I established the basic frontend project that could be run with `npm start`. I then set up routing for that page so that a user can navigate between all of our different pages.
 In the backend, I established an API route to authenticate a user. It takes a username and password in the body, and then does a lookup in our database to see if it
-can find a match. If it does, it returns a JWT to the frontend. Also configured was an [Authorize] decorator which configures any endpoint with it to take a JWT as a
-header to authorize the action.
+can find a match. If it does, it returns a JWT to the frontend, which is then stored in a cookie. I configured an [Authorize] decorator which configures any endpoint with it to take a JWT as a header to authorize the action. So far, a JWT is used to authorize our `UserService.getUser()` endpoint. 
 It's not under my name, but I also made the `docs/intro-to-apis.md` documentation to make sure that all of our team members are up to speed on how apis work
 and how to play around with them.
