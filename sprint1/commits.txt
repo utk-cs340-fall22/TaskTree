@@ -1,0 +1,22 @@
+### frontend/src/services/authService.ts ###
+
+7b7b7a84 (PotassiumLover 2022-10-10 22:50:07 -0400  1) import {setCookie, removeCookie, getCookie} from 'typescript-cookie';
+39e78b32 (PotassiumLover 2022-10-10 21:23:49 -0400  2)
+e7ef2061 (PotassiumLover 2022-10-10 21:40:33 -0400  3) export default class AuthService{
+a2682513 (PotassiumLover 2022-10-10 21:56:46 -0400  4)     static async storeJWT(jwt: string){
+e7ef2061 (PotassiumLover 2022-10-10 21:40:33 -0400  5)         setCookie("access_token", jwt);
+e7ef2061 (PotassiumLover 2022-10-10 21:40:33 -0400  6)     }
+39e78b32 (PotassiumLover 2022-10-10 21:23:49 -0400  7)
+e7ef2061 (PotassiumLover 2022-10-10 21:40:33 -0400  8)     static async removeJWT(){
+e7ef2061 (PotassiumLover 2022-10-10 21:40:33 -0400  9)         removeCookie("access_token");
+e7ef2061 (PotassiumLover 2022-10-10 21:40:33 -0400 10)     }
+7b7b7a84 (PotassiumLover 2022-10-10 22:50:07 -0400 11)
+7b7b7a84 (PotassiumLover 2022-10-10 22:50:07 -0400 12)     static async getJWT(){
+
+### frontend/src/pages/home.tsx ###
+e587d770 (PotassiumLover         2022-10-10 21:42:29 -0400  5) import AuthService from '../services/authService';
+a40f83d6 (PotassiumLover         2022-10-10 21:25:31 -0400  6)
+a40f83d6 (PotassiumLover         2022-10-10 21:25:31 -0400  7) function logout(){
+1db546a9 (PotassiumLover         2022-10-10 21:55:54 -0400  8)   AuthService.removeJWT();
+a40f83d6 (PotassiumLover         2022-10-10 21:25:31 -0400  9)   window.location.replace("/");
+a40f83d6 (PotassiumLover         2022-10-10 21:25:31 -0400 10) }
