@@ -25,12 +25,25 @@ was a lotof issues that were dependent on other issues. This made it difficult f
 * [#8](https://github.com/scrumzone/tasktree/issues/8)
 
 ### Files you worked on
+* frontend/.gitignore
+* frontend/README.md
+* frontend/package-lock.json
+* frontend/package.json
+* frontend/public/index.html
+* frontend/public/robots.txt
 * frontend/src/App.css
+* frontend/src/App.test.tsx
 * frontend/src/App.tsx
+* frontend/src/index.css
+* frontend/src/react-app-env.d.ts
+* frontend/src/reportWebVitals.ts
+* frontend/tsconfig.json
+* frontend/src/setupTests.ts
 * backend/TaskTree/Controllers/UsersController.cs
 * backend/TaskTree/Models/AppConfig.cs
 * backend/TaskTree/Models/Requests/AuthenticateUserRequest.cs
 * backend/TaskTree/Program.cs
+* backend/TaskTree/TaskTree.csproj
 * backend/TaskTree/appsettings.Development.json
 
 ### What you accomplished
