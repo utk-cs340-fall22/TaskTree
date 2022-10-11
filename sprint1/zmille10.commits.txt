@@ -1,0 +1,808 @@
+### docker-compose.yml ###
+
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  1) version: '3.7'
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  2) 
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  3) networks:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  4)   tasktree:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  5)     name: 'tasktree.localhost'
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  6) 
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400  7) services:
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400  8) 
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400  9)   db:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 10)     image: mysql:8.0
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 11)     container_name: tasktree_db
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 12)     expose:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 13)       - 3306
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 14)     ports:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 15)       - 3306:3306
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 16)     networks:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 17)       - tasktree
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 18)     environment:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 19)       MYSQL_ROOT_PASSWORD: root
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 20)       MYSQL_DATABASE: tasktree
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 21)       MYSQL_USER: tasktree
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 22)       MYSQL_PASSWORD: tasktree
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 23)     volumes:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 24)       - tasktree_db_data:/var/lib/mysql
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 25)       - ./db/init:/docker-entrypoint-initdb.d/:ro
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 26) 
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 27)   backend:
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 28)     image: tasktree/backend
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 29) 
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 30)     build:
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 31)       context: ./backend
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 32)       dockerfile: TaskTree/Dockerfile
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 33)       target: development
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 34)     container_name: tasktree_backend
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 35)     depends_on:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 36)       - db
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 37)     expose:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 38)       - 5000
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 39)     ports:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 40)       - 5000:5000
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 41)     networks:
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 42)       - tasktree
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 43)     volumes:
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 44)       - ./backend:/src
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 45)     environment:
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 46)       - DOTNET_URLS=http://+:5000
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400 47)       - ConnectionStrings:DefaultConnection=server=db;port=3306;database=tasktree;user=tasktree;password=tasktree
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 48) 
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 49)   frontend:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 50)     image: tasktree/frontend
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 51)     build:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 52)       context: frontend
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 53)       target: development
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 54)     container_name: tasktree_frontend
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 55)     expose:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 56)      - 3000
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 57)     ports:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 58)       - 3000:3000
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 59)     networks:
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 60)       - tasktree
+493c3def (Zavier Miller 2022-09-22 14:00:12 -0400 61)     volumes:
+4da050a5 (Zavier Miller 2022-09-27 09:09:54 -0400 62)       - ./frontend:/app
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 63)   
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 64) volumes:
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400 65)   tasktree_db_data:
+
+
+### backend/TaskTree/Dockerfile ###
+
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 19) FROM mcr.microsoft.com/dotnet/sdk:6.0 AS development
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400 20) ENV ASPNETCORE_ENV Docker
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 21) WORKDIR /src/TaskTree
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 22) ENTRYPOINT ["dotnet", "watch"]
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 23) 
+
+
+### backend/TaskTree/Program.cs ###
+
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  2) using Microsoft.EntityFrameworkCore;
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  5) using TaskTree.Models;
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  6) 
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400  9) var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 10) 
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 11) builder.Services.AddCors(options =>
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 12) {
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 13)   options.AddPolicy(MyAllowSpecificOrigins, policy =>
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 14)   {
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 15)     policy.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod();
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 16)   });
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 17) });
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 18) 
+564d7ade (Zavier Miller 2022-09-29 09:57:56 -0400 19) // allow for environment variables to override configuration
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400 20) builder.Configuration.AddEnvironmentVariables();
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 21) 
+564d7ade (Zavier Miller 2022-09-29 09:57:56 -0400 24) 
+564d7ade (Zavier Miller 2022-09-29 09:57:56 -0400 25) // Add services to the container.
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 26) builder.Services.AddDbContext<TaskTreeContext>(opt =>
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 27) {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 28)   opt.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0)));
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 29) });
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 30) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 31) builder.Services.AddControllers();
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 32) 
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 54) builder.Services.AddAutoMapper(typeof(Program));
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 64)   // app.UseDeveloperExceptionPage();
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 65)   app.UseSwagger();
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 66)   app.UseSwaggerUI();
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 68) else if (app.Environment.IsProduction())
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 69) {
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 70)   app.UseHttpsRedirection();
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 71) }
+e27660b3 (Zavier Miller 2022-09-25 23:39:06 -0400 74) // app.UseAuthorization();
+8a049344 (Zavier Miller 2022-10-01 19:08:12 -0400 77) app.UseCors(MyAllowSpecificOrigins);
+
+
+### backend/TaskTree/Controllers/UsersController.cs ###
+
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400   1) using AutoMapper;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400   3) using Microsoft.AspNetCore.Mvc;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400   4) using Microsoft.EntityFrameworkCore;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  11) using TaskTree.Models;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  12) using TaskTree.Models.Requests;
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  13) using TaskTree.Models.Responses;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  14) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  15) namespace TaskTree.Controllers
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  16) {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  18)   [ApiController]
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  19)   public class UsersController : ControllerBase
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  20)   {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  21)     private readonly TaskTreeContext _context;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  22)     private readonly IMapper _mapper;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  24) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  26)     {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  27)       _context = context;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  28)       _mapper = mapper;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  30)     }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  31) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  32) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  33)     // GET: api/users/5
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  35)     [HttpGet("{id}")]
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  36)     public async Task<ActionResult<UserResponse>> GetUser(long id)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  37)     {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  38)       if (_context.Users == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  39)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  40)         return Problem("Entity set 'TaskTreeContext.Users'  is null.", statusCode: 500);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  41)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  42)       var user = await _context.Users.FindAsync(id);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  43) 
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  44) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  45)       if (user == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  46)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  47)         return NotFound();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  48)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  49) 
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  50)       var userResponse = _mapper.Map<User, UserResponse>(user);
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  51) 
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  52)       return userResponse;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  53)     }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  54) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  55)     // PUT: api/users/5
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  57)     [HttpPut("{id}")]
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  58)     public async Task<IActionResult> UpdateUser(long id, UpdateUserRequest updateUserRequest)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  59)     {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  60)       
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  61)       if (_context.Users == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  62)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  63)         return Problem("Entity set 'TaskTreeContext.Users'  is null.", statusCode: 500);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  64)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  65)       
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  66)       var user = await _context.Users.FindAsync(id);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  67) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  68)       if (user == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  69)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  70)         return NotFound();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  71)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  72) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  73)       // map using automapper
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  74)       _mapper.Map(updateUserRequest, user);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  75) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  76)       _context.Entry(user).State = EntityState.Modified;
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  77) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  78)       try
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  79)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  80)         await _context.SaveChangesAsync();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  81)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  82)       catch (DbUpdateConcurrencyException)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  83)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  84)         if (!UserExists(id))
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  85)         {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  86)           return NotFound();
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  87)         }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  88)         else
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  89)         {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  90)           throw;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  91)         }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  92)       }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  93) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  94)       return NoContent();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  95)     }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  96) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  97)     // POST: api/users
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400  98)     [HttpPost]
+7795f46b (Zavier Miller 2022-10-02 01:43:39 -0400  99)     public async Task<ActionResult<UserResponse>> CreateUser(CreateUserRequest createUserRequest)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 100)     {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 101)       if (_context.Users == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 102)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 103)         return Problem("Entity set 'TaskTreeContext.Users'  is null.", statusCode: 500);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 104)       }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 105) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 106)       var user = _mapper.Map<User>(createUserRequest);
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 107) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 108)       _context.Users.Add(user);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 109)       await _context.SaveChangesAsync();
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 110) 
+7795f46b (Zavier Miller 2022-10-02 01:43:39 -0400 111)       return CreatedAtAction(nameof(GetUser), new { id = user.Id }, _mapper.Map<User, UserResponse>(user));
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 112)     }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 113) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 114)     // DELETE: api/Users/5
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 116)     [HttpDelete("{id}")]
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 117)     public async Task<IActionResult> DeleteUser(long id)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 118)     {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 119)       if (_context.Users == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 120)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 121)         return Problem("Entity set 'TaskTreeContext.Users'  is null.", statusCode: 500);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 122)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 123)       
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 124)       var user = await _context.Users.FindAsync(id);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 125)       if (user == null)
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 126)       {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 127)         return NotFound();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 128)       }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 129) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 130)       _context.Users.Remove(user);
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 131)       await _context.SaveChangesAsync();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 132) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 133)       return NoContent();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 134)     }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 135) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 188)     {
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 189)       return (_context.Users?.Any(e => e.Id == id)).GetValueOrDefault();
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 190)     }
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 191) 
+5da555a6 (Zavier Miller 2022-09-30 09:14:36 -0400 192)   }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 193) }
+
+
+### backend/TaskTree/Models/BaseEntity.cs ###
+
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  1) using System.ComponentModel.DataAnnotations;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  2) using System.ComponentModel.DataAnnotations.Schema;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  3) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  4) namespace TaskTree.Models;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  5) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  6) // from https://threewill.com/how-to-auto-generate-created-updated-field-in-ef-core/
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  7) public class BaseEntity
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  8) {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  9)     [Key]
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 10)     [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 11)     public long Id { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 12)     
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 13)     public DateTime CreatedAt { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 14)     public DateTime UpdatedAt { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 15)     
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 16) }
+
+
+### backend/TaskTree/Models/Project.cs ###
+
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 13)         [Required]
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 14)         public User User { get; set; }
+
+
+### backend/TaskTree/Models/Task.cs ###
+
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 13)         public DateTime? CompletedAt { get; set; }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 14)         
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 15)         public long? ProjectId { get; set; }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 16)         public Project? Project { get; set; }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 17)         public Task? Parent { get; set; }
+
+
+### backend/TaskTree/Models/TaskTreeContext.cs ###
+
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  1) using Microsoft.EntityFrameworkCore;
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  2) using System.Diagnostics.CodeAnalysis;
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  3) 
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  4) namespace TaskTree.Models;
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  5) 
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  6) public class TaskTreeContext : DbContext
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400  7) {
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400  8)   public TaskTreeContext(DbContextOptions<TaskTreeContext> options) : base(options)
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400  9)   {
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 10)   }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 14)     // create one-to-many relation with user and projects
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 15)     modelBuilder.Entity<User>()
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 16)       .HasMany(u => u.Projects)
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 17)       .WithOne(p => p.User)
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 18)       .OnDelete(DeleteBehavior.Cascade);
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 19)     
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 20)     // create one-to-one relationship with project and task
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 22)       .HasOne(p => p.Root)
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 23)       .WithOne(t => t.Project)
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 24)       .OnDelete(DeleteBehavior.Cascade);
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 25)     
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 26)     // create one-to-many relationship with task and task
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 28)       .HasOne(t => t.Parent)
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 30)       .OnDelete(DeleteBehavior.Cascade);
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 33)   public override int SaveChanges(bool acceptChangesOnSuccess)
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 34)   {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 35)     OnBeforeSave();
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 36)     return base.SaveChanges(acceptChangesOnSuccess);
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 37)   }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 38) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 39)   public override async Task<int> SaveChangesAsync(bool acceptChangesOnSuccess,
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 40)     CancellationToken cancellationToken = default(CancellationToken))
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 41)   {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 42)     OnBeforeSave();
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 43)     return (await base.SaveChangesAsync(acceptChangesOnSuccess, cancellationToken));
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 44)   }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 45) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 46)   private void OnBeforeSave()
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 47)   {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 48)     var entries = ChangeTracker.Entries();
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 49)     var currentDateTime = DateTime.UtcNow;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 50) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 51)     foreach (var entry in entries)
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 52)     {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 53)       if (entry.Entity is BaseEntity trackable)
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 54)       {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 55)         switch (entry.State)
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 56)         {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 57)           case EntityState.Modified:
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 58)             trackable.UpdatedAt = currentDateTime;
+564d7ade (Zavier Miller 2022-09-29 09:57:56 -0400 59)             entry.Property(nameof(trackable.CreatedAt)).IsModified = false; /* ensure that CreatedAt won't be changed */
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 60)             break;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 61)           case EntityState.Added:
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 62)             trackable.UpdatedAt = currentDateTime;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 63)             trackable.CreatedAt = currentDateTime;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 64)             break;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 65)         }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 66)       }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 67)     }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 68)   }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 69)   
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 70)   // add DbSets here
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400 71)   public DbSet<User> Users { get; set; }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 72)   public DbSet<Task> Tasks { get; set; }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 73)   public DbSet<Project> Projects { get; set; }
+13eb3eae (Zavier Miller 2022-09-25 22:59:42 -0400 74) }
+
+
+### backend/TaskTree/Models/User.cs ###
+
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400  1) using System.ComponentModel.DataAnnotations;
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400  2) using System.ComponentModel.DataAnnotations.Schema;
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  3) using Microsoft.EntityFrameworkCore;
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400  4) 
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400  5) namespace TaskTree.Models;
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400  6) 
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  7) [Index(nameof(Username), IsUnique = true)]
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  8) public class User : BaseEntity
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400  9) {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 10)     [Required]
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400 11)     public string Username { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 12)     [Required]
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400 13)     public string Password { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 14)     public string? FirstName { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 15)     public string? LastName { get; set; }
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 16)     
+36970a12 (Zavier Miller 2022-10-09 23:49:36 -0400 17)     public List<Project> Projects { get; set; }
+c2f29099 (Zavier Miller 2022-09-26 20:40:35 -0400 18) }
+
+
+### backend/TaskTree/Models/MappingProfiles/MappingProfile.cs ###
+
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  1) using AutoMapper;
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  2) using TaskTree.Models.Requests;
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400  3) using TaskTree.Models.Responses;
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  4) 
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  5) namespace TaskTree.Models.MappingProfiles;
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  6) 
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  7) public class MappingProfile : Profile
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  8) {
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400  9)     public MappingProfile()
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 10)     {
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 11)         CreateMapNoNull<UpdateUserRequest, User>();
+bc4e88ac (Zavier Miller 2022-10-02 01:10:49 -0400 12)         CreateMapNoNull<CreateUserRequest, User>(MemberList.Source);
+0db4778c (Zavier Miller 2022-10-02 01:15:01 -0400 13)         CreateMapNoNull<User, UserResponse>();
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 14)     }
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 15) 
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 16)     // This is a helper wrapper around the CreateMap function that allows us to concisely specify a mapping should not override non-null values with null ones
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 17)     private IMappingExpression<TSource, TDestination> CreateMapNoNull<TSource, TDestination>(MemberList memberList = MemberList.Destination)
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 18)     {
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 19)         IMappingExpression<TSource, TDestination> result = CreateMap<TSource, TDestination>(memberList);
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 20)         
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 21)         result.ForAllMembers(x => x.Condition((src, dest, sourceValue) => sourceValue != null));
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 22) 
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 23)         return result;
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 24)     }
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 25) }
+
+
+### backend/TaskTree/Models/Requests/CreateUserRequest.cs ###
+
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  1) namespace TaskTree.Models.Requests;
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  2) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  3) public class CreateUserRequest
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  4) {
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  5)     public string Username { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  6)     public string Password { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  7)     public string? FirstName { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  8)     public string? LastName { get; set; }
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400  9) 
+686f429d (Zavier Miller 2022-09-28 15:37:25 -0400 10) }
+
+
+### backend/TaskTree/Models/Requests/UpdateUserRequest.cs ###
+
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 1) namespace TaskTree.Models.Requests;
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 2) 
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 3) public class UpdateUserRequest
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 4) {
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 5)     public string? Username { get; set; }
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 6)     public string? Password { get; set; }
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 7)     public string? FirstName { get; set; }
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 8)     public string? LastName { get; set; }
+75695ca3 (Zavier Miller 2022-09-29 08:02:20 -0400 9) }
+
+
+### backend/TaskTree/Models/Responses/UserResponse.cs ###
+
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 1) namespace TaskTree.Models.Responses;
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 2) 
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 3) public class UserResponse
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 4) {
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 5)     public long id { get; set; }
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 6)     public string username { get; set; }
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 7)     public string? firstName { get; set; }
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 8)     public string? lastName { get; set; }
+702de399 (Zavier Miller 2022-10-01 19:42:09 -0400 9) }
+
+
+### db/init/init.sql ###
+
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 1) CREATE USER 'tasktree'@'localhost' IDENTIFIED BY 'tasktree';
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 2) ALTER USER tasktree WITH LOGIN;
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 3) ALTER USER tasktree WITH CREATEDB;
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 4) CREATE DATABASE tasktree;
+86609a51 (Zavier Miller 2022-09-26 00:25:19 -0400 5) GRANT ALL PRIVILEGES ON DATABASE tasktree TO tasktree;
+
+
+### docs/backend-structure.md ###
+
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400  1) # Backend structure
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400  2) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400  3) The .NET web API uses the Model-View-Controller pattern, though the View doesn't really exist since we render JSON entities instead of actual views.
+dbc81634 (Zavier Miller 2022-09-29 08:30:36 -0400  4) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400  5) ## Models
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400  6) The models in the top-level `Models` directory are the actual entities as they appear in the database.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400  7) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400  8) ### Creating an entity
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400  9) To register a model to be added into the database, first the class with all the data being stored should be added into the top-level `Models` directory. This class should inherit from `BaseEntity` and not define any of the following: Id, CreatedAt, UpdatedAt.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 10) Next, in `Models/TaskTreeContext.cs` a `DbSet` should be added with the name of the database table.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 11) Now create a migration to update the database with your entity table using the following command:
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 12) `dotnet ef migrations add [MigrationNameInPascalCase]`
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 13) This command will add a file to the `Migrations` directory that will update the database with your entity.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 14) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 15) Finally, to actually propagate the change to the database, you need to run the following command:
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 16) `dotnet ef database update`
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 17) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 18) ### Request objects
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 19) When accepting data from an API call, there is almost never a case where all the data an entity stores should be modifiable. For example, a user should never be able to specify their own ID as this is generated by the database on the rows creation.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 20) To remedy this, a request class should be defined in `Models/Requests` containing the data accepted for specific requests. For example, `CreateUserRequest.cs` and `UpdateUserRequest.cs` hold the data that is accepted for creating and updating a user, respectively.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 21) 
+0b96eabb (Zavier Miller 2022-10-02 01:34:53 -0400 22) ### Response objects
+0b96eabb (Zavier Miller 2022-10-02 01:34:53 -0400 23) When returning data, there are cases when returning the entity stored in the database is undesirable. For example, with user entities it is likely that the password hash stored in the database won't want to be returned.
+0b96eabb (Zavier Miller 2022-10-02 01:34:53 -0400 24) In this case, a response object should be created in `Models/Responses` which contains the fields that should be returned. Then in the controllers, this type should be returned.
+0b96eabb (Zavier Miller 2022-10-02 01:34:53 -0400 25) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 26) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 27) ## Controllers
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 28) The controllers in the `Controllers` directory essentially routes API requests and decides what the response is.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 29) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 30) ### Creating a controller
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 31) Creating a controller with simple CRUD actions is pretty straight-forward, Visual Studio provides a scaffolding tool for API controllers. When creating a scaffolded item, look for the 'API Controller with actions, using Entity Framework' option, and configure that as necessary.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 32) Remember, any action that will create or update tables should have an associated Request object in `Models/Requests`.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 33) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 34) ### AutoMapper
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 35) After accepting a Request object in the controller actions, it will need to be converted into an actual database entity. Rather than doing this conversion manually, TaskTree uses a project called [AutoMapper](https://github.com/AutoMapper/AutoMapper). It is almost completely automatic, but some manual work is needed to get it working.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 36) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 37) #### Creating a mapping
+b8d419de (Zavier Miller 2022-10-02 01:36:35 -0400 38) In `Models/MappingProfiles/MappingProfile.cs`, add a `CreateMap<Source, Dest>()` function, where `Source` is original type and `Dest` is the type being converted to. If you want to ensure that null fields won't override non-null fields when merging objects (useful when updating entities), you can use the `CreateMapNoNull` helper we have defined in the `MappingProfile` class.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 39) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 40) #### Using a mapping
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 41) Now define a private property on the controller you wish to use AutoMapper on:
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 42) `private readonly IMapper _mapper;`
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 43) Then, modify the controller's construtor to accept an `IMapper` object and set the `_mapper` property to that.
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 44) 
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 45) The mapper can now be used by calling the following function:
+ecafe0cb (Zavier Miller 2022-09-29 09:43:18 -0400 46) `_mapper.Map(source, dest);`
+564d7ade (Zavier Miller 2022-09-29 09:57:56 -0400 47) 
+564d7ade (Zavier Miller 2022-09-29 09:57:56 -0400 48) For an in-depth example, check out the `Controllers/UsersController.cs`.
+
+
+### frontend/.env.development ###
+
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 1) REACT_APP_API_URL=http://localhost:5000/api
+
+
+### frontend/.env.production ###
+
+
+
+### frontend/src/components/TTNavBar/TTNavBarBase.ts ###
+
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 1) export interface Props {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 2)   navItems: {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 3)     name: string;
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 4)     path: string;
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 5)   }[];
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 6) }
+
+
+### frontend/src/components/TTNavBar/TTNavBarDesktop.tsx ###
+
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  1) import React from 'react';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  2) import {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  3)   AppBar,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  4)   Avatar,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  5)   Box,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  6)   Button,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  7)   Container,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  8)   Toolbar,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  9)   Typography,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 10) } from '@mui/material';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 11) import { Props } from './TTNavBarBase';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 12) import logo from '../../assets/logo.png';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 13) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 14) export default function TTNavBarDesktop(props: Props) {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 15)   return (
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 16)     <Box sx={{ display: 'flex' }}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 17)       <AppBar position="static" elevation={0} color="transparent">
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 18)         <Container maxWidth={false}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 19)           <Toolbar disableGutters>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 20)             <Avatar
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 21)               variant="rounded"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 22)               alt="tasktree logo"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 23)               src={logo}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 24)               sx={{ mr: 2 }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 25)             />
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 26)             <Typography
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 27)               variant="h6"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 28)               sx={{
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 29)                 display: { xs: 'none', md: 'flex' },
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 30)                 fontWeight: 700,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 31)                 letterSpacing: '.3rem',
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 32)                 color: 'inherit',
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 33)                 textDecoration: 'none',
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 34)                 flexGrow: 1,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 35)               }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 36)             >
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 37)               TaskTree
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 38)             </Typography>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 39)             <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 40)               {props.navItems.map((item) => (
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 41)                 <Button
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 42)                   key={item.path}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 43)                   href={item.path}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 44)                   sx={{ my: 2, display: 'block' }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 45)                   variant={
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 46)                     item.path === location.pathname ? 'contained' : 'text'
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 47)                   }
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 48)                 >
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 49)                   {item.name}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 50)                 </Button>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 51)               ))}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 52)             </Box>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 53)           </Toolbar>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 54)         </Container>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 55)       </AppBar>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 56)     </Box>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 57)   );
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 58) }
+
+
+### frontend/src/components/TTNavBar/TTNavBarMobile.tsx ###
+
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   1) import React from 'react';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   2) import {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   3)   AppBar,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   4)   Avatar,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   5)   Box,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   6)   Container,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   7)   Divider,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   8)   Drawer,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400   9)   Icon,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  10)   IconButton,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  11)   List,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  12)   ListItem,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  13)   ListItemButton,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  14)   ListItemText,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  15)   Toolbar,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  16)   Typography,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  17) } from '@mui/material';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  18) import { Props } from './TTNavBarBase';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  19) import logo from '../../assets/logo.png';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  20) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  21) const drawerWidth = 240;
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  22) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  23) export default function TTNavBarMobile(props: Props) {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  24)   const [open, setOpen] = React.useState(false);
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  25) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  26)   const toggleDrawer = () => {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  27)     setOpen(!open);
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  28)   };
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  29) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  30)   const drawer = (
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  31)     <Box onClick={toggleDrawer} sx={{ textAlign: 'center' }}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  32)       <Typography variant="h6" sx={{ fontWeight: 700, letterSpacing: '.3rem' }}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  33)         TaskTree
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  34)       </Typography>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  35)       <Divider />
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  36)       <List>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  37)         {props.navItems.map((item) => (
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  38)           <ListItem key={item.path} disablePadding>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  39)             <ListItemButton
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  40)               sx={{ textAlign: 'center' }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  41)               href={item.path}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  42)               selected={item.path === location.pathname}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  43)             >
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  44)               <ListItemText primary={item.name} />
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  45)             </ListItemButton>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  46)           </ListItem>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  47)         ))}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  48)       </List>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  49)     </Box>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  50)   );
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  51) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  52)   return (
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  53)     <Box sx={{ display: 'flex' }}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  54)       <AppBar position="static" elevation={0} color="transparent">
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  55)         <Container maxWidth={false}>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  56)           <Toolbar disableGutters>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  57)             <Avatar
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  58)               variant="rounded"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  59)               alt="tasktree logo"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  60)               src={logo}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  61)               sx={{ mr: 2 }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  62)             />
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  63)             <Typography
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  64)               variant="h6"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  65)               sx={{
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  66)                 display: { xs: 'flex', md: 'none' },
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  67)                 fontWeight: 700,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  68)                 letterSpacing: '.3rem',
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  69)                 color: 'inherit',
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  70)                 textDecoration: 'none',
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  71)                 flexGrow: 1,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  72)               }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  73)             >
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  74)               TaskTree
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  75)             </Typography>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  76)             <IconButton
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  77)               size="large"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  78)               aria-label="account of current user"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  79)               aria-controls="menu-appbar"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  80)               aria-haspopup="true"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  81)               onClick={toggleDrawer}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  82)               color="inherit"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  83)             >
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  84)               <Icon>menu</Icon>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  85)             </IconButton>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  86)           </Toolbar>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  87)         </Container>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  88)       </AppBar>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  89)       <Drawer
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  90)         variant="temporary"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  91)         anchor="right"
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  92)         open={open}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  93)         onClose={toggleDrawer}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  94)         ModalProps={{ keepMounted: true }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  95)         sx={{
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  96)           display: { xs: 'block' },
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  97)           '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  98)         }}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  99)       >
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 100)         {drawer}
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 101)       </Drawer>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 102)     </Box>
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 103)   );
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 104) }
+
+
+### frontend/src/components/TTNavBar/index.ts ###
+
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  1) import TTNavBarDesktop from './TTNavBarDesktop';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  2) import TTNavBarMobile from './TTNavBarMobile';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  3) import { Props } from './TTNavBarBase';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  4) import { useMediaQuery } from '@mui/material';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  5) import { useTheme } from '@mui/material/styles';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  6) import React from 'react';
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  7) 
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  8) export default function TTNavBar(props: Props) {
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400  9)   const theme = useTheme();
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 10)   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 11)   return React.createElement(
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 12)     isMobile ? TTNavBarMobile : TTNavBarDesktop,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 13)     props,
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 14)     null
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 15)   );
+da991b65 (Zavier Miller 2022-09-29 22:27:26 -0400 16) }
+
+
+### frontend/src/pages/home.tsx ###
+
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400  2) import { Button, Typography } from '@mui/material';
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400  3) import UserService from '../services/UserService';
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400  4) import User, { BlankUser } from '../types/User';
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400  6) interface HomePageState {
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400  7)   user: User;
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400  8) }
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400  9) 
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 10) class HomePage extends React.Component<{}, HomePageState> {
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 11)   state: HomePageState = {
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 12)     user: BlankUser,
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 13)   };
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400 14) 
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 15)   constructor(props: {}) {
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 16)     super(props);
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 17)   }
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400 18) 
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 19)   componentDidMount() {
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400 20)     UserService.getUser(1).then((user) => {
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 21)       this.setState({ user: user });
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400 22)     });
+1b224900 (Zavier Miller          2022-10-01 19:08:32 -0400 23)   }
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 25)   render() {
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 26)     return (
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 27)       <div>
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 28)         <Typography variant="h1">HOME PAGE</Typography>
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 29)         <Button>Hello World</Button>
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 30)         <Typography variant="h2">
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 31)           Hello, {this.state.user.firstName}.
+592f7232 (Zavier Miller          2022-10-10 10:31:58 -0400 32)         </Typography>
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 33)       </div>
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 34)     );
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 35)   }
+a4447f77 (Zavier Miller          2022-09-29 20:48:11 -0400 38) export default HomePage;
+
+
+### frontend/src/services/UserService.ts ###
+
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  1) import http from '../util/http';
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  2) import User from '../types/User';
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  3) 
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  4) export default class UserService {
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  5)   static async getUser(id: number): Promise<User> {
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  6)     const response = await http.get(`/users/${id}`);
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  7)     return response.data;
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  8)   }
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  9) 
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 10)   static async createUser(user: User): Promise<User> {
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 11)     const response = await http.post('/users', user);
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 12)     return response.data;
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 13)   }
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 14) 
+79c22cef (Zavier Miller 2022-10-10 15:37:46 -0400 15)   // TODO: we should return the updated user from the endpoint
+79c22cef (Zavier Miller 2022-10-10 15:37:46 -0400 16)   static async updateUser(user: User) {
+79c22cef (Zavier Miller 2022-10-10 15:37:46 -0400 17)     await http.put(`/users/${user.id}`, user);
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 18)   }
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 19) 
+79c22cef (Zavier Miller 2022-10-10 15:37:46 -0400 20)   // TODO: we should return if the deletion succeeded or not
+79c22cef (Zavier Miller 2022-10-10 15:37:46 -0400 21)   static async deleteUser(id: number) {
+79c22cef (Zavier Miller 2022-10-10 15:37:46 -0400 22)     await http.delete(`/users/${id}`);
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 23)   }
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 24) }
+
+
+### frontend/src/types/User.ts ###
+
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  1) export default interface User {
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  2)   id: number;
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  3)   username: string;
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  4)   firstName?: string;
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  5)   lastName?: string;
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400  6) }
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400  7) 
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400  8) export const BlankUser: User = {
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400  9)   id: 0,
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400 10)   username: '',
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400 11)   firstName: '',
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400 12)   lastName: '',
+592f7232 (Zavier Miller 2022-10-10 10:31:58 -0400 13) };
+
+
+### frontend/src/util/http.ts ###
+
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 1) import axios from 'axios';
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 2) 
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 3) export default axios.create({
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 4)   baseURL: process.env.REACT_APP_API_URL,
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 5)   headers: {
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 6)     'Content-type': 'application/json',
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 7)   },
+1b224900 (Zavier Miller 2022-10-01 19:08:32 -0400 8) });
+
+
