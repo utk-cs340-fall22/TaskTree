@@ -1,0 +1,39 @@
+Note that this does not include the files from setting up VS 2022 so that this file isn't filled with megabytes of mostly non-relevant junk.
+
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  1) ∩╗┐using Microsoft.EntityFrameworkCore;
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  2) using System.ComponentModel.DataAnnotations;
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  3)
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  4) namespace TaskTree.Models
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  5) {
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  6)     public class Project : BaseEntity
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  7)     {
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  8)         [Required]
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  9)         public string Name { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 10)         public string? Description { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 11)         public Task? Root { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 12)         public double? Progress   { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 15)     }
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400 16) }
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  1) using Microsoft.EntityFrameworkCore;
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  2) using System.ComponentModel.DataAnnotations;
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  3)
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  4) namespace TaskTree.Models
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400  5) {
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  6)     public class Task : BaseEntity
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  7)     {
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  8)         [Required]
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400  9)         public string Name { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 10)         public string? Description { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 11)         public double? Progress { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 12)         public double? Weight { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 18)         public List<Task>? Children { get; set; }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 19)     }
+bf72d059 (ethanhmaness  2022-10-04 12:56:28 -0400 20) }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 11)
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 12)   protected override void OnModelCreating(ModelBuilder modelBuilder)
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 13)   {
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 21)     modelBuilder.Entity<Project>()
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 27)     modelBuilder.Entity<Task>()
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 29)       .WithMany(t => t.Children)
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 31)   }
+408598f0 (ethanhmaness  2022-10-06 18:54:07 -0400 32)
