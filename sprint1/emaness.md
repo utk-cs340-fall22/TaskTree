@@ -1,8 +1,10 @@
 
-# Sprint n (1, 2, 3 or 4)
+# Sprint 1
 
 Ethan Maness
+
 emaness-utk
+
 TaskTree
 
 ### What you planned to do
