@@ -112,30 +112,6 @@ a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10
 9fbf3775 frontend/src/types/User.ts (Andrew Rutter 2022-10-16 21:59:15 -0400  6)   password?: string;
 
 
-### backend/TaskTree/Controllers/UsersController.cs ###
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400   1) using System.IdentityModel.Tokens.Jwt;
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 120)             try
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 121)             {
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 122)                 await _context.SaveChangesAsync();
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 123)
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 124)             } catch(Exception e)
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 125)             {
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 126)                 var exceptionCode = e.HResult;
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 127)
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 128)                 // SQL server not running
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 129)                 if (exceptionCode == -2146233079)
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 130)                 {
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 131)                     return StatusCode(503, "Unable to connect to database");
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 132)                 }
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 133)
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 134)                 // duplicate username
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 135)                 else if (exceptionCode == -2146233088)
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 136)                 {
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 137)                     return BadRequest("User already exists");
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 138)                 }
-c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 139)             }
-
-
 ### frontend/src/components/SignUp/index.tsx ###
 621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   1) import { Alert, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
 621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   3) import AuthService from '../../services/AuthService';
