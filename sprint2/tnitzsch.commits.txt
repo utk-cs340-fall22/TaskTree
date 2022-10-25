@@ -1,0 +1,159 @@
+
+### frontend/src/pages/project.tsx ###
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  1) import React from 'react';
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  2) import ProjectComponent from '../components/Project';
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  3) 
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  4) class ProjectPage extends React.Component {
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  5)   render() {
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  6)     return <ProjectComponent />;
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  7)   }
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  8) }
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400  9) 
+d4e205b9 frontend/src/pages/project.tsx (PotassiumLover 2022-10-25 01:25:44 -0400 10) export default ProjectPage;
+
+### frontend/src/components/DisplayProjects/index.tsx ###
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   1) //import { Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   2) //import React, { FormEvent, useState } from 'react';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   3) //import User from '../../types/User';
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400   4) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   5) import * as React from 'react';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   6) //import Box from '@mui/material/Box';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   7) import ListItem from '@mui/material/ListItem';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   8) import ListItemButton from '@mui/material/ListItemButton';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400   9) import ListItemText from '@mui/material/ListItemText';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  10) import { FixedSizeList, ListChildComponentProps } from 'react-window';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  12) import Dialog from '@mui/material/Dialog';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  13) import DialogActions from '@mui/material/DialogActions';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  14) import DialogContent from '@mui/material/DialogContent';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  15) import DialogContentText from '@mui/material/DialogContentText';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  16) import DialogTitle from '@mui/material/DialogTitle';
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  19) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  20) function renderRow(props: ListChildComponentProps) {
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  22) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  23)   return (
+31ccca84 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 08:10:38 -0400  24) 
+31ccca84 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 08:10:38 -0400  26) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  27)       <ListItemButton>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  30)       </ListItemButton>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  31)     </ListItem>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  32)   );
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  33) }
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  34) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  39) export default function VirtualizedList() {
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  40)   const [open, setOpen] = React.useState(false);
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  52) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  53)   const handleClickOpen = () => {
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  54)     setOpen(true);
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  55)   };
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  56) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  57)   const handleClose = () => {
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  58)     setOpen(false);
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  59)   };
+31ccca84 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 08:10:38 -0400  61) 
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  73)   return (
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  74)     <Box
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  75)       sx={{
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  76)         marginTop: 8,
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  77)         display: 'flex',
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  78)         flexDirection: 'column',
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  79)         alignItems: 'center'
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  80)       }}>
+7c5d80ad frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 08:26:57 -0400  81)       <Typography component="h5" variant="h5">
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  82)         Projects
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  83)       </Typography>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  84)       <Button variant="outlined" onClick={handleClickOpen}>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  85)         Create new project
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  86)       </Button>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  87)       <Dialog open={open} onClose={handleClose}>
+31ccca84 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 08:10:38 -0400  88) 
+495952de frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:09:28 -0400  89)         <DialogTitle>Create Project</DialogTitle>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  90)         <DialogContent>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  91)           <TextField
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  92)             autoFocus
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  93)             margin="dense"
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  94)             id="name"
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  96)             label="Project Name"
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  97)             type="project"
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  98)             fullWidth
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400  99)             variant="standard"
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 101)           />
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 102)           <TextField
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 103)             autoFocus
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 104)             margin="dense"
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 105)             id="name"
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 106)             label="Project Description"
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 107)             type="description"
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 108)             fullWidth
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 109)             variant="standard"
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 110)           />
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 111)         </DialogContent>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 112)         <DialogActions>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 113)           <Button onClick={handleClose}>Cancel</Button>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 120)         </DialogActions>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 121)       </Dialog>
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 122)       <FixedSizeList
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 123)         height={400}
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 124)         width={360}
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 125)         itemSize={46}
+31ccca84 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 08:10:38 -0400 126) 
+592ec7ec frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 01:27:52 -0400 128)         overscanCount={5}
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 130)         {renderRow}
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 131)       </FixedSizeList>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 132)     </Box>
+eee4dd06 frontend/src/components/DisplayProjects/index.tsx (PotassiumLover 2022-10-25 00:03:25 -0400 133)   );
+
+### frontend/src/components/Project/index.tsx ###
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  1) import * as React from 'react';
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  2) import ListSubheader from '@mui/material/ListSubheader';
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  3) import List from '@mui/material/List';
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  4) import ListItemButton from '@mui/material/ListItemButton';
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  5) import ListItemText from '@mui/material/ListItemText';
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  6) import Collapse from '@mui/material/Collapse';
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  7) 
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  8) export default function NestedList() {
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400  9)   const [open, setOpen] = React.useState(false);
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 10) 
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 11)   const handleClick = () => {
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 12)     setOpen(!open);
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 13)   };
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 14) 
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 15)   return (
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 16)     <List
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 17)       sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 18)       component="nav"
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 19)       aria-labelledby="nested-list-subheader"
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 20)       subheader={
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 21)         <ListSubheader component="div" id="nested-list-subheader">
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 22)           Tasks
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 23)         </ListSubheader>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 24)       }
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 25)     >
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 26)       <ListItemButton onClick={handleClick}>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 27)         <ListItemText primary="Expand All" />
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 28)       </ListItemButton>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 29)       <ListItemButton >
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 30)         <ListItemText primary="Task 1" />
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 31)       </ListItemButton>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 32)       <Collapse in={open} timeout="auto" unmountOnExit>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 33)         <List component="div" disablePadding>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 34)           <ListItemButton sx={{ pl: 4 }}>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 35)             <ListItemText primary="Task 1-1" />
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 36)           </ListItemButton>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 37)         </List>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 38)       </Collapse>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 39)       <ListItemButton >
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 40)         <ListItemText primary="Task 2" />
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 41)       </ListItemButton>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 42)       <ListItemButton >
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 43)         <ListItemText primary="Task 3" />
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 44)       </ListItemButton>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 45)       <Collapse in={open} timeout="auto" unmountOnExit>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 46)         <List component="div" disablePadding>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 47)           <ListItemButton sx={{ pl: 4 }}>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 48)             <ListItemText primary="Task 3-1" />
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 49)           </ListItemButton>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 50)         </List>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 51)       </Collapse>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 52)     </List>
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 53)   );
+d08cc4f0 frontend/src/components/Project/index.tsx (PotassiumLover 2022-10-25 01:29:18 -0400 54) }

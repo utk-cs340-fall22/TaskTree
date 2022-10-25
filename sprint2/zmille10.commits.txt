@@ -1,0 +1,517 @@
+### backend/TaskTree/Controllers/TaskTreeControllerBase.cs ###
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  1) ﻿using System.Security.Claims;
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  2) using System.Security.Principal;
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  3) using Microsoft.AspNetCore.Mvc;
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  4)
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  5) namespace TaskTree.Controllers;
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  6)
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  7) // This class will contain any helper methods needed by all controllers
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  8) // Any controller created should inherit from this class.
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400  9) public class TaskTreeControllerBase : ControllerBase
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400 10) {
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400 11)     protected bool CurrentUserIdDoesNotMatch(long requestedUserId)
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400 12)     {
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400 14)         return userId != requestedUserId;
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400 15)     }
+68abe7f3 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (Zavier Miller 2022-10-16 22:01:14 -0400 21) }
+
+
+### backend/TaskTree/Controllers/UsersController.cs ###
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   2) using System.Security.Claims;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   3) using System.Text;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   4) using AutoMapper;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   5) using Microsoft.AspNetCore.Authorization;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   6) using Microsoft.AspNetCore.Mvc;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   7) using Microsoft.EntityFrameworkCore;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   8) using Microsoft.EntityFrameworkCore.Metadata.Internal;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400   9) using Microsoft.Extensions.Options;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  10) using Microsoft.IdentityModel.Tokens;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  11) using TaskTree.Models;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  12) using TaskTree.Models.Requests;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  13) using TaskTree.Models.Responses;
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  14)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  15) namespace TaskTree.Controllers
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  16) {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  19)     public class UsersController : TaskTreeControllerBase
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  42)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  43)             if (CurrentUserIdDoesNotMatch(id))
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  44)             {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  45)                 return Unauthorized();
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  46)             }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  47)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  72)             if (CurrentUserIdDoesNotMatch(id))
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  73)             {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  74)                 return Unauthorized();
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  75)             }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400  76)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 154)             if (CurrentUserIdDoesNotMatch(id))
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 155)             {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 156)                 return Unauthorized();
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 157)             }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 158)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 169)         }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 170)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 171)         // POST api/Users/auth
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 172)         [HttpPost("auth")]
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 173)         public IActionResult AuthenticateUser(AuthenticateUserRequest authenticateUserRequest)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 174)         {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 175)             // gets a single entry from DB with matching username and password, stores in a <= 1 length list
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 176)             var query = (from user in _context.Users
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 177)                          where user.Username == authenticateUserRequest.Username
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 178)                          where user.Password == authenticateUserRequest.Password
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 179)                          select new UserResponse
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 180)                          { id = user.Id, firstName = user.FirstName, lastName = user.LastName, username = user.Username }).ToList();
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 181)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 182)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 183)             // if the list has an entry, create a jwt valid for 24 hours. Otherwise, return 401
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 184)             if (query.Any())
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 185)             {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 186)                 var userResponse = query.First();
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 187)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 188)                 var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.Value.AuthKey));
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 189)                 var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 190)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 191)                 //Create a List of Claims
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 192)                 var permClaims = new List<Claim>();
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 193)                 permClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 194)                 permClaims.Add(new Claim("username", userResponse.username));
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 195)                 permClaims.Add(new Claim("id", userResponse.id.ToString()));
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 196)                 if (userResponse.firstName != null)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 197)                 {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 198)                     permClaims.Add(new Claim("firstname", userResponse.firstName));
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 199)                 }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 200)                 if (userResponse.lastName != null)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 201)                 {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 202)                     permClaims.Add(new Claim("lastname", userResponse.lastName));
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 203)                 }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 204)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 205)                 //Create Security Token object by giving required parameters
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 206)                 var token = new JwtSecurityToken(_config.Value.AuthIssuer,
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 207)                   _config.Value.AuthIssuer,
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 208)                   permClaims,
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 209)                   expires: DateTime.Now.AddDays(1),
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 210)                   signingCredentials: credentials);
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 213)                 return Ok(jwt_token);
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 214)             }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 215)             else
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 216)             {
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 217)                 // user could not be found
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 218)                 return Unauthorized("Invalid username or password.");
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 219)             }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 220)         }
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 221)
+68abe7f3 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-16 22:01:14 -0400 227)     }
+f69f784f backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-17 21:37:41 -0400 228) }
+
+
+### frontend/.eslintignore ###
+26cd7e6a frontend/.eslintignore (Zavier Miller 2022-10-13 09:34:44 -0400 1) node_modules
+26cd7e6a frontend/.eslintignore (Zavier Miller 2022-10-13 09:34:44 -0400 2) dist
+
+
+### frontend/.eslintrc.js ###
+cda10408 frontend/.eslintrc.js (Zavier Miller 2022-10-12 16:27:07 -0400  5)     jest: true,
+1ccb5759 frontend/.eslintrc.js (Zavier Miller 2022-10-12 16:32:36 -0400  6)     node: true
+26cd7e6a frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:34:44 -0400  8)   parser: '@typescript-eslint/parser',
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400  9)   extends: [
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400 10)     'eslint:recommended',
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400 11)     'plugin:@typescript-eslint/eslint-recommended',
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400 12)     'plugin:@typescript-eslint/recommended',
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400 13)     'plugin:react/recommended',
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400 14)     'plugin:prettier/recommended'
+f94e6eee frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:36:48 -0400 15)   ],
+26cd7e6a frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:34:44 -0400 26)   plugins: ['react', '@typescript-eslint'],
+26cd7e6a frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:34:44 -0400 28)     'react/react-in-jsx-scope': 'off',
+26cd7e6a frontend/.eslintrc.js (Zavier Miller 2022-10-13 09:34:44 -0400 29)     'no-console': 2
+
+
+### frontend/src/components/CreateTaskFormDialog/index.tsx ###
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  1) import Button from '@mui/material/Button';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  2) import Dialog from '@mui/material/Dialog';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  3) import DialogActions from '@mui/material/DialogActions';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  4) import DialogContent from '@mui/material/DialogContent';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  5) import DialogTitle from '@mui/material/DialogTitle';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  6) import TextField from '@mui/material/TextField';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  7) import React from 'react';
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  8)
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400  9) export interface CreateTaskFormData {
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 10)   name: string;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 11)   description: string;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 12)   weight: number;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 13) }
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 14)
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 15) interface CreateTaskFormProps {
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 16)   open: boolean;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 17)   onClose: () => void;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 18)   onSubmit: (taskData: CreateTaskFormData) => void;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 19) }
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 20)
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 21) export default function CreateTaskFormDialog(props: CreateTaskFormProps) {
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 22)   const [formData, setFormData] = React.useState<CreateTaskFormData>({
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 23)     name: '',
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 24)     description: '',
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 25)     weight: 1
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 26)   } as CreateTaskFormData);
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 27)
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 28)   const onChange = (e: React.SyntheticEvent) => {
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 29)     const target = e.target as HTMLInputElement;
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 30)     setFormData((formData) => ({ ...formData, [target.name]: target.value }));
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 31)   };
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 32)
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 33)   return (
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 34)     <Dialog open={props.open} onClose={props.onClose}>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 35)       <DialogTitle>Create Task</DialogTitle>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 36)       <DialogContent>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 37)         <TextField
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 38)           autoFocus
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 39)           margin="dense"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 40)           id="name"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 41)           name="name"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 42)           label="Task name"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 43)           type="text"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 44)           fullWidth
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 45)           variant="standard"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 46)           onChange={onChange}
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 47)           value={formData.name}
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 48)         />
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 49)         <TextField
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 50)           autoFocus
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 51)           margin="dense"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 52)           id="description"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 53)           name="description"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 54)           label="Task description"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 55)           type="text"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 56)           fullWidth
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 57)           variant="standard"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 58)           onChange={onChange}
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 59)           value={formData.description}
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 60)         />
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 61)         <TextField
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 62)           autoFocus
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 63)           margin="dense"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 64)           id="weight"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 65)           name="weight"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 66)           label="Task weight"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 67)           type="number"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 68)           fullWidth
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 69)           variant="standard"
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 70)           onChange={onChange}
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 71)           value={formData.weight}
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 72)         />
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 73)       </DialogContent>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 74)       <DialogActions>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 75)         <Button onClick={props.onClose}>Cancel</Button>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 76)         <Button onClick={() => props.onSubmit(formData)}>Create</Button>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 77)       </DialogActions>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 78)     </Dialog>
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 79)   );
+b8ee5690 frontend/src/components/CreateTaskFormDialog/index.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 80) }
+
+
+### frontend/src/components/TTNavBar/TTNavBarBase.ts ###
+172c6e8f frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-23 23:46:29 -0400  1) import React from 'react';
+172c6e8f frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-23 23:46:29 -0400  2)
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400  4)   navItems: {
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400  5)     name: string;
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400  6)     path?: string;
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400  7)     action?: (
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400  8)       e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement | HTMLDivElement, MouseEvent>
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400  9)     ) => void;
+e47199fc frontend/src/components/TTNavBar/TTNavBarBase.ts (Zavier Miller 2022-10-24 00:21:28 -0400 10)   }[];
+
+
+### frontend/src/components/TTNavBar/TTNavBarMobile.tsx ###
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  19) import { Link } from 'react-router-dom';
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  38)         {props.navItems.map((item) =>
+e47199fc frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-24 00:21:28 -0400  39)           item.path ? (
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  40)             <ListItem key={item.path} disablePadding>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  41)               <ListItemButton
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  42)                 sx={{ textAlign: 'center' }}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  43)                 component={Link}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  44)                 to={item.path}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  45)                 selected={item.path === location.pathname}>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  46)                 <ListItemText primary={item.name} />
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  47)               </ListItemButton>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  48)             </ListItem>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  49)           ) : (
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  50)             <ListItem key={item.name} disablePadding>
+5787ca9f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-24 00:09:40 -0400  51)               <ListItemButton sx={{ textAlign: 'center' }} onClick={item.action!}>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  52)                 <ListItemText primary={item.name} />
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  53)               </ListItemButton>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  54)             </ListItem>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  55)           )
+172c6e8f frontend/src/components/TTNavBar/TTNavBarMobile.tsx (Zavier Miller 2022-10-23 23:46:29 -0400  56)         )}
+
+
+### frontend/src/components/TTNavBar/TTNavBarDesktop.tsx ###
+a5219112 frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-17 23:27:51 -0400  4) import { Link } from 'react-router-dom';
+a5219112 frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-17 23:27:51 -0400  6) import { useLocation } from 'react-router-dom';
+a5219112 frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-17 23:27:51 -0400  9)   const location = useLocation();
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 29)               {props.navItems.map((item) =>
+e47199fc frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-24 00:21:28 -0400 30)                 item.path ? (
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 31)                   <Button
+b8ee5690 frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 32)                     key={item.name}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 33)                     sx={{ my: 2, display: 'block' }}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 34)                     component={Link}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 35)                     to={item.path!}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 36)                     variant={item.path === location.pathname ? 'contained' : 'text'}>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 37)                     {item.name}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 38)                   </Button>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 39)                 ) : (
+b8ee5690 frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-25 05:25:26 -0400 40)                   <Button key={item.name} sx={{ my: 2, display: 'block' }} onClick={item.action}>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 41)                     {item.name}
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 42)                   </Button>
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 43)                 )
+172c6e8f frontend/src/components/TTNavBar/TTNavBarDesktop.tsx (Zavier Miller 2022-10-23 23:46:29 -0400 44)               )}
+
+
+### frontend/src/store/hooks.ts ###
+a5219112 frontend/src/store/hooks.ts (Zavier Miller 2022-10-17 23:27:51 -0400 1) import { useDispatch, useSelector } from 'react-redux';
+a5219112 frontend/src/store/hooks.ts (Zavier Miller 2022-10-17 23:27:51 -0400 2) import type { TypedUseSelectorHook } from 'react-redux';
+a5219112 frontend/src/store/hooks.ts (Zavier Miller 2022-10-17 23:27:51 -0400 3) import type { RootState, AppDispatch } from './index';
+a5219112 frontend/src/store/hooks.ts (Zavier Miller 2022-10-17 23:27:51 -0400 4)
+a5219112 frontend/src/store/hooks.ts (Zavier Miller 2022-10-17 23:27:51 -0400 5) export const useAppDispatch = () => useDispatch<AppDispatch>();
+a5219112 frontend/src/store/hooks.ts (Zavier Miller 2022-10-17 23:27:51 -0400 6) export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
+
+
+### frontend/src/store/index.ts ###
+d831c578 frontend/src/store/index.ts (Zavier Miller 2022-10-14 20:30:35 -0400  1) import { configureStore } from '@reduxjs/toolkit';
+d831c578 frontend/src/store/index.ts (Zavier Miller 2022-10-14 20:30:35 -0400  2) import userReducer from './user';
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  3) import { UserState } from './types';
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  4) import AuthService from '../services/AuthService';
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  5)
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  6) export type RootState = {
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  7)   user: UserState;
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  8) };
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400  9)
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400 10) function preloadState(): RootState {
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400 11)   const jwt = AuthService.getJWT();
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400 12)   const user = AuthService.decodeJWT(jwt);
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400 13)   return { user: { current: user, isLoggedIn: !!user } };
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400 14) }
+d831c578 frontend/src/store/index.ts (Zavier Miller 2022-10-14 20:30:35 -0400 15)
+a5219112 frontend/src/store/index.ts (Zavier Miller 2022-10-17 23:27:51 -0400 16) export const store = configureStore({
+d831c578 frontend/src/store/index.ts (Zavier Miller 2022-10-14 20:30:35 -0400 17)   reducer: {
+d831c578 frontend/src/store/index.ts (Zavier Miller 2022-10-14 20:30:35 -0400 18)     user: userReducer
+a5219112 frontend/src/store/index.ts (Zavier Miller 2022-10-17 23:27:51 -0400 19)   },
+172c6e8f frontend/src/store/index.ts (Zavier Miller 2022-10-23 23:46:29 -0400 20)   preloadedState: preloadState(),
+a5219112 frontend/src/store/index.ts (Zavier Miller 2022-10-17 23:27:51 -0400 21)   devTools: true
+d831c578 frontend/src/store/index.ts (Zavier Miller 2022-10-14 20:30:35 -0400 22) });
+a5219112 frontend/src/store/index.ts (Zavier Miller 2022-10-17 23:27:51 -0400 23)
+a5219112 frontend/src/store/index.ts (Zavier Miller 2022-10-17 23:27:51 -0400 24) export type AppDispatch = typeof store.dispatch;
+
+
+### frontend/src/store/types.ts ###
+172c6e8f frontend/src/store/types.ts (Zavier Miller 2022-10-23 23:46:29 -0400 1) import User from '../types/User';
+172c6e8f frontend/src/store/types.ts (Zavier Miller 2022-10-23 23:46:29 -0400 2)
+172c6e8f frontend/src/store/types.ts (Zavier Miller 2022-10-23 23:46:29 -0400 3) export interface UserState {
+172c6e8f frontend/src/store/types.ts (Zavier Miller 2022-10-23 23:46:29 -0400 4)   current: User | null;
+172c6e8f frontend/src/store/types.ts (Zavier Miller 2022-10-23 23:46:29 -0400 5)   isLoggedIn: boolean;
+172c6e8f frontend/src/store/types.ts (Zavier Miller 2022-10-23 23:46:29 -0400 6) }
+
+
+### frontend/src/store/user.ts ###
+a5219112 frontend/src/store/user.ts (Zavier Miller 2022-10-17 23:27:51 -0400  1) import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400  2) import User from '../types/User';
+172c6e8f frontend/src/store/user.ts (Zavier Miller 2022-10-23 23:46:29 -0400  3) import { UserState } from './types';
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400  4)
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400  5) const initialState: UserState = {
+172c6e8f frontend/src/store/user.ts (Zavier Miller 2022-10-23 23:46:29 -0400  6)   current: null,
+a5219112 frontend/src/store/user.ts (Zavier Miller 2022-10-17 23:27:51 -0400  7)   isLoggedIn: false
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400  8) };
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400  9)
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 10) export const userSlice = createSlice({
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 11)   name: 'user',
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 12)   initialState,
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 13)   reducers: {
+a5219112 frontend/src/store/user.ts (Zavier Miller 2022-10-17 23:27:51 -0400 14)     setCurrentUser: (state, action: PayloadAction<User | null>) => {
+172c6e8f frontend/src/store/user.ts (Zavier Miller 2022-10-23 23:46:29 -0400 15)       state.current = action.payload;
+a5219112 frontend/src/store/user.ts (Zavier Miller 2022-10-17 23:27:51 -0400 16)       state.isLoggedIn = action.payload !== null;
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 17)     },
+85e04757 frontend/src/store/user.ts (Zavier Miller 2022-10-23 20:34:13 -0400 18)     clearCurrentUser: (_) => {
+a5219112 frontend/src/store/user.ts (Zavier Miller 2022-10-17 23:27:51 -0400 19)       return initialState;
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 20)     }
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 21)   }
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 22) });
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 23)
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 24) export const { setCurrentUser, clearCurrentUser } = userSlice.actions;
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 25)
+d831c578 frontend/src/store/user.ts (Zavier Miller 2022-10-14 20:30:35 -0400 26) export default userSlice.reducer;
+
+
+### frontend/src/types/Route.ts ###
+e47199fc frontend/src/types/Route.ts (Zavier Miller 2022-10-24 00:21:28 -0400 1) export interface TTRoute {
+e47199fc frontend/src/types/Route.ts (Zavier Miller 2022-10-24 00:21:28 -0400 2)   name: string;
+e47199fc frontend/src/types/Route.ts (Zavier Miller 2022-10-24 00:21:28 -0400 3)   path: string;
+e47199fc frontend/src/types/Route.ts (Zavier Miller 2022-10-24 00:21:28 -0400 4)   component: React.ReactNode;
+e47199fc frontend/src/types/Route.ts (Zavier Miller 2022-10-24 00:21:28 -0400 5) }
+
+
+### frontend/src/App.tsx ###
+cda10408 frontend/src/App.tsx (Zavier Miller          2022-10-12 16:27:07 -0400  5) import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+8f501435 frontend/src/App.tsx (Zavier Miller          2022-10-23 18:20:39 -0400  7) import TTNavBar from './components/TTNavBar';
+a5219112 frontend/src/App.tsx (Zavier Miller          2022-10-17 23:27:51 -0400  8) import { useAppDispatch, useAppSelector } from './store/hooks';
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400  9) import { TTRoute } from './types/Route';
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 10) import AuthService from './services/AuthService';
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 11) import { clearCurrentUser } from './store/user';
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 12) import LandingPage from './pages/landing';
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 13) import { authorizedRoutes, unauthorizedRoutes } from './router';
+8f501435 frontend/src/App.tsx (Zavier Miller          2022-10-23 18:20:39 -0400 14)
+8f501435 frontend/src/App.tsx (Zavier Miller          2022-10-23 18:20:39 -0400 15) function App() {
+172c6e8f frontend/src/App.tsx (Zavier Miller          2022-10-23 23:46:29 -0400 16)   const { isLoggedIn } = useAppSelector((state) => state.user);
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 17)   const dispatch = useAppDispatch();
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 18)   const routes = isLoggedIn ? authorizedRoutes : unauthorizedRoutes;
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 19)
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 20)   const navItems = isLoggedIn
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 21)     ? [
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 22)         {
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 23)           name: 'Home',
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 24)           path: '/'
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 25)         },
+c99f371c frontend/src/App.tsx (Zavier Miller          2022-10-25 01:01:19 -0400 26)         {
+c99f371c frontend/src/App.tsx (Zavier Miller          2022-10-25 01:01:19 -0400 27)           name: 'Projects',
+c99f371c frontend/src/App.tsx (Zavier Miller          2022-10-25 01:01:19 -0400 28)           path: '/projects'
+c99f371c frontend/src/App.tsx (Zavier Miller          2022-10-25 01:01:19 -0400 29)         },
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 30)         {
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 31)           name: 'Log out',
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 32)           action: (
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 33)             e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement | HTMLDivElement, MouseEvent>
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 34)           ) => {
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 35)             e.preventDefault();
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 36)             AuthService.signOut();
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 37)             dispatch(clearCurrentUser());
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 38)           }
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 39)         }
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 40)       ]
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 41)     : [
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 42)         {
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 43)           name: 'Landing',
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 44)           path: '/'
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 45)         },
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 46)         {
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 47)           name: 'Log in',
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 48)           path: '/login'
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 49)         },
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 50)         {
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 51)           name: 'Sign up',
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 52)           path: '/signup'
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 53)         }
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 54)       ];
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 55)
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 56)   return (
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 57)     <div className="App">
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 58)       <Router>
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 59)         <TTNavBar navItems={navItems} />
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 60)         <Routes>
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 61)           {routes.map((item: TTRoute) => {
+e47199fc frontend/src/App.tsx (Zavier Miller          2022-10-24 00:21:28 -0400 62)             return <Route key={item.name} path={item.path} element={item.component} />;
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 63)           })}
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 64)         </Routes>
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 65)       </Router>
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 66)     </div>
+5787ca9f frontend/src/App.tsx (Zavier Miller          2022-10-24 00:09:40 -0400 67)   );
+
+
+### README.md ###
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400   2)
+f368722e README.md (Zavier Miller 2022-10-12 16:40:12 -0400   4)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400   5) # Getting started
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400   6)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400   7) This section of the guide will help get you up and running with a fresh copy of the repo.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400   8)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400   9) ## Prerequisites
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  10)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  11) Before you can run any apps, you will need to have the following installed:
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  12)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  13) - local setup
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  14)   - the `dotnet` CLI
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  15)   - `mysql`
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  16)   - `node`
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  17)     **OR**
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  18) - docker setup
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  19)   - `docker`
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  20)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  21) ### Local setup
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  22)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  23) #### Setting up dotnet CLI
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  24)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  25) When you first set up Visual Studio or Rider to work with our project backend, the dotnet CLI should be automatically installed.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  26) You can now run commands starting with `dotnet ...`. For example, one tool you'll need is the Entity Framework CLI, which is easily installable through the dotnet CLI:
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  27)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  28) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  29) dotnet tool install --global dotnet-ef
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  30) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  31)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  32) #### Setting up MySQL
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  33)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  34) On Windows, you can install the MySQL server using the installer found [here](https://dev.mysql.com/downloads/installer/). **Be sure to install version 8.0.xx.**
+0a7df94f README.md (Zavier Miller 2022-10-25 06:34:45 -0400  35) After doing that, navigate to the install location of the MySQL binary (usually somthing like `C:\ProgramFiles\MySQL\MySQL Server 8.0\bin\`) and run the following:
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  36)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  37) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  38) .\mysql.exe -u root -p
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  39) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  40)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  41) You will be asked to provide a password, this is the same one you set up during the install process.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  42)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  43) Now, copy the commands in the file `db/init/init-windows.sql` to get the MySQL user set up correctly for talking to the backend.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  44)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  45) Finally, you should now navigate to the `backend/TaskTree` directory and run the following command to create the appropriate tables in the database by running migrations:
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  46)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  47) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  48) dotnet ef database update
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  49) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  50)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  51) **NOTE: This will need to be run anytime you pull a change that modifies the `backend/TaskTree/Migrations` folder**
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  52)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  53) Before you can run the backend, you need to make sure that the MySQL server is running using the following command:
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  54)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  55) ```
+0a7df94f README.md (Zavier Miller 2022-10-25 06:34:45 -0400  56) net start mysql80
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  57) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  58)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  59) #### Setting up NodeJS
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  60)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  61) Install the latest version of NodeJS through an installer or CLI. If it is installed correctly, you should be able to run the `node` command and see a JavaScript REPL come up.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  62)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  63) Once Node has been installed, navigate to the `frontend` directory and execute `npm install` to get all the dependencies on your local machine.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  64)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  65) ### Docker setup
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  66)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  67) There are a lot of steps involved with getting everything set up locally, so we have a Docker Compose project to help get started a lot quicker.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  68)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  69) To use Docker, on Windows, install Docker Desktop. On Linux, install the Docker daemon from you package manager.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  70)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  71) ## Running the app
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  72)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  73) Now that all the prerequisites are satisfied, you can pretty easily run the app.
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  74)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  75) #### Running locally
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  76)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  77) ##### backend
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  78)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  79) To run the backend project, all you have to do is open the project in Visual Studio and hit the 'Run' button.
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  80)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  81) **NOTE: There is not hot-reloading on the backend, so whenever you make a change to it you must restart the server.**
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  82)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  83) ##### frontend
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  84)
+2707c807 README.md (Zavier Miller 2022-10-25 06:08:10 -0400  85) Running the frontend is very simple; just navigate to the `frontend` directory and execute:
+2707c807 README.md (Zavier Miller 2022-10-25 06:08:10 -0400  86)
+2707c807 README.md (Zavier Miller 2022-10-25 06:08:10 -0400  87) ```
+2707c807 README.md (Zavier Miller 2022-10-25 06:08:10 -0400  88) npm run start
+2707c807 README.md (Zavier Miller 2022-10-25 06:08:10 -0400  89) ```
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  90)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  91) #### Using Docker
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  92)
+631df434 README.md (Zavier Miller 2022-10-25 06:07:26 -0400  93) To run the project with docker, simply navigate to this directory and run:
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  94)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  95) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  96) docker compose up [project]
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  97) ```
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  98)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400  99) to run the whole project, or just the backend/frontend.
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400 100)
+6df381fb README.md (Zavier Miller 2022-10-25 06:01:26 -0400 101) To run just the backend or frontend simply specify that in the command up in the optional `[project]` argument.
+
+
+

@@ -1,0 +1,473 @@
+### backend/TaskTree/Controllers/UsersController.cs ###
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400   1) using System.IdentityModel.Tokens.Jwt;
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 120)             try
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 121)             {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 122)                 await _context.SaveChangesAsync();
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 123)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 124)             } catch(Exception e)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 125)             {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 126)                 var exceptionCode = e.HResult;
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 127)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 128)                 // SQL server not running
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 129)                 if (exceptionCode == -2146233079)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 130)                 {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 131)                     return StatusCode(503, "Unable to connect to database");
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 132)                 }
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 133)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 134)                 // duplicate username
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 135)                 else if (exceptionCode == -2146233088)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 136)                 {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 137)                     return BadRequest("User already exists");
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 138)                 }
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 139)             }
+
+
+### backend/TaskTree/Program.cs ###
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400  5) using Microsoft.OpenApi.Models;
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400  6) using Swashbuckle.AspNetCore.Filters;
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 56) builder.Services.AddSwaggerGen(options =>
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 57) {
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 58)     options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 59)     {
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 60)         Description = "Authorization header using the Bearer scheme. Format: \"Bearer {token}\"",
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 61)         In = ParameterLocation.Header,
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 62)         Name = "Authorization",
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 63)         Type = SecuritySchemeType.ApiKey
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 64)     });
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 65)     options.OperationFilter<SecurityRequirementsOperationFilter>();
+9e01e4b2 backend/TaskTree/Program.cs (Andrew Rutter 2022-10-14 19:00:14 -0400 66) });
+
+
+### backend/TaskTree/Models/Requests/CreateUserRequest.cs ###
+9fbf3775 backend/TaskTree/Models/Requests/CreateUserRequest.cs (Andrew Rutter 2022-10-16 21:59:15 -0400  7)     public string FirstName { get; set; } = null!;
+
+
+### frontend/.env.development ###
+fc1efb7e frontend/.env.development (Andrew Rutter 2022-10-16 17:16:21 -0400 1) REACT_APP_API_URL=http://localhost:5000/api
+fc1efb7e frontend/.env.development (Andrew Rutter 2022-10-16 17:16:21 -0400 2) SKIP_PREFLIGHT_CHECK=true
+
+
+### frontend/src/components/SignUp/index.tsx ###
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   1) import { Alert, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   3) import AuthService from '../../services/AuthService';
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   4) import UserService from '../../services/UserService';
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400   5) import User from '../../types/User';
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  18)   passwordLength: number;
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  19)   errorText: string;
+2465a69e frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-17 16:20:52 -0400  22) export default function SignUpComponent() {
+a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:30:43 -0400  27)   /* Generic way of using useStates for state values so that one onChange can be used for
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  32)     if (target.name === 'password')
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  33)       setValues((values) => ({ ...values, ['passwordLength']: values.password.length }));
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  36)   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:30:43 -0400  38)     setValues((values) => ({ ...values, ['submitFlag']: true }));
+a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:30:43 -0400  39)
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  41)       const user: User = {
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  42)         firstName: values.firstName,
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  43)         lastName: values.lastName || undefined,
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  44)         username: values.username,
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  45)         password: values.password
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  47)       // Creates the user
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  48)       const res = await UserService.createUser(user);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  49)       if (res.status != 201) {
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  50)         displayError(res.data);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  51)         return;
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  52)       }
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  54)       // Authenticates the user and redirects to homepage
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  55)       const jwt: string = await UserService.authenticateUser(values.username, values.password);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  56)       AuthService.storeJWT(jwt);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  64)   const displayError = (errorMessage: string) => {
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  65)     setValues((values) => ({ ...values, ['errorText']: errorMessage }));
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  67)
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  72)     if (!values.firstName) {
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  73)       setValues((values) => ({ ...values, ['firstName']: '' }));
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  74)       isValid = false;
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  75)     }
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  76)
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  92)     // makes sure password is 8+ characters
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  93)     if (values.passwordLength < 8) {
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  94)       isValid = false;
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  95)     }
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  96)
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 118)           <Box>
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 119)             <br />
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 120)             <Alert severity="error">{values.errorText}</Alert>
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 121)           </Box>
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 133)                 required
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 135)                 error={values.firstName === ''}
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 136)                 helperText={values.firstName === '' ? 'Required' : ''}
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 137)                 value={values.firstName}
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 172)                 error={values.password === '' || (values.passwordLength < 8 && values.submitFlag)}
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 173)                 helperText={
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 174)                   values.password === ''
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 175)                     ? 'Required'
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 176)                     : values.passwordLength < 8 && values.submitFlag
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 177)                     ? 'Password must be at least 8 characters'
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 178)                     : ''
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 179)                 }
+
+
+### frontend/src/types/User.ts ###
+9fbf3775 frontend/src/types/User.ts (Andrew Rutter 2022-10-16 21:59:15 -0400  2)   id?: number;
+9fbf3775 frontend/src/types/User.ts (Andrew Rutter 2022-10-16 21:59:15 -0400  4)   firstName: string;
+9fbf3775 frontend/src/types/User.ts (Andrew Rutter 2022-10-16 21:59:15 -0400  6)   password?: string;
+
+
+### backend/TaskTree/Controllers/UsersController.cs ###
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400   1) using System.IdentityModel.Tokens.Jwt;
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 120)             try
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 121)             {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 122)                 await _context.SaveChangesAsync();
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 123)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 124)             } catch(Exception e)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 125)             {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 126)                 var exceptionCode = e.HResult;
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 127)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 128)                 // SQL server not running
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 129)                 if (exceptionCode == -2146233079)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 130)                 {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 131)                     return StatusCode(503, "Unable to connect to database");
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 132)                 }
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 133)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 134)                 // duplicate username
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 135)                 else if (exceptionCode == -2146233088)
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 136)                 {
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 137)                     return BadRequest("User already exists");
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 138)                 }
+c91e584c backend/TaskTree/Controllers/UsersController.cs (Andrew Rutter 2022-10-18 00:06:52 -0400 139)             }
+
+
+### frontend/src/components/SignUp/index.tsx ###
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   1) import { Alert, Box, Button, Grid, Link, TextField, Typography } from '@mui/material';
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   3) import AuthService from '../../services/AuthService';
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400   4) import UserService from '../../services/UserService';
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400   5) import User from '../../types/User';
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  18)   passwordLength: number;
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  19)   errorText: string;
+2465a69e frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-17 16:20:52 -0400  22) export default function SignUpComponent() {
+a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:30:43 -0400  27)   /* Generic way of using useStates for state values so that one onChange can be used for
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  32)     if (target.name === 'password')
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  33)       setValues((values) => ({ ...values, ['passwordLength']: values.password.length }));
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  36)   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:30:43 -0400  38)     setValues((values) => ({ ...values, ['submitFlag']: true }));
+a6df3cec frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:30:43 -0400  39)
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  41)       const user: User = {
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  42)         firstName: values.firstName,
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  43)         lastName: values.lastName || undefined,
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  44)         username: values.username,
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  45)         password: values.password
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  47)       // Creates the user
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  48)       const res = await UserService.createUser(user);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  49)       if (res.status != 201) {
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  50)         displayError(res.data);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  51)         return;
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  52)       }
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  54)       // Authenticates the user and redirects to homepage
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  55)       const jwt: string = await UserService.authenticateUser(values.username, values.password);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  56)       AuthService.storeJWT(jwt);
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  64)   const displayError = (errorMessage: string) => {
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  65)     setValues((values) => ({ ...values, ['errorText']: errorMessage }));
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400  67)
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  72)     if (!values.firstName) {
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  73)       setValues((values) => ({ ...values, ['firstName']: '' }));
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  74)       isValid = false;
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  75)     }
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400  76)
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  92)     // makes sure password is 8+ characters
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  93)     if (values.passwordLength < 8) {
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  94)       isValid = false;
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  95)     }
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400  96)
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 118)           <Box>
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 119)             <br />
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 120)             <Alert severity="error">{values.errorText}</Alert>
+621454e8 frontend/src/components/SignUp/index.tsx         (Andrew Rutter 2022-10-18 00:08:37 -0400 121)           </Box>
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 133)                 required
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 135)                 error={values.firstName === ''}
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 136)                 helperText={values.firstName === '' ? 'Required' : ''}
+5f8a9a56 frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 21:58:32 -0400 137)                 value={values.firstName}
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 172)                 error={values.password === '' || (values.passwordLength < 8 && values.submitFlag)}
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 173)                 helperText={
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 174)                   values.password === ''
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 175)                     ? 'Required'
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 176)                     : values.passwordLength < 8 && values.submitFlag
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 177)                     ? 'Password must be at least 8 characters'
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 178)                     : ''
+9a54b9dc frontend/src/components/SignUp/SignUpDesktop.tsx (Andrew Rutter 2022-10-16 16:03:13 -0400 179)                 }
+
+
+### frontend/src/services/UserService.ts ###
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 13)   static async createUser(user: User): Promise<any> {
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 14)     var response;
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 18)         response = res;
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 21)         response = err.response;
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 22)       });
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 23)     return response;
+04a14a70 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 33)     await http.delete(`/users/${id}`, {
+04a14a70 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 34)       headers: authHeader(AuthService.getJWT())
+04a14a70 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 35)     });
+
+
+### frontend/src/components/DisplayProjects/index.tsx ###
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  11) import { Box, Button, TextField, Typography } from '@mui/material';
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  17) import ProjectService from '../../services/ProjectService';
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  18) import Project, { BlankProject } from '../../types/Project';
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  21)   const { data, index, style } = props;
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  25)     <ListItem style={style} key={data[index].name} component="a" disablePadding>
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  28)         <ListItemText primary={data[index].name} />
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  29)         <ListItemText primary={data[index].progress} />
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  41)   const [projects, setProjects] = React.useState<Project[]>([BlankProject]);
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  45) 
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  46)   React.useEffect(() => {
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  47)     const fetchProjects = async () => {
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  48)       setProjects(await ProjectService.getProjects());
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  49)     };
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  50)     fetchProjects();
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400  51)   }, []);
+37beb55d frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter  2022-10-25 02:14:16 -0400 129)         itemData={projects}>
+
+
+### frontend/src/pages/home.tsx ###
+3404ece1 frontend/src/pages/home.tsx (Andrew Rutter          2022-10-25 00:58:45 -0400  9) import ProjectService from '../services/ProjectService';
+3404ece1 frontend/src/pages/home.tsx (Andrew Rutter          2022-10-25 00:58:45 -0400 10) import { BlankProject } from '../types/Project';
+
+
+### frontend/src/services/ProjectService.ts ###
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  1) import http, { authHeader } from '../util/http';
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  2) import AuthService from './AuthService';
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  3) import Project from '../types/Project';
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  4)
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  5) export default class ProjectService {
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  6)   static async getProject(id: number): Promise<Project> {
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  7)     const response = await http.get(`/projects/${id}`, {
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  8)       headers: authHeader(AuthService.getJWT())
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  9)     });
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 10)     return response.data;
+215460de frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 11)   }
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 12)
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 13)   static async getProjects(): Promise<Project[]> {
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 14)     const response = await http.get(`/projects`, {
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 15)       headers: authHeader(AuthService.getJWT())
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 16)     });
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 17)     return response.data;
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 18)   }
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 19)
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 20)   static async createProject(project: Project): Promise<any> {
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 21)     const response = await http.post(`/projects`, project, {
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 22)       headers: authHeader(AuthService.getJWT())
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 23)     });
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 24)     return response.data;
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 25)   }
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 26)
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 27)   static async updateProject(project: Project, id: number): Promise<Project> {
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 29)       headers: authHeader(AuthService.getJWT())
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 30)     });
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 31)     return response.data;
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 32)   }
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 33)
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 34)   static async deleteProject(id: number) {
+04a14a70 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 35)     await http.delete(`/projects/${id}`, {
+04a14a70 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 36)       headers: authHeader(AuthService.getJWT())
+04a14a70 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 37)     });
+3404ece1 frontend/src/services/ProjectService.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 38)   }
+
+
+### frontend/src/services/UserService.ts ###
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 13)   static async createUser(user: User): Promise<any> {
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 14)     var response;
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 18)         response = res;
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 21)         response = err.response;
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 22)       });
+a40f4b17 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-18 00:07:21 -0400 23)     return response;
+04a14a70 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 33)     await http.delete(`/users/${id}`, {
+04a14a70 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 34)       headers: authHeader(AuthService.getJWT())
+04a14a70 frontend/src/services/UserService.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 35)     });
+
+
+### frontend/src/types/Project.ts ###
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  1) import Task from "./Task";
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  2)
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  3) export default interface Project {
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  4)     name: string,
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  5)     description?: string,
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  6)     root?: Task,
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  7)     progress: number,
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  8) }
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400  9)
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 10) export const BlankProject: Project = {
+3404ece1 frontend/src/types/Project.ts (Andrew Rutter 2022-10-25 00:58:45 -0400 11)     name: 'blank',
+04a14a70 frontend/src/types/Project.ts (Andrew Rutter 2022-10-25 01:34:22 -0400 12)     description: 'blank',
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 13)     progress: 0
+215460de frontend/src/types/Project.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 14) }
+
+
+### frontend/src/types/Task.ts ###
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 1) export default interface Task {
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 2)     name: string,
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 3)     description?: string,
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 4)     progress: number,
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 5)     weight: number,
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 6)     completedAt: Date,
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 7)     Children: Task[];
+215460de frontend/src/types/Task.ts (Andrew Rutter 2022-10-24 20:50:24 -0400 8) }
+
+
+
+### frontend/src/components/SignUp/index.tsx ###
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400   2) import React, { FormEvent, useState } from 'react';
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  11) interface stateInterface {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  12)   firstName: string;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  13)   lastName: string;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  14)   username: string;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  15)   password: string;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  16)   confirmPassword: string;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  17)   submitFlag: boolean;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  20) }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  21)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  23)   const [values, setValues] = useState<stateInterface>({} as stateInterface);
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  26)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  28)    * all values in the stateInterface */
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  29)   const onChange = (e: React.SyntheticEvent) => {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  30)     const target = e.target as HTMLInputElement;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  31)     setValues((values) => ({ ...values, [target.name]: target.value }));
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  34)   };
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  35)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  37)     e.preventDefault();
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  40)     if (validateFields()) {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  53)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  59)     } else {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  60)       return;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  61)     }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  62)   };
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  63)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  68)   const validateFields = () => {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  69)     let isValid = true;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  70)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  71)     // makes sure required fields are populated
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  77)     if (!values.username) {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  78)       setValues((values) => ({ ...values, ['username']: '' }));
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  79)       isValid = false;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  80)     }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  81)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  82)     if (!values.password) {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  83)       setValues((values) => ({ ...values, ['password']: '' }));
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  84)       isValid = false;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  85)     }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  86)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  87)     if (!values.confirmPassword) {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  88)       setValues((values) => ({ ...values, ['confirmPassword']: '' }));
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  89)       isValid = false;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  90)     }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  91)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  97)     // makes sure passwords match
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  98)     if (values.password !== values.confirmPassword) {
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400  99)       isValid = false;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 100)     }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 101)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 102)     return isValid;
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 103)   };
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 104)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 105)   return (
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 106)     <div>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 107)       <Box
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 108)         sx={{
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 109)           marginTop: 8,
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 110)           display: 'flex',
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 111)           flexDirection: 'column',
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 112)           alignItems: 'center'
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 113)         }}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 114)         <Typography component="h1" variant="h5">
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 115)           Sign up
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 116)         </Typography>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 123)         <Box component="form" noValidate onSubmit={(e) => handleSubmit(e)} sx={{ mt: 3 }}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 124)           <Grid container spacing={2}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 125)             <Grid item xs={12} sm={6}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 126)               <TextField
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 127)                 autoComplete="given-name"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 128)                 name="firstName"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 129)                 fullWidth
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 130)                 id="firstName"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 131)                 label="First Name"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 132)                 autoFocus
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 134)                 onChange={onChange}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 138)               />
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 139)             </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 140)             <Grid item xs={12} sm={6}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 141)               <TextField
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 142)                 fullWidth
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 143)                 id="lastName"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 144)                 label="Last Name"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 145)                 name="lastName"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 146)                 autoComplete="family-name"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 147)                 onChange={onChange}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 148)               />
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 149)             </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 150)             <Grid item xs={12}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 151)               <TextField
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 152)                 required
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 153)                 fullWidth
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 154)                 id="username"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 155)                 label="Username"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 156)                 name="username"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 157)                 onChange={onChange}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 158)                 error={values.username === ''}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 159)                 helperText={values.username === '' ? 'Required' : ''}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 160)                 value={values.username}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 161)               />
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 162)             </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 163)             <Grid item xs={12}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 164)               <TextField
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 165)                 required
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 166)                 fullWidth
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 167)                 name="password"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 168)                 label="Password"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 169)                 type="password"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 170)                 id="password"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 171)                 onChange={onChange}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 180)                 value={values.password}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 181)               />
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 182)             </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 183)             <Grid item xs={12}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 184)               <TextField
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 185)                 required
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 186)                 fullWidth
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 187)                 name="confirmPassword"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 188)                 label="Confirm Password"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 189)                 type="password"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 190)                 id="confirmPassword"
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 191)                 onChange={onChange}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 192)                 error={
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 193)                   values.confirmPassword === '' ||
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 194)                   (values.password !== values.confirmPassword && values.submitFlag)
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 195)                 }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 196)                 helperText={
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 197)                   values.confirmPassword === ''
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 198)                     ? 'Required'
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 199)                     : values.password !== values.confirmPassword && values.submitFlag
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 200)                     ? 'Passwords do not match'
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 201)                     : ''
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 202)                 }
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 203)                 value={values.confirmPassword}
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 204)               />
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 205)             </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 206)           </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 207)           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 208)             Sign Up
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 209)           </Button>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 210)           <Grid container justifyContent="center">
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 211)             <Grid
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 212)               item
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 213)               sx={{
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 214)                 display: 'flex',
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 215)                 flexDirection: 'row'
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 216)               }}>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 217)               <Typography variant="body2">Already have an account? &nbsp;</Typography>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 218)               <Link className="existingUser" href="/login" variant="body2">
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 219)                 Log in
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 220)               </Link>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 221)             </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 222)           </Grid>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 223)         </Box>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 224)       </Box>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 225)     </div>
+35fc52a6 frontend/src/components/SignUp/SignUpDesktop.tsx (andlrutt      2022-10-16 15:22:21 -0400 226)   );
+

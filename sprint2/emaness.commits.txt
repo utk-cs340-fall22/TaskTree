@@ -1,0 +1,275 @@
+### backend/TaskTree/TaskTree.csproj ###
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 12)     <PackageReference Include="AutoMapper" Version="12.0.0" />
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 13)     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 14)     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 15)     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 19)     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.10" />
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 20)     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.10">
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 21)       <PrivateAssets>all</PrivateAssets>
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 22)       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 23)     </PackageReference>
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 25)     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
+abebf001 backend/TaskTree/TaskTree.csproj (emaness-utk   2022-10-22 13:06:04 -0400 27)     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+
+
+### backend/TaskTree/Controllers/ProjectsController.cs ###
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   1) ﻿using System;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   2) using System.Collections.Generic;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   3) using System.Linq;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   4) using System.Threading.Tasks;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   5) using AutoMapper;
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400   6) using Microsoft.AspNetCore.Authorization;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   7) using Microsoft.AspNetCore.Http;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   8) using Microsoft.AspNetCore.Mvc;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400   9) using Microsoft.EntityFrameworkCore;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  10) using Microsoft.Extensions.Options;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  11) using TaskTree.Models;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  12) using TaskTree.Models.Requests;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  13) using TaskTree.Models.Responses;
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400  14) using Task = TaskTree.Models.Task;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  15)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  16) namespace TaskTree.Controllers
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  17) {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  18)     [Route("api/[controller]")]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  19)     [ApiController]
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400  20)     public class ProjectsController : TaskTreeControllerBase
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  21)     {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  22)         private readonly TaskTreeContext _context;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  23)         private readonly IMapper _mapper;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  24)         private readonly IOptions<AppConfig> _config;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  25)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  26)         public ProjectsController(TaskTreeContext context, IMapper mapper, IOptions<AppConfig> config)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  27)         {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  28)             _context = context;
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400  29)             _mapper = mapper;
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400  30)             _config = config;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  31)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  32)
+caac7d41 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:45:55 -0400  33)         // GET: api/Projects/5
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400  34)         [Authorize]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  35)         [HttpGet]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  36)         public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects()
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  37)         {
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  38)
+47b09133 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 19:33:22 -0400  39)             var projects = _context.Projects.Where(project => project.UserId == CurrentUserId());
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  40)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  41)             List<ProjectResponse> projectResponses = new List<ProjectResponse>();
+47b09133 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 19:33:22 -0400  42)             foreach (Project project in projects)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  43)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  44)                 projectResponses.Add(_mapper.Map<Project, ProjectResponse>(project));
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  45)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  46)             return Ok(projectResponses);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  47)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  48)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  49)         // GET: api/Projects/5
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400  50)         [Authorize]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  51)         [HttpGet("{id}")]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  52)         public async Task<ActionResult<ProjectResponse>> GetProject(long id)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  53)         {
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  54)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  55)             var project = await _context.Projects.FindAsync(id);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  56)
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  57)             if (CurrentUserIdDoesNotMatch(project.UserId))
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  58)             {
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  59)                 return Unauthorized();
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  60)             }
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  61)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  62)             if (project == null)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  63)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  64)                 return NotFound();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  65)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  66)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  67)             return _mapper.Map<Project, ProjectResponse>(project);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  68)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  69)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  70)         // PUT: api/Projects/5
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  71)         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400  72)         [Authorize]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  73)         [HttpPut("{id}")]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  74)         public async Task<IActionResult> PutProject(long id, UpdateProjectRequest updateProjectRequest)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  75)         {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  76)             if (_context.Projects == null)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  77)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  78)                 return Problem("Entity set 'TaskTreeContext.Projects'  is null.", statusCode: 500);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  79)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  80)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  81)             var project = await _context.Projects.FindAsync(id);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  82)
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  83)             if (CurrentUserIdDoesNotMatch(project.UserId))
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  84)             {
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  85)                 return Unauthorized();
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  86)             }
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  87)
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400  88)             if (project == null)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  89)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  90)                 return NotFound();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  91)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  92)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  93)             _mapper.Map(updateProjectRequest, project);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  94)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  95)             _context.Entry(project).State = EntityState.Modified;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  96)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  97)             try
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  98)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400  99)                 await _context.SaveChangesAsync();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 100)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 101)             catch (DbUpdateConcurrencyException)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 102)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 103)                 if (!ProjectExists(id))
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 104)                 {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 105)                     return NotFound();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 106)                 }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 107)                 else
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 108)                 {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 109)                     throw;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 110)                 }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 111)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 112)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 113)             return NoContent();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 114)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 115)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 116)         // POST: api/Projects
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 117)         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400 118)         [Authorize]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 119)         [HttpPost]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 120)         public async Task<ActionResult<ProjectResponse>> PostProject(CreateProjectRequest createProjectRequest)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 121)         {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 122)             if (_context.Projects == null)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 123)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 124)                 return Problem("Entity set 'TaskTreeContext.Projects'  is null.", statusCode: 500);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 125)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 126)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 127)             var project = _mapper.Map<Project>(createProjectRequest);
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 128)             project.UserId = CurrentUserId();
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 129)
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 130)             var rootTask = new Task()
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 131)             {
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 132)                 Name = project.Name,
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 133)                 ProjectId = project.Id,
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 135)             };
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 136)             project.Root = rootTask;
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 137)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 138)             _context.Projects.Add(project);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 139)             await _context.SaveChangesAsync();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 140)
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 141)             var projectResponse = _mapper.Map<Project, ProjectResponse>(project);
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 142)
+b9996983 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 18:06:06 -0400 143)             return CreatedAtAction(nameof(GetProject), new { id = project.Id }, projectResponse);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 144)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 145)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 146)         // DELETE: api/Projects/5
+3c2f7627 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 13:43:06 -0400 147)         [Authorize]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 148)         [HttpDelete("{id}")]
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 149)         public async Task<IActionResult> DeleteProject(long id)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 150)         {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 151)             if (_context.Projects == null)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 152)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 153)                 return Problem("Entity set 'TaskTreeContext.Projects'  is null.", statusCode: 500);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 154)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 155)             var project = await _context.Projects.FindAsync(id);
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400 156)
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400 157)             if (CurrentUserIdDoesNotMatch(project.UserId))
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400 158)             {
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400 159)                 return Unauthorized();
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400 160)             }
+bebc5727 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-24 20:03:29 -0400 161)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 162)             if (project == null)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 163)             {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 164)                 return NotFound();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 165)             }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 166)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 167)             _context.Projects.Remove(project);
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 168)             await _context.SaveChangesAsync();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 169)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 170)             return NoContent();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 171)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 172)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 173)         private bool ProjectExists(long id)
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 174)         {
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 175)             return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 176)         }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 177)     }
+abebf001 backend/TaskTree/Controllers/ProjectsController.cs (emaness-utk 2022-10-22 13:06:04 -0400 178) }
+
+
+### backend/TaskTree/Controllers/TaskTreeControllerBase.cs ###
+b9996983 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (emaness-utk   2022-10-24 18:06:06 -0400 13)         var userId = CurrentUserId();
+b9996983 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (emaness-utk   2022-10-24 18:06:06 -0400 16)
+b9996983 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (emaness-utk   2022-10-24 18:06:06 -0400 17)     protected long CurrentUserId()
+b9996983 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (emaness-utk   2022-10-24 18:06:06 -0400 18)     {
+b9996983 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (emaness-utk   2022-10-24 18:06:06 -0400 19)         return long.Parse(((ClaimsIdentity)User.Identity).FindFirst("id").Value);
+b9996983 backend/TaskTree/Controllers/TaskTreeControllerBase.cs (emaness-utk   2022-10-24 18:06:06 -0400 20)     }
+
+
+### backend/TaskTree/Models/MappingProfiles/MappingProfile.cs ###
+b9996983 backend/TaskTree/Models/MappingProfiles/MappingProfile.cs (emaness-utk   2022-10-24 18:06:06 -0400 14)         CreateMapNoNull<Task, TaskResponse>()
+b9996983 backend/TaskTree/Models/MappingProfiles/MappingProfile.cs (emaness-utk   2022-10-24 18:06:06 -0400 15)             .ForMember(dest => dest.Children, input => input.MapFrom(src => src.Children));
+b9996983 backend/TaskTree/Models/MappingProfiles/MappingProfile.cs (emaness-utk   2022-10-24 18:06:06 -0400 16)         CreateMapNoNull<Project, ProjectResponse>()
+b9996983 backend/TaskTree/Models/MappingProfiles/MappingProfile.cs (emaness-utk   2022-10-24 18:06:06 -0400 17)             .ForMember(dest => dest.Root, input => input.MapFrom(src => src.Root));
+3c2f7627 backend/TaskTree/Models/MappingProfiles/MappingProfile.cs (emaness-utk   2022-10-24 13:43:06 -0400 18)         CreateMapNoNull<UpdateProjectRequest, Project>();
+3c2f7627 backend/TaskTree/Models/MappingProfiles/MappingProfile.cs (emaness-utk   2022-10-24 13:43:06 -0400 19)         CreateMapNoNull<CreateProjectRequest, Project>();
+
+
+### backend/TaskTree/Models/Requests/CreateProjectRequest.cs ###
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  1) ﻿using TaskTree.Models.Responses;
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  2)
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  3) namespace TaskTree.Models.Requests
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  4) {
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  5)     public class CreateProjectRequest
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  6)     {
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  7)         public string Name { get; set; } = null!;
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  8)         public string? Description { get; set; }
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  9)         public double? Progress { get; set; }
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400 10)     }
+abebf001 backend/TaskTree/Models/Requests/CreateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400 11) }
+
+
+### backend/TaskTree/Models/Requests/UpdateProjectRequest.cs ###
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  1) ﻿using TaskTree.Models.Responses;
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  2)
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  3) namespace TaskTree.Models.Requests;
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  4)
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  5) public class UpdateProjectRequest
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  6) {
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  7)     public string? Name { get; set; }
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  8)     public string? Description { get; set; }
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400  9)     public double? Progress { get; set; }
+abebf001 backend/TaskTree/Models/Requests/UpdateProjectRequest.cs (emaness-utk 2022-10-22 13:06:04 -0400 10) }
+
+
+### backend/TaskTree/Models/Responses/ProjectResponse.cs ###
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 1) ﻿namespace TaskTree.Models.Responses;
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 2)
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 3) public class ProjectResponse
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 4) {
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 5)     public string Name { get; set; }
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 6)     public string? Description { get; set; }
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 7)     public TaskResponse? Root { get; set; }
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 8)     public double? Progress { get; set; }
+255f053f backend/TaskTree/Models/Responses/ProjectResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 9) }
+
+
+### backend/TaskTree/Models/Responses/TaskResponse.cs ###
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  1) ﻿namespace TaskTree.Models.Responses;
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  2)
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  3) public class TaskResponse
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  4) {
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  5)     public string Name { get; set; } = null!;
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  6)     public string? Description { get; set; }
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  7)     public double? Progress { get; set; }
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  8)     public double? Weight { get; set; }
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400  9)     public DateTime? CompletedAt { get; set; }
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 10)     public List<TaskResponse>? Children { get; set; }
+255f053f backend/TaskTree/Models/Responses/TaskResponse.cs (emaness-utk 2022-10-18 08:38:52 -0400 11) }
+
+
+### backend/TaskTree/Models/Project.cs ###
+b9996983 backend/TaskTree/Models/Project.cs (emaness-utk   2022-10-24 18:06:06 -0400 14)         public long UserId { get; set; }
+b9996983 backend/TaskTree/Models/Project.cs (emaness-utk   2022-10-24 18:06:06 -0400 15)         [Required]
+
+
+### backend/TaskTree/Models/TaskTreeContext.cs ###
+5eeb3802 backend/TaskTree/Models/TaskTreeContext.cs (emaness-utk   2022-10-23 18:58:10 -0400  3) using TaskTree.Models.Responses;
+
+
+
