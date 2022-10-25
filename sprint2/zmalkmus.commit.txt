@@ -1,0 +1,315 @@
+### tasktree\backend\TaskTree\Controllers\TasksController.cs ###
+
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   1) using System;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   2) using System.Collections.Generic;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   3) using System.Linq;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   4) using System.Threading.Tasks;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   5) using AutoMapper;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   6) using Microsoft.AspNetCore.Authorization;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   7) using Microsoft.AspNetCore.Http;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   8) using Microsoft.AspNetCore.Mvc;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400   9) using Microsoft.EntityFrameworkCore;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  10) using Microsoft.Extensions.Options;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  11) using TaskTree.Models;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  12) using TaskTree.Models.Requests;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  13) using TaskTree.Models.Responses;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  14) using Task = TaskTree.Models.Task;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  15)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  16) namespace TaskTree.Controllers
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  17) {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  18)     [Route("api/tasks")]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  19)     [ApiController]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  20)     public class TasksController : TaskTreeControllerBase
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  21)     {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  22)         private readonly TaskTreeContext _context;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  23)         private readonly IMapper _mapper;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  24)         private readonly IOptions<AppConfig> _config;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  25)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  26)         public TasksController(TaskTreeContext context, IMapper mapper, IOptions<AppConfig> config)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  27)         {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  28)             _context = context;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  29)             _mapper = mapper;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  30)             _config = config;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  31)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  32)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  33)         // GET: api/projects/{projectId}/tasks
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  34)         [Authorize]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  35)         [HttpGet]
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  36)         public async Task<ActionResult<TaskResponse>> GetTasks(long projectId)   
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  37)         {
+934a0792 (zmalkmus 2022-10-24 23:56:24 -0400  38)             var project = await _context.Projects
+934a0792 (zmalkmus 2022-10-24 23:56:24 -0400  39)                 .Include(project => project.Root)
+934a0792 (zmalkmus 2022-10-24 23:56:24 -0400  40)                 .Include("Root.Children.Children.Children.Children.Children.Children.Children.Children.Children")
+934a0792 (zmalkmus 2022-10-24 23:56:24 -0400  41)                 .FirstOrDefaultAsync(project => project.Id == projectId);        
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  42)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  43)             if (project == null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  44)             {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  45)                 return NotFound();
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  46)             }
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  47)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  48)             // Is valid user
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400  49)             if (CurrentUserIdDoesNotMatch(project.UserId))
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  50)             {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  51)                 return Unauthorized();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  52)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  53)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  54)             var root = _mapper.Map<Task, TaskResponse>(project.Root);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  55)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  56)             return root;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  57)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  58) 
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  59)         // GET: api/Tasks/5
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  60)         [Authorize]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  61)         [HttpGet("{id}")]
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  62)         public async Task<ActionResult<TaskResponse>> GetTask(long id)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  63)         {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  64)             var task = await _context.Tasks.FindAsync(id);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  65)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  66)             if (task == null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  67)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  68)                 return NotFound();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  69)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  70)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  71)             // Is valid user
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400  72)             if (CurrentUserIdDoesNotMatch(task.UserId))
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  73)             {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  74)                 return Unauthorized();
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  75)             }
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  76) 
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  77)             var taskResponse = _mapper.Map<Task, TaskResponse>(task);
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  78)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  79)             return taskResponse;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  80)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  81)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  82)         // PUT: api/Tasks/5
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  83)         [Authorize]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  84)         [HttpPut("{id}")]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  85)         public async Task<IActionResult> UpdateTask(long id, UpdateTaskRequest updateTaskRequest)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  86)         {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  87)             if (_context.Tasks == null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  88)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  89)                 return Problem("Entity set 'TaskTreeContext.Tasks' is null.", statusCode: 500);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  90)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  91)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  92)             var task = await _context.Tasks.FindAsync(id);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  93)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  94)             if (task == null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  95)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  96)                 return NotFound();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  97)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  98)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400  99)             // Is valid user
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 100)             if (CurrentUserIdDoesNotMatch(task.UserId))
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 101)             {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 102)                 return Unauthorized();
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 103)             }
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 104)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 105)             _mapper.Map(updateTaskRequest, task);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 106)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 107)             _context.Entry(task).State = EntityState.Modified;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 108)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 109)             try
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 110)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 111)                 await _context.SaveChangesAsync();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 112)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 113)             catch (DbUpdateConcurrencyException)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 114)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 115)                 if (!TaskExists(id))
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 116)                 {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 117)                     return NotFound();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 118)                 }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 119)                 else
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 120)                 {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 121)                     throw;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 122)                 }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 123)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 124) 
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 125)             return NoContent();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 126)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 127)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 128)         // POST: api/tasks/{parentId}/create
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 129)         [Authorize]
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 130)         [HttpPost("{parentId}/create")]
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 131)         public async Task<ActionResult<Task>> CreateTask(long parentId, CreateTaskRequest createTaskRequst)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 132)         {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 133)             if (_context.Tasks == null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 134)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 135)                 return Problem("Entity set 'TaskTreeContext.Tasks' is null.", statusCode: 500);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 136)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 137)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 138)             var parentTask = await _context.Tasks.FindAsync(parentId);
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 139)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 140)             // Is valid user
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 141)             if (CurrentUserIdDoesNotMatch(parentTask.UserId))
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 142)             {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 143)                 return Unauthorized();
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 144)             }
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 145)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 146)             var task = _mapper.Map<Task>(createTaskRequst);
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 147)             task.UserId = CurrentUserId();
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 148)
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 149)             if (parentTask.Children == null)
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 150)             {
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 151)                 parentTask.Children = new List<Task>();
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 152)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 153)
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 154)             parentTask.Children.Add(task);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 155)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 156)             try
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 157)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 158)                 await _context.SaveChangesAsync();
+5dd9dde1 (zmalkmus 2022-10-24 15:57:30 -0400 159)             }
+5dd9dde1 (zmalkmus 2022-10-24 15:57:30 -0400 160)             catch(Exception e)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 161)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 162)                 var exceptionCode = e.HResult;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 163)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 164)                 // If the SQL server is down
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 165)                 if (exceptionCode == -2146233079)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 166)                 {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 167)                     return StatusCode(503, "Unable to connect database");
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 168)                 }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 169) 
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 170)                 // duplicate task
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 171)                 else if (exceptionCode == -2146233088)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 172)                 {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 173)                     return BadRequest("Task already exists");
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 174)                 }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 175)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 176)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 177)             return CreatedAtAction(nameof(GetTask), new { id = task.Id }, _mapper.Map<Task, TaskResponse>(task));
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 178)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 179)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 180)         // DELETE: api/Tasks/5
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 181)         [Authorize]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 182)         [HttpDelete("{id}")]
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 183)         public async Task<IActionResult> DeleteTask(long id)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 184)         {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 185)             if (_context.Tasks == null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 186)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 187)                 return Problem("Entity set 'TaskTreeContext.Users' is null.", statusCode: 500);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 188)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 189) 
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 190)             var task = await _context.Tasks.FindAsync(id);
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 191)             if (task == null)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 192)             {
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 193)                 return NotFound();
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 194)             }
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 195)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 196)             // User is not valid
+0488dc85 (zmalkmus 2022-10-24 22:52:00 -0400 197)             if (CurrentUserIdDoesNotMatch(task.UserId))
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 198)             {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 199)                 return Unauthorized();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 200)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 201)
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 202)             // Task is the root
+09c0e621 (zmalkmus 2022-10-24 15:17:55 -0400 203)             if (task.ProjectId != null)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 204)             {
+ae3846ba (zmalkmus 2022-10-25 00:00:40 -0400 205)                 return Problem("Cannot delete root task", statusCode: 400);      
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 206)             }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 207)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 208)             _context.Tasks.Remove(task);
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 209)             await _context.SaveChangesAsync();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 210)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 211)             return NoContent();
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 212)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 213) 
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 214)         private bool TaskExists(long id)
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 215)         {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 216)             return (_context.Tasks?.Any(e => e.Id == id)).GetValueOrDefault();   
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 217)         }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 218)     }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 219) }
+
+### tasktree\backend\TaskTree\Models\Task.cs ###
+
+0488dc85 (zmalkmus      2022-10-24 22:52:00 -0400 19)         public long UserId { get; set; }
+
+### tasktree\backend\TaskTree\Models\MappingProfiles\MappingProfile.cs ###
+
+09c0e621 (zmalkmus      2022-10-24 15:17:55 -0400 20) 
+09c0e621 (zmalkmus      2022-10-24 15:17:55 -0400 21)         CreateMapNoNull<UpdateTaskRequest, Task>();
+09c0e621 (zmalkmus      2022-10-24 15:17:55 -0400 22)         CreateMapNoNull<CreateTaskRequest, Task>(MemberList.Source);
+09c0e621 (zmalkmus      2022-10-24 15:17:55 -0400 23)         CreateMapNoNull<Task, TaskResponse>();
+0488dc85 (zmalkmus      2022-10-24 22:52:00 -0400 24)         CreateMapNoNull<Task, Task>();
+
+### tasktree\backend\TaskTree\Models\Requests\CreateTaskRequest.cs ###
+
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  1) ???using TaskTree.Models.Responses;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  2) 
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  3) namespace TaskTree.Models.Requests
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  4) {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  5)     public class CreateTaskRequest
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  6)     {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  7)         public string Name { get; set; } = null!;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  8)         public string? Description { get; set; }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  9)         public double? Weight { get; set; }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 10)     }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 11) }
+
+### tasktree\backend\TaskTree\Models\Requests\UpdateTaskRequest.cs ###
+
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  1) ???using TaskTree.Models.Responses;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  2) 
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  3) namespace TaskTree.Models.Requests
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  4) {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  5)     public class UpdateTaskRequest
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  6)     {
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  7)         public string? Name { get; set; } = null!;
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  8)         public string? Description { get; set; }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400  9)         public double? Weight { get; set; }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 10)         public DateTime? CompletedAt { get; set; }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 11)     }
+5cb4db89 (zmalkmus 2022-10-22 14:20:25 -0400 12) }
+
+### tasktree\frontend\src\components\Login\LoginDesktop.tsx ###
+
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 41)             type="password"
+
+### tasktree\frontend\src\components\Login\LoginMobile.tsx ###
+
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  1) import React, { useState } from 'react';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  2) import TextField from '@mui/material/TextField';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  3) import Button from '@mui/material/Button';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  5) import AuthService from '../../services/AuthService';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  6) import { useAppDispatch, useAppSelector } from '../../store/hooks';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  7) import { setCurrentUser } from '../../store/user';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  8) import { useNavigate } from 'react-router-dom';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  9) import UserService from '../../services/UserService';
+5c5a82b8 (zmalkmus      2022-10-06 13:35:15 -0400 10)
+5c5a82b8 (zmalkmus      2022-10-06 13:35:15 -0400 11) export default function LoginMobile() {
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 12)     const [username, setUsername] = useState('');
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 13)     const [password, setPassword] = useState('');
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 14)     const navigate = useNavigate();
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 15)     const dispatch = useAppDispatch();
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 16)
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 17)     const onSubmit = async () => {
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 18)         const token = await UserService.authenticateUser(username, password);ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 19)         const user = AuthService.decodeJWT(token);
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 20)         dispatch(setCurrentUser(user));
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 21)         navigate('/');
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 22)     };
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 23)
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 24)     return (
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 25)         <div id="wrapper1">
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 26)             <div id="loginField">
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 27)                 <h1>Account Log In</h1>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 28)                 <form>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 29)                     <TextField
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 30)                         id="userIn"
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 31)                         onChange={(e) => setUsername(e.target.value)}        
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 32)                         variant="outlined"
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 33)                         placeholder="Username"></TextField>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 34)                     <br />
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 35)                     <br />
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 36)                     <TextField
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 37)                         id="passIn"
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 38)                         onChange={(e) => setPassword(e.target.value)}        
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 39)                         variant="outlined"
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 40)                         type="password"
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 41)                         placeholder="Password"></TextField>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 42)                     <Button id="loginBtn" onClick={onSubmit} variant="contained">
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 43)                         Log In
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 44)                     </Button>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 45)                 </form>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 46)             </div>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 47)         </div>
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 48)     );
