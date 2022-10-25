@@ -7,7 +7,7 @@
 * Destroy route for task entity in API (issue #96: https://github.com/scrumzone/tasktree/issues/96)
 * Update route for task entity in API (issue #95: https://github.com/scrumzone/tasktree/issues/95)
 * Read route for task entity in API (issue #94: https://github.com/scrumzone/tasktree/issues/94)
-* Destroy route for task entity in API (issue #93: https://github.com/scrumzone/tasktree/issues/93)
+* Create route for task entity in API (issue #93: https://github.com/scrumzone/tasktree/issues/93)
 * Make password field not plaintext on login page (issue #99: https://github.com/scrumzone/tasktree/issues/99)
 * Add sign up link to login page (issue #57: https://github.com/scrumzone/tasktree/issues/57)
 
@@ -37,4 +37,4 @@
 * tasktree\frontend\src\components\Login\LoginMobile.tsx
 
 ### What you accomplished
-I successfully...
+I successfully learned how the backend endpoints linked together and created the destroy, update, read, and create routes for the task-api entity using C#. This took quite a bit longer than expected due to a variety of reasons in the backend, but it all functions properly and works together with the other endpoints. After creating the routes and making requested changes, I tested their functionality using the swagger page and was able to create a tree of tasks within my local version of the database without issue.
