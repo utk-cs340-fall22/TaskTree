@@ -1,1 +1,280 @@
+### backend\TaskTree\Models\Responses\TaskResponse.cs ###
 
+### backend\TaskTree\Models\Responses\ProjectResponse.cs ###
+
+ffb9e8c6 (zmalkmus    2022-10-31 17:57:27 -0400  5)     public long Id { get; set; }
+
+### frontend\src\types\Project.ts ###
+
+34a971e8 (zmalkmus      2022-11-01 08:16:54 -0400 12)   id: 0,
+
+### frontend\src\components\Login\login.css ###
+
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400  1) 
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400  2) #wrapper1 {
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400  3)     font-family: Helvetica;
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400  4)     width:100%;
+0edc35df (zmalkmus 2022-10-06 18:15:38 -0400  5)     padding-top:200px;
+0edc35df (zmalkmus 2022-10-06 18:15:38 -0400  6)     padding-bottom:300px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400  7)     background-color: #cacaca;
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400  8) }
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400  9)
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400 10) #loginField {
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400 11)     width:400px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 12)     height:500px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 13)     /* border-radius:20px; */
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 14)     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 15)     background-color:white;
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400 16)     padding:20px;
+0edc35df (zmalkmus 2022-10-06 18:15:38 -0400 17)     margin: 0 auto;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 18) }
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 19)
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 20) #loginField form {
+0edc35df (zmalkmus 2022-10-06 18:15:38 -0400 21)     position: relative;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 22)     bottom: -75px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 23) }
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 24)
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 25) #loginBtn {
+2b1f25cd (zmalkmus 2022-11-01 09:23:36 -0400 26)     margin-top:80px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 27)     width:328px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 28)     height:50px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 29)     color:white;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 30)     background-color:rgb(36, 131, 240);
+2b1f25cd (zmalkmus 2022-11-01 09:23:36 -0400 31) }
+2b1f25cd (zmalkmus 2022-11-01 09:23:36 -0400 32)
+2b1f25cd (zmalkmus 2022-11-01 09:23:36 -0400 33) #signUpDiv {
+4b430ee9 (zmalkmus 2022-11-03 17:04:10 -0400 34)     font-size:14px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 35) }
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 36)
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 37) #userIn, #passIn {
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 38)     width:300px;
+2e092266 (zmalkmus 2022-10-06 17:47:07 -0400 39)     height:15px;
+5c5a82b8 (zmalkmus 2022-10-06 13:35:15 -0400 40) }
+
+### frontend\src\components\Login\LoginDesktop.tsx ###
+
+4b430ee9 (zmalkmus      2022-11-03 17:04:10 -0400  2) import { TextField, Button, Link, Typography } from '@mui/material';
+2e092266 (zmalkmus      2022-10-06 17:47:07 -0400  3) import './login.css';
+2e092266 (zmalkmus      2022-10-06 17:47:07 -0400  9)
+5c5a82b8 (zmalkmus      2022-10-06 13:35:15 -0400 10) export default function LoginDesktop() {
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 40)             type="password"
+2b1f25cd (zmalkmus      2022-11-01 09:23:36 -0400 44)           </Button><br></br><br></br>
+2b1f25cd (zmalkmus      2022-11-01 09:23:36 -0400 45)
+4b430ee9 (zmalkmus      2022-11-03 17:04:10 -0400 46)           <Typography id="signUpDiv">
+2b1f25cd (zmalkmus      2022-11-01 09:23:36 -0400 47)             Don't have an account? &nbsp;
+2b1f25cd (zmalkmus      2022-11-01 09:23:36 -0400 48)             <Link className="existingUser" href="/SignUp" variant="body2">
+2b1f25cd (zmalkmus      2022-11-01 09:23:36 -0400 49)                 Sign Up
+2b1f25cd (zmalkmus      2022-11-01 09:23:36 -0400 50)             </Link>
+4b430ee9 (zmalkmus      2022-11-03 17:04:10 -0400 51)           </Typography>
+2e092266 (zmalkmus      2022-10-06 17:47:07 -0400 56) }
+
+### frontend\src\components\Login\LoginMobile.tsx ###
+
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  1) import React, { useState } from 'react';
+4b430ee9 (zmalkmus      2022-11-03 17:04:10 -0400  2) import { TextField, Button, Link, Typography } from '@mui/material';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  4) import AuthService from '../../services/AuthService';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  5) import { useAppDispatch, useAppSelector } from '../../store/hooks';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  6) import { setCurrentUser } from '../../store/user';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  7) import { useNavigate } from 'react-router-dom';
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400  8) import UserService from '../../services/UserService';
+5c5a82b8 (zmalkmus      2022-10-06 13:35:15 -0400  9)
+5c5a82b8 (zmalkmus      2022-10-06 13:35:15 -0400 10) export default function LoginMobile() {
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 11)   const [username, setUsername] = useState('');
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 12)   const [password, setPassword] = useState('');
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 13)   const navigate = useNavigate();
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 14)   const dispatch = useAppDispatch();
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 15)
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 16)   const onSubmit = async () => {
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 17)     const token = await UserService.authenticateUser(username, password);
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 18)     AuthService.storeJWT(token);
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 19)     const user = AuthService.decodeJWT(token);
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 20)     dispatch(setCurrentUser(user));
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 21)     navigate('/');
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 22)   };
+ca67b54d (zmalkmus      2022-10-24 21:06:49 -0400 23)
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 24)   return (
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 25)     <div id="wrapper1">
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 26)       <div id="loginField">
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 27)         <h1>Account Log In</h1>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 28)         <form>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 29)           <TextField
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 30)             id="userIn"
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 31)             onChange={(e) => setUsername(e.target.value)}
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 32)             variant="outlined"
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 33)             placeholder="Username"></TextField>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 34)           <br />
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 35)           <br />
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 36)           <TextField
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 37)             id="passIn"
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 38)             onChange={(e) => setPassword(e.target.value)}
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 39)             variant="outlined"
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 40)             type="password"
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 41)             placeholder="Password"></TextField>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 42)           <Button id="loginBtn" onClick={onSubmit} variant="contained">
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 43)             Log In
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 44)           </Button><br></br><br></br>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 45)
+4b430ee9 (zmalkmus      2022-11-03 17:04:10 -0400 46)           <Typography id="signUpDiv">
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 47)             Don't have an account? &nbsp;
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 48)             <Link className="existingUser" href="/SignUp" variant="body2">
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 49)                 Sign Up
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 50)             </Link>
+4b430ee9 (zmalkmus      2022-11-03 17:04:10 -0400 51)           </Typography>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 52)         </form>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 53)       </div>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 54)     </div>
+e9dedf8b (zmalkmus      2022-11-01 09:24:12 -0400 55)   );
+
+### frontend\src\components\DisplayProjects\index.tsx ###
+
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400   4) import { Box, Button, Typography, Snackbar, Alert } from '@mui/material';
+f85f1b35 (zmalkmus      2022-11-05 20:52:28 -0400  12)   const [open, setOpen] = React.useState(false);
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  13)   const [openDel, setOpenDel] = React.useState(false);
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  20)   function renderRow(props: ListChildComponentProps) {
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  21)     const { data, index, style } = props;
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  22)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  23)     function onEditSubmit(formData: Project) {
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  24)       data[index].name = formData.name;
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  25)       data[index].description = formData.description;
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  26)       ProjectService.updateProject(data[index], data[index].id!);
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  27)     }
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  28)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  29)     function onDelete() {
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  30)       ProjectService.deleteProject(data[index].id!);
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  31)       setProjects(projects.filter(project => project != data[index]));
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  32)       setOpenDel(true);
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  33)     }
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  34)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  35)     return <ListItem style={style}>
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  36)       <ProjectListItem onEditSubmit={onEditSubmit} onDelete={onDelete} project={data[index]} />        
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  37)       </ListItem>;
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  38)   }
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  39)
+f85f1b35 (zmalkmus      2022-11-05 20:52:28 -0400  50)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  66)   // handle close for delete
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  67)   const handleDelClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  68)     if (reason === 'clickaway') {
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  69)       return;
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  70)     }
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  71)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  72)     setOpenDel(false);
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  73)   };
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400  74)
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  81)         alignItems: 'center',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  82)         width: '80%',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  83)         marginLeft: 'auto',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  84)         marginRight: 'auto',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  86)
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  87)       <Box
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  88)         sx={{
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  89)           marginTop: 8,
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  90)           display: 'flex',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  91)           flexDirection: 'row',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  92)           alignItems: 'center',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  93)           alignContent: 'space-between',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  94)           width: '100%',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  95)           padding: '10px',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  96)           paddingBottom: '20px',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  97)           borderBottom: '3px solid darkgrey',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  98)           marginBottom: '10px',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400  99)         }}>
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 100)         <Typography component="h4" variant="h4"
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 101)           sx={{
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 102)             justifySelf: 'left',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 103)             marginLeft: '30px',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 104)           }}>
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 105)           Projects
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 106)         </Typography>
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 107)
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 108)         <Button variant="outlined" onClick={handleClickOpen}
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 109)           sx={{
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 110)             justifySelf: 'right',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 111)             marginLeft: 'auto',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 112)             marginRight: '30px',
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 113)           }}>
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 114)           Create new project
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 115)         </Button>
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 116)       </Box>
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 117)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 119)
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 121)         height={800}
+bc230681 (zmalkmus      2022-11-05 23:36:05 -0400 122)         width={'100%'}
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 129)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 130)       <Snackbar
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 131)         open={openDel}
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 132)         autoHideDuration={6000}
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 133)         onClose={handleDelClose}
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 134)         message="Project successfully deleted">
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 135)
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 136)         <Alert onClose={handleDelClose} severity="success" sx={{ width: '100%'}}>
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 137)           Project successfully deleted
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 138)         </Alert>
+b9e74d6b (zmalkmus      2022-11-06 01:01:28 -0400 139)       </Snackbar>
+
+### frontend\src\components\EditProjectDialog\index.tsx ###
+
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  1) import Button from '@mui/material/Button';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  2) import Dialog from '@mui/material/Dialog';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  3) import DialogActions from '@mui/material/DialogActions';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  4) import DialogContent from '@mui/material/DialogContent';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  5) import DialogTitle from '@mui/material/DialogTitle';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  6) import React from 'react';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  7) import Project from '../../types/Project';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  8) import ProjectForm from '../ProjectForm';
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400  9)
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 10) interface CreateProjectFormProps {
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 11)   project: Project;
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 12)   open: boolean;
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 13)   onClose: () => void;
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 14)   onSubmit: (project: Project) => void;
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 15) }
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 16)
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 17) export default function EditProjectDialog(props: CreateProjectFormProps) {
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 18)   const [formData, setFormData] = React.useState<Project>(props.project);
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 19)
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 20)   const onChange = (e: React.SyntheticEvent) => {
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 21)     const target = e.target as HTMLInputElement;
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 22)     setFormData((formData) => ({ ...formData, [target.name]: target.value }));
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 23)   };
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 24)
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 25)   return (
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 26)     <Dialog open={props.open} onClose={props.onClose}>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 27)       <DialogTitle>Edit Project</DialogTitle>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 28)       <DialogContent>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 29)         <ProjectForm project={formData} onChange={onChange} />
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 30)       </DialogContent>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 31)       <DialogActions>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 32)         <Button onClick={props.onClose}>Cancel</Button>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 33)         <Button onClick={() => props.onSubmit(formData)}>Update</Button>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 34)       </DialogActions>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 35)     </Dialog>
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 36)   );
+f85f1b35 (zmalkmus 2022-11-05 20:52:28 -0400 37) }
+
+### frontend\src\components\ProjectItem\index.tsx ###
+
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 10) import { Alert, Box, Button, ListItem, ListItemIcon, ListItemSecondaryAction, Snackbar } from '@mui/material';
+f85f1b35 (zmalkmus       2022-11-05 20:52:28 -0400 13) import EditProjectDialog from '../EditProjectDialog';
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 14) import ProjectService from '../../services/ProjectService';
+f85f1b35 (zmalkmus       2022-11-05 20:52:28 -0400 15)
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 18)   onEditSubmit: (formData: Project) => void;
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 19)   onDelete: () => void;
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 38)   const [openEdit, setOpenEdit] = React.useState(false);
+f85f1b35 (zmalkmus       2022-11-05 20:52:28 -0400 39)
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 56)                   setOpenEdit(true);
+9e48fb04 (zmalkmus       2022-11-05 23:44:57 -0400 64)                   e.preventDefault();
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 65)                   if (confirm(`Are you sure you want to delete project "${props.project.name}"?`)) {   
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 66)                     props.onDelete();
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 67)                   }
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 75)
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 76)       {/* Edit project popup */}
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 77)       <EditProjectDialog
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 78)           open={openEdit}
+6c795396 (zmalkmus       2022-11-05 23:52:20 -0400 79)           project={props.project}
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 80)           onClose={() => setOpenEdit(false)}
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 81)           onSubmit={(formData) => {
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 82)             props.onEditSubmit(formData);
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 83)             setOpenEdit(false);
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 84)           }}
+bc230681 (zmalkmus       2022-11-05 23:36:05 -0400 85)       />
+b9e74d6b (zmalkmus       2022-11-06 01:01:28 -0400 86)
