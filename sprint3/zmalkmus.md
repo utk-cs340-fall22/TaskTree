@@ -6,36 +6,37 @@
 
 ### What you planned to do
 * Add functionality to delete button on project list component (issue #148: https://github.com/scrumzone/tasktree/issues/148)
-* Update route for task entity in API (issue #95: https://github.com/scrumzone/tasktree/issues/95)
-* Read route for task entity in API (issue #94: https://github.com/scrumzone/tasktree/issues/94)
-* Create route for task entity in API (issue #93: https://github.com/scrumzone/tasktree/issues/93)
-* Make password field not plaintext on login page (issue #99: https://github.com/scrumzone/tasktree/issues/99)
-* Add sign up link to login page (issue #57: https://github.com/scrumzone/tasktree/issues/57)
+* Add functionality to edit button on project list component (issue #116: https://github.com/scrumzone/tasktree/issues/116)
+* Add Id fields to response objects (issue #115: https://github.com/scrumzone/tasktree/issues/115)
+* Add sign up link to login page #57 (issue #57: https://github.com/scrumzone/tasktree/issues/57)
 
 ### What you did not do
-* Add a sign up link from the login page.
+* I got everything I planned to do completed
 
 ### What problems you encountered
-* Learning backend was confusing and required some help to get figured out.
-* The way the endpoints linked together needed a decent bit of altering.
-* Could not complete the sign up link due to main being temporarily not functional.
+This sprint went very well overall. I didn't encounter many problems and I fixed a few bugs/helped others out
+with their issues. We did have trouble initially with merging because me and Tyler were both given seperate tasks that
+overlapped heavily so I had to change what I was working on.
 
 ### Issues you worked on
-* (#96): https://github.com/scrumzone/tasktree/issues/96
-* (#95): https://github.com/scrumzone/tasktree/issues/95
-* (#94): https://github.com/scrumzone/tasktree/issues/94
-* (#93): https://github.com/scrumzone/tasktree/issues/93
-* (#99): https://github.com/scrumzone/tasktree/issues/99
+* (#148): https://github.com/scrumzone/tasktree/issues/148
+* (#116): https://github.com/scrumzone/tasktree/issues/116
+* (#115): https://github.com/scrumzone/tasktree/issues/115
+* (#57): https://github.com/scrumzone/tasktree/issues/57
 
 ### Files you worked on
 (Give a bulleted list of the files in your github repo that you worked on. Give the full pathname.)
-* tasktree\backend\TaskTree\Controllers\TasksController.cs
-* tasktree\backend\TaskTree\Models\Task.cs
-* tasktree\backend\TaskTree\Models\MappingProfiles\MappingProfile.cs
-* tasktree\backend\TaskTree\Models\Requests\CreateTaskRequest.cs
-* tasktree\backend\TaskTree\Models\Requests\UpdateTaskRequest.cs
-* tasktree\frontend\src\components\Login\LoginDesktop.tsx
-* tasktree\frontend\src\components\Login\LoginMobile.tsx
+* backend\TaskTree\Models\Responses\TaskResponse.cs
+* backend\TaskTree\Models\Responses\ProjectResponse.cs
+* frontend\src\types\Task.ts
+* frontend\src\types\Project.ts
+* frontend\src\components\Login\login.css
+* frontend\src\components\Login\LoginDesktop.tsx
+* frontend\src\components\Login\LoginMobile.tsx
+* frontend\src\components\DisplayProjects\display.css
+* frontend\src\components\DisplayProjects\index.tsx
+* frontend\src\components\EditProjectDialog\index.tsx
+* frontend\src\components\ProjectItem\index.tsx
 
 ### What you accomplished
 I successfully learned how the backend endpoints linked together and created the destroy, update, read, and create routes for the task-api entity using C#. This took quite a bit longer than expected due to a variety of reasons in the backend, but it all functions properly and works together with the other endpoints. After creating the routes and making requested changes, I tested their functionality using the swagger page and was able to create a tree of tasks within my local version of the database without issue.
