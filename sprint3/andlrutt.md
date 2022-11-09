@@ -41,7 +41,6 @@ This was temporary, though, and as soon as that blocker was lifted there were no
 
 
 ### What you accomplished
-(Give a description of the features you added or tasks you accomplished. Provide some detail here. This section will be a little longer than the bulleted lists above)
 This sprint, I almost exclusively worked on frontend components. I added functionality to the delete, check, and edit icons on a task so that they execute the appropriate action.
 I also updated a task to have a different, distinct view if it is complete. 
 This involes a grayed out, strikethroughed task with a green progress bar and checksymbol to indicate that it has been completed.
