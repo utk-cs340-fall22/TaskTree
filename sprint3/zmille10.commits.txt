@@ -1,0 +1,502 @@
+### backend/TaskTree/Controllers/UsersController.cs ###
+b6aa5273 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-31 23:15:57 -0400 124)             }
+b6aa5273 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-31 23:15:57 -0400 125)             catch (Exception e)
+b6aa5273 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-31 23:15:57 -0400 130)                 if (exceptionCode == -2146233079)
+b6aa5273 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-31 23:15:57 -0400 136)                 else if (exceptionCode == -2146233088)
+b6aa5273 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-31 23:15:57 -0400 199)                     permClaims.Add(new Claim("firstName", userResponse.firstName));
+b6aa5273 backend/TaskTree/Controllers/UsersController.cs (Zavier Miller 2022-10-31 23:15:57 -0400 203)                     permClaims.Add(new Claim("lastName", userResponse.lastName));
+
+
+### frontend/src/components/CreateTaskDialog/index.tsx ###
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500  1) import React from 'react';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  2) import Button from '@mui/material/Button';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  3) import Dialog from '@mui/material/Dialog';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  4) import DialogActions from '@mui/material/DialogActions';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  5) import DialogContent from '@mui/material/DialogContent';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  6) import DialogTitle from '@mui/material/DialogTitle';
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500  7) import Task, { BlankTask } from '../../types/Task';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  8) import TaskForm from '../TaskForm';
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  9)
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 10) interface CreateTaskFormProps {
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 11)   open: boolean;
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 12)   onClose: () => void;
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 13)   onSubmit: (taskData: Task) => void;
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 14) }
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 15)
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 16) export default function CreateTaskDialog(props: CreateTaskFormProps) {
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 17)   const [formData, setFormData] = React.useState<Task>({
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 18)     name: '',
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 19)     description: '',
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 20)     weight: 1
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 21)   } as Task);
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 22)
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 23)   const onChange = (e: React.SyntheticEvent) => {
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 24)     const target = e.target as HTMLInputElement;
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 25)     setFormData((formData) => ({ ...formData, [target.name]: target.value }));
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 26)   };
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 27)
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 28)   return (
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 29)     <Dialog open={props.open} onClose={props.onClose}>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 30)       <DialogTitle>Create Task</DialogTitle>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 31)       <DialogContent>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 32)         <TaskForm task={formData} onChange={onChange} />
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 33)       </DialogContent>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 34)       <DialogActions>
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500 35)         <Button
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 36)           onClick={(e) => {
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 37)             e.preventDefault();
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 38)             e.stopPropagation();
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 39)             props.onClose();
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 40)           }}>
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 41)           Cancel
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 42)         </Button>
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 43)         <Button
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 44)           onClick={(e) => {
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 45)             e.preventDefault();
+45a7d395 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 22:33:26 -0500 46)             e.stopPropagation();
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500 47)             props.onSubmit(formData);
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500 48)             setFormData(BlankTask);
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500 49)           }}>
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500 50)           Create
+2780ab61 frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500 51)         </Button>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 52)       </DialogActions>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 53)     </Dialog>
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 54)   );
+a413937c frontend/src/components/CreateTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 55) }
+
+
+### frontend/src/components/CreateProjectDialog/index.tsx ###
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  1) import {
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  2)   Dialog,
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  3)   DialogTitle,
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  4)   DialogContent,
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  5)   TextField,
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  6)   DialogActions,
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  7)   Button
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  8) } from '@mui/material';
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  9) import React from 'react';
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 10) import Project from '../../types/Project';
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 11) import ProjectForm from '../ProjectForm';
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 12)
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 13) interface CreateProjectDialogProps {
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 14)   open: boolean;
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 15)   onClose: () => void;
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 16)   onSubmit: (project: Project) => void;
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 17) }
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 18)
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 19) export default function CreateProjectDialog({ open, onClose, onSubmit }: CreateProjectDialogProps) {
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 20)   const [formData, setFormData] = React.useState<Project>({
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 21)     name: '',
+ec451039 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 20:35:47 -0400 22)     description: '',
+ec451039 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 20:35:47 -0400 23)     progress: 0
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 24)   } as Project);
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 25)
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 26)   const onChange = (e: React.SyntheticEvent) => {
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 27)     const target = e.target as HTMLInputElement;
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 28)     setFormData((formData) => ({ ...formData, [target.name]: target.value }));
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 29)   };
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 30)   return (
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 31)     <Dialog open={open} onClose={onClose}>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 32)       <DialogTitle>Create Project</DialogTitle>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 33)       <DialogContent>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 34)         <ProjectForm project={formData} onChange={onChange} />
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 35)       </DialogContent>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 36)       <DialogActions>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 37)         <Button onClick={onClose}>Cancel</Button>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 38)         <Button
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 39)           onClick={() => {
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 40)             onSubmit(formData);
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 41)           }}>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 42)           Create
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 43)         </Button>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 44)       </DialogActions>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 45)     </Dialog>
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 46)   );
+69bd6b86 frontend/src/components/CreateProjectDialog/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 47) }
+
+
+### frontend/src/components/DisplayProjects/index.tsx ###
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400   1) import * as React from 'react';
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400   2) import ListItem from '@mui/material/ListItem';
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400   3) import { FixedSizeList, ListChildComponentProps } from 'react-window';
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400   5) import ProjectService from '../../services/ProjectService';
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400   6) import Project, { BlankProject } from '../../types/Project';
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400   7) import CreateProjectDialog from '../CreateProjectDialog';
+5906f454 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400   8) import ProjectListItem from '../ProjectItem';
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  10)
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  11) export default function VirtualizedList() {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  15)   const [formData, setFormData] = React.useState<Project>({
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  16)     name: '',
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  17)     description: '',
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  18)     progress: 0
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  19)   });
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  20)
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  43)   React.useEffect(() => {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  44)     const fetchProjects = async () => {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  45)       setProjects(await ProjectService.getProjects());
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  46)     };
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  47)     fetchProjects();
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  48)   }, []);
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  49)
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  50)   const handleClickOpen = () => {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  51)     setOpen(true);
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  52)   };
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  54)   const handleClose = () => {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  55)     setOpen(false);
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  56)   };
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  57)
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  58)   const onChange = (e: React.SyntheticEvent) => {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  59)     const target = e.target as HTMLInputElement;
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  60)     setFormData((formData) => ({ ...formData, [target.name]: target.value }));
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  61)   };
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  62)
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  63)   const handleSubmit = async (data: Project) => {
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  64)     const project = await ProjectService.createProject(data);
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  65)     setProjects([...projects, project]);
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  66)     handleClose();
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  67)   };
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  68)
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  78)   return (
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  79)     <Box
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  80)       sx={{
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  81)         marginTop: 8,
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  82)         display: 'flex',
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  83)         flexDirection: 'column',
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400  88)       }}>
+2780ab61 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-07 15:10:47 -0500  99)           borderBottom: '1px solid darkgrey',
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 124)       <CreateProjectDialog open={open} onClose={handleClose} onSubmit={handleSubmit} />
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 127)     </Box>
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 128)   );
+69bd6b86 frontend/src/components/DisplayProjects/index.tsx (Zavier Miller 2022-11-03 12:11:43 -0400 129) }
+
+
+### frontend/src/components/EditTaskDialog/index.tsx ###
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  1) import Button from '@mui/material/Button';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  2) import Dialog from '@mui/material/Dialog';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  3) import DialogActions from '@mui/material/DialogActions';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  4) import DialogContent from '@mui/material/DialogContent';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  5) import DialogTitle from '@mui/material/DialogTitle';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  6) import React from 'react';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  7) import Task from '../../types/Task';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  8) import TaskForm from '../TaskForm';
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  9)
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 10) interface CreateTaskFormProps {
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 11)   task: Task;
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 12)   open: boolean;
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 13)   onClose: () => void;
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 14)   onSubmit: (taskData: Task) => void;
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 15) }
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 16)
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 17) export default function EditTaskDialog(props: CreateTaskFormProps) {
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 18)   const [formData, setFormData] = React.useState<Task>(props.task);
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 19)
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 20)   const onChange = (e: React.SyntheticEvent) => {
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 21)     const target = e.target as HTMLInputElement;
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 22)     setFormData((formData) => ({ ...formData, [target.name]: target.value }));
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 23)   };
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 24)
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 25)   return (
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 26)     <Dialog open={props.open} onClose={props.onClose}>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 27)       <DialogTitle>Edit Task</DialogTitle>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 28)       <DialogContent>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 29)         <TaskForm task={formData} onChange={onChange} />
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 30)       </DialogContent>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 31)       <DialogActions>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 32)         <Button onClick={props.onClose}>Cancel</Button>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 33)         <Button onClick={() => props.onSubmit(formData)}>Update</Button>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 34)       </DialogActions>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 35)     </Dialog>
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 36)   );
+a413937c frontend/src/components/EditTaskDialog/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 37) }
+
+
+### frontend/src/components/ExpandableTaskList/index.tsx ###
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  1) import { ExpandLess, ExpandMore } from '@mui/icons-material';
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  2) import Collapse from '@mui/material/Collapse';
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  3) import List from '@mui/material/List';
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  4) import React from 'react';
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  5) import Task from '../../types/Task';
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  6) import TaskListItem from '../TaskItem';
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  7)
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  8) interface ExpandableTaskListItemProps {
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500  9)   task: Task;
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 10)   reloadProject: () => void;
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 11) }
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 12)
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 13) export default function ExpandableTaskList({ task, reloadProject }: ExpandableTaskListItemProps) {
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 14)   const [expanded, setExpanded] = React.useState(false);
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 15)   return (
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 16)     <List disablePadding>
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 17)       <TaskListItem
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 18)         task={task}
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 19)         onClick={() => {
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 20)           setExpanded(!expanded);
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 21)         }}
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 22)         reloadProject={reloadProject}>
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 23)         {expanded ? <ExpandLess /> : <ExpandMore />}
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 24)       </TaskListItem>
+b5b67075 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 25)       <Collapse in={expanded} timeout="auto" unmountOnExit sx={{ pl: 2 }}>
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 26)         {task.children &&
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 27)           task.children.map((child) => {
+b5b67075 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 28)             if (child.children!.length) {
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 29)               return (
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 30)                 <ExpandableTaskList key={child.id} task={child} reloadProject={reloadProject} />
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 31)               );
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 32)             } else {
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 33)               return (
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 34)                 <TaskListItem
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 35)                   key={child.id || child.name}
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 36)                   task={child}
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 37)                   reloadProject={reloadProject}></TaskListItem>
+7a26926a frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 38)               );
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 39)             }
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 40)           })}
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 41)       </Collapse>
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 42)     </List>
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 43)   );
+bbaa0a12 frontend/src/components/ExpandableTaskList/index.tsx (Zavier Miller 2022-11-07 17:27:31 -0500 44) }
+
+
+### frontend/src/components/Project/index.tsx ###
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  1) import React from 'react';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  2) import ListSubheader from '@mui/material/ListSubheader';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  3) import List from '@mui/material/List';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  4) import ListItemButton from '@mui/material/ListItemButton';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  5) import ListItemText from '@mui/material/ListItemText';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  6) import Collapse from '@mui/material/Collapse';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  7) import ProjectHeader from '../ProjectHeader';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  8) import Project, { BlankProject } from '../../types/Project';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500  9) import ExpandableTaskList from '../ExpandableTaskList';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 10) import { useParams } from 'react-router-dom';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 11) import Task, { BlankTask } from '../../types/Task';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 12) import ProjectService from '../../services/ProjectService';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 13) import TaskService from '../../services/TaskService';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 14) import TaskListItem from '../TaskItem';
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 15)
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 16) export default function ProjectComponent() {
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 17)   const params = useParams();
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 18)   const [open, setOpen] = React.useState(false);
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 19)   const [project, setProject] = React.useState<Project>(BlankProject);
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 20)
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 21)   const loadProject = () => {
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 22)     ProjectService.getProject(parseInt(params.projectId!)).then((project) => {
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 23)       setProject(project);
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 24)     });
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 25)   };
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 26)
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 27)   React.useEffect(() => {
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 28)     loadProject();
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 29)   }, []);
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 30)
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 31)   const TaskListTag =
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 32)     project.root!.children && project.root!.children.length ? ExpandableTaskList : TaskListItem;
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 33)
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 34)   return (
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 35)     <div>
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 36)       <ProjectHeader project={project} />
+7a26926a frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 07:14:29 -0500 37)       <TaskListTag task={project.root!} reloadProject={loadProject} />
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 38)     </div>
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 39)   );
+b5b67075 frontend/src/components/Project/index.tsx (Zavier Miller 2022-11-08 01:02:18 -0500 40) }
+
+
+### frontend/src/components/ProjectItem/index.tsx ###
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 10) import {
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 11)   Alert,
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 12)   Box,
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 13)   Button,
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 14)   ListItem,
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 15)   ListItemIcon,
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 16)   ListItemSecondaryAction,
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 17)   Snackbar
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 18) } from '@mui/material';
+5906f454 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-05 12:59:36 -0400 20) import { Link } from 'react-router-dom';
+5906f454 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-05 12:59:36 -0400 49)       <ListItemButton component={Link} to={`/projects/${props.project.id}`}>
+5906f454 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-05 12:59:36 -0400 67)
+5906f454 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-05 12:59:36 -0400 69)                 onClick={(e) => {
+5906f454 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-05 12:59:36 -0400 70)                   e.stopPropagation();
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 85)         open={openEdit}
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 86)         project={props.project}
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 87)         onClose={() => setOpenEdit(false)}
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 88)         onSubmit={(formData) => {
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 89)           props.onEditSubmit(formData);
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 90)           setOpenEdit(false);
+b5b67075 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-08 01:02:18 -0500 91)         }}
+5906f454 frontend/src/components/ProjectItem/index.tsx (Zavier Miller  2022-11-05 12:59:36 -0400 95) }
+
+
+### frontend/src/components/TaskForm/index.tsx ###
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  1) import { TextField } from '@mui/material';
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  2) import React from 'react';
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  3) import Task from '../../types/Task';
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  4)
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  5) interface TaskFormProps {
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  6)   task: Task;
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  7)   onChange: (e: React.SyntheticEvent) => void;
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  8) }
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400  9)
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 10) export default function TaskForm({ task, onChange }: TaskFormProps) {
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 11)   return (
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 12)     <form>
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 13)       <TextField
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 14)         autoFocus
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 15)         margin="dense"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 16)         id="name"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 17)         name="name"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 18)         label="Task name"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 19)         type="text"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 20)         fullWidth
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 21)         variant="standard"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 22)         onChange={onChange}
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 23)         value={task.name}
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 24)       />
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 25)       <TextField
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 26)         autoFocus
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 27)         margin="dense"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 28)         id="description"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 29)         name="description"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 30)         label="Task description"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 31)         type="text"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 32)         fullWidth
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 33)         variant="standard"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 34)         onChange={onChange}
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 35)         value={task.description}
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 36)       />
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 37)       <TextField
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 38)         autoFocus
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 39)         margin="dense"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 40)         id="weight"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 41)         name="weight"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 42)         label="Task weight"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 43)         type="number"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 44)         fullWidth
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 45)         variant="standard"
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 46)         onChange={onChange}
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 47)         value={task.weight}
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 48)       />
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 49)     </form>
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 50)   );
+a413937c frontend/src/components/TaskForm/index.tsx (Zavier Miller 2022-10-31 18:39:33 -0400 51) }
+
+
+### frontend/src/components/TaskItem/index.tsx ###
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  17) import CreateTaskDialog from '../CreateTaskDialog';
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  19) interface TaskListItemProps {
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  21)   children?: React.ReactNode;
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  22)   onClick?: (e: React.SyntheticEvent) => void;
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  23)   reloadProject: () => void;
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  24)   sx?: any;
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  35)         <LinearProgress
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  36)           variant="determinate"
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  37)           color={props.task.completedAt ? 'success' : 'primary'}
+209c516a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:26:01 -0500  38)           value={props.task.progress}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  39)           {...props}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  40)         />
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  44)           props.task.progress
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  51) function IconGrid(
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  52)   props: TaskListItemProps & {
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  53)     setSnackbarOpen: (e: boolean) => void;
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  54)     setCreateDialogOpen: (e: boolean) => void;
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  55)     setEditDialogOpen: (e: boolean) => void;
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  56)     reloadProject: () => void;
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  57)   }
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  58) ) {
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  60)     <Grid xs={2} container justifyContent="center">
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  65)           props.setCreateDialogOpen(true);
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  73)           props.setEditDialogOpen(true);
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  83)               TaskService.deleteTask(props.task.id!).then(() => {
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  84)                 props.reloadProject();
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  85)               });
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  86)               props.setSnackbarOpen(true);
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500  96) export default function TaskListItem(props: TaskListItemProps) {
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500  99)   const [openCreate, setOpenCreate] = React.useState(false);
+209c516a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:26:01 -0500 110)     <ListItem button={!!props.onClick as false} onClick={props.onClick}>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 111)       <ListItemText disableTypography>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 112)         <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 113)           <Grid xs={2} sx={{ display: 'flex', alignItems: 'center' }}>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 114)             <IconButton
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 115)               onClick={(e) => {
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 116)                 e.stopPropagation();
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 117)                 e.preventDefault();
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 118)                 if (
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 119)                   confirm(`Mark task "${props.task.name}" and all of its sub-tasks as complete?`)
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 120)                 ) {
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 121)                   props.task.completedAt = new Date();
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500 122)                   TaskService.updateTask(props.task, props.task.id!).then(() => {
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500 123)                     props.reloadProject();
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500 124)                   });
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 125)                 }
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 126)               }}>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 127)               {props.task.completedAt && (
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 128)                 <CheckCircleIcon color={props.task.completedAt ? 'success' : 'primary'} />
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 129)               )}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 130)               {!props.task.completedAt && (
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 131)                 <CheckCircleOutlineIcon color={props.task.completedAt ? 'success' : 'primary'} />
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 132)               )}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 133)             </IconButton>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 134)             <Typography
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 135)               sx={{
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 136)                 textDecoration: props.task.completedAt ? 'line-through' : '',
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 137)                 color: props.task.completedAt ? 'gray' : ''
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 138)               }}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 139)               variant="h6">
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 140)               {props.task.name}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 141)             </Typography>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 142)           </Grid>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 143)           <Grid xs={8}>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 144)             <LinearProgressWithLabel variant="determinate" task={props.task} />
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 146)           {props.task.completedAt && <Grid xs={2} container justifyContent="center"></Grid>}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 147)           {!props.task.completedAt && (
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 148)             <IconGrid
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 149)               task={props.task}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 150)               setSnackbarOpen={setOpenSnackbar}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 151)               setCreateDialogOpen={setOpenCreate}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 152)               setEditDialogOpen={setOpenEdit}
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500 153)               reloadProject={props.reloadProject}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 154)             />
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 155)           )}
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 156)         </Grid>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 157)       </ListItemText>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 159)       <EditTaskDialog
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500 165)           TaskService.updateTask(formData, props.task.id!).then(() => props.reloadProject());
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 169)       <CreateTaskDialog
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 170)         open={openCreate}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 171)         onClose={() => setOpenCreate(false)}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 172)         onSubmit={(formData) => {
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500 173)           TaskService.createTask(formData, props.task.id!).then(() => props.reloadProject());
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 174)           setOpenCreate(false);
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 175)         }}
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 176)       />
+45a7d395 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 22:33:26 -0500 177)
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 178)       <Snackbar
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 182)         message="Task successfully deleted">
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 183)         <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 184)           Task successfully deleted
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 185)         </Alert>
+bbaa0a12 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-07 17:27:31 -0500 187)       {props.children}
+
+
+### frontend/src/router/index.tsx ###
+c99f371c frontend/src/router/index.tsx (Zavier Miller 2022-10-25 01:01:19 -0400  2) import ProjectsPage from '../pages/projects';
+5906f454 frontend/src/router/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400  7) import ProjectPage from '../pages/project';
+c99f371c frontend/src/router/index.tsx (Zavier Miller 2022-10-25 01:01:19 -0400 32)   },
+c99f371c frontend/src/router/index.tsx (Zavier Miller 2022-10-25 01:01:19 -0400 33)   {
+c99f371c frontend/src/router/index.tsx (Zavier Miller 2022-10-25 01:01:19 -0400 34)     name: 'Projects',
+c99f371c frontend/src/router/index.tsx (Zavier Miller 2022-10-25 01:01:19 -0400 35)     path: '/projects',
+c99f371c frontend/src/router/index.tsx (Zavier Miller 2022-10-25 01:01:19 -0400 36)     component: <ProjectsPage />
+5906f454 frontend/src/router/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400 37)   },
+5906f454 frontend/src/router/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400 38)   {
+5906f454 frontend/src/router/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400 39)     name: 'Project',
+5906f454 frontend/src/router/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400 40)     path: '/projects/:projectId',
+5906f454 frontend/src/router/index.tsx (Zavier Miller 2022-11-05 12:59:36 -0400 41)     component: <ProjectPage />
+
+
+### frontend/src/types/Task.ts ###
+a413937c frontend/src/types/Task.ts (Zavier Miller  2022-10-31 18:39:33 -0400  3)   name: string;
+a413937c frontend/src/types/Task.ts (Zavier Miller  2022-10-31 18:39:33 -0400  4)   description?: string;
+a413937c frontend/src/types/Task.ts (Zavier Miller  2022-10-31 18:39:33 -0400  5)   progress: number;
+a413937c frontend/src/types/Task.ts (Zavier Miller  2022-10-31 18:39:33 -0400  6)   weight: number;
+8a6f6c74 frontend/src/types/Task.ts (Zavier Miller  2022-11-08 09:02:32 -0500 17)   weight: 1
+
+
+
