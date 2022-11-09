@@ -1,0 +1,467 @@
+### backend\TaskTree\Controllers\TasksController.cs ###
+
+85d6c886 (emaness-utk 2022-11-05 15:07:46 -0400   9) using Microsoft.CodeAnalysis;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500  55)             if (project.Root == null)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500  56)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500  57)                 return Problem("Project root is null.", statusCode: 500);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500  58)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500  59)
+85d6c886 (emaness-utk 2022-11-05 15:07:46 -0400  98)             var task = await _context.Tasks
+add2e688 (emaness-utk 2022-11-05 21:23:54 -0400  99)                 .Include("Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent")
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 100)                 .Include("Children.Children.Children.Children.Children.Children.Children.Children.Children")
+85d6c886 (emaness-utk 2022-11-05 15:07:46 -0400 101)                 .FirstOrDefaultAsync(task => task.Id == id);
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 114)             var projId = task.RootProjectId();
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 115)
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 116)             var updatingCompletionStatus = updateTaskRequest.CompletedAt.HasValue && !task.CompletedAt.HasValue;
+add2e688 (emaness-utk 2022-11-05 21:23:54 -0400 117)
+add2e688 (emaness-utk 2022-11-05 21:23:54 -0400 118)             _mapper.Map(updateTaskRequest, task);
+add2e688 (emaness-utk 2022-11-05 21:23:54 -0400 119)
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 120)             // Marking complete also completes all incomplete children
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 121)             if (updatingCompletionStatus)
+85d6c886 (emaness-utk 2022-11-05 15:07:46 -0400 122)             {
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 123)                 foreach (Task t in task.Descendents())
+85d6c886 (emaness-utk 2022-11-05 15:07:46 -0400 124)                 {
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 125)                     if (!t.CompletedAt.HasValue)
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 126)                     {
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 127)                         t.CompletedAt = task.CompletedAt;
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 128)                         _context.Entry(t).State = EntityState.Modified;
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 129)                     }
+85d6c886 (emaness-utk 2022-11-05 15:07:46 -0400 130)                 }
+add2e688 (emaness-utk 2022-11-05 21:23:54 -0400 131)             }
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 133)             _context.Entry(task).State = EntityState.Modified;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 151)             // After making changes, tree and project status must be re-evaluated bottom-up
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 152)             if (projId == null)
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 153)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 154)                 return Problem("Cannot find root project.", statusCode: 500); ;
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 155)             }
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 156)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 157)             await AuditProject((long)projId);
+f6dd3474 (emaness-utk 2022-11-06 20:56:11 -0500 158)
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 172)             var parentTask = await _context.Tasks
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 173)                 .Include("Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent")
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 174)                 .FirstOrDefaultAsync(task => task.Id == parentId);
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 175)
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 176)             if (parentTask == null)
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 177)             {
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 178)                 return NotFound();
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 179)             }
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 187)             var projId = parentTask.RootProjectId();
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 188)
+add2e688 (emaness-utk 2022-11-05 21:23:54 -0400 198)             task.Parent = parentTask;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 221)             // After making changes, tree and project status must be re-evaluated bottom-up
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 222)             if (projId == null)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 223)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 224)                 return Problem("Cannot find root project.", statusCode: 500); ;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 225)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 226)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 227)             await AuditProject((long)projId);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 228)
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 242)             var task = await _context.Tasks
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 243)                 .Include("Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent.Parent")
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 244)                 .FirstOrDefaultAsync(task => task.Id == id);
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 245)
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 263)             var projId = task.RootProjectId();
+e22c49f3 (emaness-utk 2022-11-07 19:28:36 -0500 264)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 268)             // After making changes, tree and project status must be re-evaluated bottom-up
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 269)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 270)             if (projId == null)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 271)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 272)                 return Problem("Cannot find root project.", statusCode: 500); ;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 273)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 274)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 275)             await AuditProject((long)projId);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 276)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 277)             return NoContent();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 278)         }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 279)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 280)         /// <summary>
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 281)         /// Audits an entire project tree from the bottom up, correcting all progress and completion values.
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 282)         /// </summary>
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 283)         /// <param name="id">The value of the <see cref="BaseEntity.Id"/> property for the desired project.</param>
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 284)         private async Task<IActionResult> AuditProject(long id)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 285)         {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 286)             var project = await _context.Projects
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 287)                 .Include(project => project.Root)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 288)                 .Include("Root.Children.Children.Children.Children.Children.Children.Children.Children.Children")
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 289)                 .FirstOrDefaultAsync(project => project.Id == id);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 290)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 291)             if (CurrentUserIdDoesNotMatch(project?.UserId))
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 292)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 293)                 return Unauthorized();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 294)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 295)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 296)             if (project == null)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 297)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 298)                 return NotFound();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 299)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 300)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 301)             var root = project.Root;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 302)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 303)             if (root == null)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 304)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 305)                 return Problem("Cannot find root node in 'TaskTreeContext.Tasks'.", statusCode: 500); ;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 306)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 307)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 308)             List<List<Task>> treeLayers = new List<List<Task>>();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 309)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 310)             List<Task> thisLayer = new List<Task>();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 311)             List<Task> nextLayer = new List<Task>();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 312)             thisLayer.Add(root);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 313)             while (thisLayer.Count > 0)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 314)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 315)                 foreach (Task t in thisLayer)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 316)                 {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 317)                     if (t.Children != null)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 318)                     {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 319)                         nextLayer.AddRange(t.Children);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 320)                     }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 321)                 }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 322)                 treeLayers.Add(new List<Task>());
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 323)                 treeLayers.Last().AddRange(thisLayer);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 324)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 325)                 thisLayer.Clear();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 326)                 thisLayer.AddRange(nextLayer);
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 327)                 nextLayer.Clear();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 328)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 329)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 330)             for (int i = treeLayers.Count - 1; i >= 0; i--)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 331)             {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 332)                 var layer = treeLayers[i];
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 333)                 foreach (Task t in layer)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 334)                 {
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 335)                     t.UpdateProgress();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 336)                     _context.Entry(t).State = EntityState.Modified;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 337)                 }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 338)             }
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 339)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 340)             project.Progress = root.Progress;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 341)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 342)             _context.Entry(project).State = EntityState.Modified;
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 343)
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 344)             await _context.SaveChangesAsync();
+a8422821 (emaness-utk 2022-11-07 18:00:12 -0500 345)
+  
+### backend\TaskTree\Controllers\ProjectsController.cs ###
+  
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   1) using System;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   2) using System.Collections.Generic;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   3) using System.Linq;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   4) using System.Threading.Tasks;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   5) using AutoMapper;
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400   6) using Microsoft.AspNetCore.Authorization;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   7) using Microsoft.AspNetCore.Http;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400   8) using Microsoft.AspNetCore.Mvc;
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400   9) using Microsoft.CodeAnalysis;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  10) using Microsoft.EntityFrameworkCore;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  11) using Microsoft.Extensions.Options;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  12) using TaskTree.Models;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  13) using TaskTree.Models.Requests;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  14) using TaskTree.Models.Responses;
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  15) using Project = TaskTree.Models.Project;
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400  16) using Task = TaskTree.Models.Task;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  17)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  18) namespace TaskTree.Controllers
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  19) {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  20)     [Route("api/[controller]")]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  21)     [ApiController]
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400  22)     public class ProjectsController : TaskTreeControllerBase
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  23)     {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  24)         private readonly TaskTreeContext _context;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  25)         private readonly IMapper _mapper;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  26)         private readonly IOptions<AppConfig> _config;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  27)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  28)         public ProjectsController(TaskTreeContext context, IMapper mapper, IOptions<AppConfig> config)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  29)         {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  30)             _context = context;
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400  31)             _mapper = mapper;
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400  32)             _config = config;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  33)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  34)
+caac7d41 (emaness-utk   2022-10-24 13:45:55 -0400  35)         // GET: api/Projects/5
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400  36)         [Authorize]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  37)         [HttpGet]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  38)         public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetProjects()
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  39)         {
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  40)
+47b09133 (emaness-utk   2022-10-24 19:33:22 -0400  41)             var projects = _context.Projects.Where(project => project.UserId == CurrentUserId());
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  42)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  43)             List<ProjectResponse> projectResponses = new List<ProjectResponse>();
+47b09133 (emaness-utk   2022-10-24 19:33:22 -0400  44)             foreach (Project project in projects)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  45)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  46)                 projectResponses.Add(_mapper.Map<Project, ProjectResponse>(project));
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  47)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  48)             return Ok(projectResponses);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  49)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  50)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  51)         // GET: api/Projects/5
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400  52)         [Authorize]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  53)         [HttpGet("{id}")]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  54)         public async Task<ActionResult<ProjectResponse>> GetProject(long id)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  55)         {
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  56)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  57)             var project = await _context.Projects
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  58)                 .Include(project => project.Root)
+021ff9e4 (emaness-utk   2022-11-05 15:20:02 -0400  59)                 .Include("Root.Children.Children.Children.Children.Children.Children.Children.Children.Children")
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  60)                 .FirstOrDefaultAsync(project => project.Id == id);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  61)
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  63)             {
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  64)                 return Unauthorized();
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  65)             }
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  66)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  67)             if (project == null)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  68)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  69)                 return NotFound();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  70)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  71)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  72)             return _mapper.Map<Project, ProjectResponse>(project);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  73)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  74)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  75)         // PUT: api/Projects/5
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  76)         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400  77)         [Authorize]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  78)         [HttpPut("{id}")]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  79)         public async Task<IActionResult> PutProject(long id, UpdateProjectRequest updateProjectRequest)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  80)         {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  81)             if (_context.Projects == null)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  82)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  83)                 return Problem("Entity set 'TaskTreeContext.Projects'  is null.", statusCode: 500);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  84)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  85)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  86)             var project = await _context.Projects.FindAsync(id);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  87)
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  88)             if (CurrentUserIdDoesNotMatch(project.UserId))
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  89)             {
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  90)                 return Unauthorized();
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  91)             }
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  92)
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400  93)             if (project == null)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  94)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  95)                 return NotFound();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  96)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  97)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  98)             _mapper.Map(updateProjectRequest, project);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400  99)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 100)             _context.Entry(project).State = EntityState.Modified;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 101)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 102)             try
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 103)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 104)                 await _context.SaveChangesAsync();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 105)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 106)             catch (DbUpdateConcurrencyException)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 107)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 108)                 if (!ProjectExists(id))
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 109)                 {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 110)                     return NotFound();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 111)                 }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 112)                 else
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 113)                 {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 114)                     throw;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 115)                 }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 116)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 117)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 118)             return NoContent();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 119)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 120)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 121)         // POST: api/Projects
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 122)         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400 123)         [Authorize]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 124)         [HttpPost]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 125)         public async Task<ActionResult<ProjectResponse>> PostProject(CreateProjectRequest createProjectRequest)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 126)         {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 127)             if (_context.Projects == null)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 128)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 129)                 return Problem("Entity set 'TaskTreeContext.Projects'  is null.", statusCode: 500);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 130)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 131)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 132)             var project = _mapper.Map<Project>(createProjectRequest);
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 133)             project.UserId = CurrentUserId();
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 134)
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 135)             var rootTask = new Task()
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 136)             {
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 137)                 Name = project.Name,
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 138)                 ProjectId = project.Id,
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 140)             };
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 141)             project.Root = rootTask;
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 142)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 143)             _context.Projects.Add(project);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 144)             await _context.SaveChangesAsync();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 145)
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 146)             var projectResponse = _mapper.Map<Project, ProjectResponse>(project);
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 147)
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 148)             return CreatedAtAction(nameof(GetProject), new { id = project.Id }, projectResponse);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 149)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 150)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 151)         // DELETE: api/Projects/5
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400 152)         [Authorize]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 153)         [HttpDelete("{id}")]
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 154)         public async Task<IActionResult> DeleteProject(long id)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 155)         {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 156)             if (_context.Projects == null)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 157)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 158)                 return Problem("Entity set 'TaskTreeContext.Projects'  is null.", statusCode: 500);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 159)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 160)             var project = await _context.Projects.FindAsync(id);
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400 161)
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400 162)             if (CurrentUserIdDoesNotMatch(project.UserId))
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400 163)             {
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400 164)                 return Unauthorized();
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400 165)             }
+bebc5727 (emaness-utk   2022-10-24 20:03:29 -0400 166)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 167)             if (project == null)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 168)             {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 169)                 return NotFound();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 170)             }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 171)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 172)             _context.Projects.Remove(project);
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 173)             await _context.SaveChangesAsync();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 174)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 175)             return NoContent();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 176)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 177)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 178)         private bool ProjectExists(long id)
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 179)         {
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 180)             return (_context.Projects?.Any(e => e.Id == id)).GetValueOrDefault();
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 181)         }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 182)     }
+abebf001 (emaness-utk   2022-10-22 13:06:04 -0400 183) }
+  
+### backend\TaskTree\Models\MappingProfiles\MappingProfile.cs ###
+  
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 14)         CreateMapNoNull<Task, TaskResponse>()
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 15)             .ForMember(dest => dest.Children, input => input.MapFrom(src => src.Children));
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 16)         CreateMapNoNull<Project, ProjectResponse>()
+b9996983 (emaness-utk   2022-10-24 18:06:06 -0400 17)             .ForMember(dest => dest.Root, input => input.MapFrom(src => src.Root));
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400 18)         CreateMapNoNull<UpdateProjectRequest, Project>();
+3c2f7627 (emaness-utk   2022-10-24 13:43:06 -0400 19)         CreateMapNoNull<CreateProjectRequest, Project>();
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400 21)         CreateMap<UpdateTaskRequest, Task>();
+  
+### backend\TaskTree\Models\Task.cs ###
+  
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400   8)         private double _weight = 1.0;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400   9)         private double _progress = 0.0;
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  10)         private DateTime? _completedAt = null;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  11)
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  15)         public DateTime? CompletedAt
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  16)         {
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  17)             get => _completedAt;
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  18)             set
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  19)             {
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  20)                 _completedAt = value;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  21)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  22)                 if (value != null && Progress < 100.0)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  23)                 {
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  24)                     Progress = 100.0;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  25)                 }
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  26)                 if (value == null && (Children == null || Children.Count == 0))
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  27)                 {
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  28)                     Progress = 0.0;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  29)                 }
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  30)             }
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  31)         }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  32)         public double Weight
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  33)         {
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  34)             get => _weight;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  35)             set
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  36)             {
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  37)                 if (value <= 0.0) throw new ArgumentOutOfRangeException();
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  38)                 _weight = value;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  39)             }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  40)         }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  41)         public double Progress
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  42)         {
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  43)             get => _progress;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  44)             set
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  45)             {
+f6dd3474 (emaness-utk   2022-11-06 20:56:11 -0500  46)                 _progress = Math.Clamp(value, 0.0, 100.0);
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  47)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  48)                 if (value >= 100.0 && CompletedAt == null)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  49)                 {
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  50)                     CompletedAt = DateTime.Now;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  51)                 }
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  52)                 if (value < 100.0 && CompletedAt != null)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  53)                 {
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  54)                     CompletedAt = null;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  55)                 }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  56)             }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  57)         }
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  64)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  65)         /// <summary>
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  66)         /// Performs a breadth-first search on <see cref="Children"/> to find every <see cref="Task"/> descended from the caller.
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  67)         /// </summary>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  68)         /// <returns>A sorted <see cref="List{T}"/> containing every <see cref="Task"/> descended from the caller, from closest to furthest.</returns>
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  69)         public List<Task> Descendents()
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  70)         {
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  71)             if (Children == null) return new List<Task>();
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  72)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  73)             List<Task> unprocessedTasks = new List<Task>();
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  74)             List<Task> processedTasks = new List<Task>();
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  75)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  76)             unprocessedTasks.AddRange(Children);
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  77)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  78)             Task t;
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  79)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  80)             while (unprocessedTasks.Count != 0)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  81)             {
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  82)                 t = unprocessedTasks.ElementAt(0);
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  83)                 if (t.Children != null)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  84)                 {
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  85)                     unprocessedTasks.AddRange(t.Children);
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500  86)                 }
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  87)                 unprocessedTasks.RemoveAt(0);
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  88)                 processedTasks.Add(t);
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  89)             }
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  90)
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  91)             return processedTasks;
+85d6c886 (emaness-utk   2022-11-05 15:07:46 -0400  92)         }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  93)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  94)         /// <summary>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  95)         /// Recursively finds the ancestors of the caller through <see cref="Parent"/>.
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  96)         /// </summary>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  97)         /// <returns>A sorted <see cref="List{T}"/> containing every <see cref="Task"/> which is an ancestor to the caller, from closest to furthest.</returns>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  98)         public List<Task> Ancestors()
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400  99)         {
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 100)             List<Task> ancestors = new List<Task>();
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 101)             Task t = this;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 102)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 103)             while (t.Parent != null)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 104)             {
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 105)                 t = t.Parent;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 106)                 ancestors.Add(t);
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 107)             }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 108)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 109)             return ancestors;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 110)         }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 111)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 112)         /// <summary>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 113)         /// <para>Updates <see cref="Progress"/> based on the <see cref="Weight"/> and <see cref="Progress"/> of all items in <see cref="Children"/>.</para>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 114)         /// <para>If the caller has no children, <see cref="UpdateProgress"/> does nothing.</para>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 115)         /// </summary>
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 116)         public void UpdateProgress()
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 117)         {
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 118)             if (Children == null || Children.Count == 0) return;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 119)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 120)             double totalChildWeight = 0;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 121)             double totalChildWeightCompleted = 0;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 122)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 123)             foreach (Task t in Children)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 124)             {
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 125)                 totalChildWeight += t.Weight;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 126)                 if (t.Progress != 0)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 127)                 {
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 128)                     totalChildWeightCompleted += t.Weight * (t.Progress / 100);
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 129)                 }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 130)             }
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 131)
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 132)             Progress = (totalChildWeightCompleted / totalChildWeight) * 100;
+add2e688 (emaness-utk   2022-11-05 21:23:54 -0400 133)         }
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 134)
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 135)         public long? RootProjectId()
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 136)         {
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 137)             if (ProjectId != null)
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 138)             {
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 139)                 return ProjectId;
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 140)             }
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 141)
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 142)             var ancestors = Ancestors();
+e22c49f3 (emaness-utk   2022-11-07 19:28:36 -0500 143)             return (ancestors.Count == 0) ? null : ancestors.Last().ProjectId;
+a8422821 (emaness-utk   2022-11-07 18:00:12 -0500 144)         }
