@@ -23,7 +23,7 @@ Features:
 
 
 Technology:
-*	Typescript
+* Typescript
 *	C#
 * Mui
 * mySql database
