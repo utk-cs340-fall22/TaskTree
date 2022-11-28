@@ -1,0 +1,215 @@
+### frontend\src\pages\landing.tsx ###
+
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500   2) import { Typography, Grid, Paper, Avatar, Link } from '@mui/material';
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500   3) import { styled } from '@mui/material/styles';
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500   4) import backgroundTop from '../assets/background_top.png';
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500   5) import backgroundBot from '../assets/background_bot.png';
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500   6) import project1 from '../assets/project_example1.png';
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500   7) import logo from '../assets/logo.png';
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  10)   const elevation = 12;
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  11)
+f95b4882 (zmalkmus      2022-11-22 11:48:35 -0500  14)       <Typography
+f95b4882 (zmalkmus      2022-11-22 11:48:35 -0500  15)       // sx={{ backgroundColor: '#3087d1' }}
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  16)       >
+f95b4882 (zmalkmus      2022-11-22 11:48:35 -0500  17)         <img src={backgroundTop} style={{ opacity: 0.7, maxWidth: '100%' }}></img>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  18)         <Typography
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500  19)           sx={{
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  20)             padding: 5,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  21)             paddingBottom: 10,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  22)             paddingRight: 20,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  23)             paddingLeft: 20
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500  24)           }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  25)           <Avatar
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  26)             src={logo}
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  27)             sx={{
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  28)               width: 500,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  29)               height: 500,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  30)               marginLeft: 'auto',
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  31)               marginRight: 'auto',
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  32)               marginBottom: 5
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  33)             }}></Avatar>
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  34)
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  35)           <Grid container rowSpacing={5} columns={12} columnSpacing={{ xs: 6, sm: 10, md: 5 }}>
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  36)             <Grid item xs={12}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  37)               <Paper elevation={0}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  38)                 <Typography
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  39)                   variant="h1"
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  40)                   sx={{
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  41)                     padding: 2
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  42)                   }}>
+f281e98d (zmalkmus      2022-11-22 11:49:34 -0500  43)                   Welcome to TaskTree!
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  44)                 </Typography>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  45)               </Paper>
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500  46)             </Grid>
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500  47)
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  48)             <Grid item xs={4}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  49)               <Paper elevation={elevation} sx={{ minHeight: 500, padding: 4 }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  50)                 <Typography variant="h3">What is TaskTree?</Typography>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  51)                 <hr />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  52)                 <p style={{ fontSize: '30px' }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  53)                   TaskTree is a productivity manager that allows anyone to gain more control over
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  54)                   their everyday activities!
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  55)                 </p>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  56)                 <br />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  57)                 <Avatar
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  58)                   src={logo}
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  59)                   sx={{
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  60)                     width: 150,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  61)                     height: 150,
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  62)                     marginLeft: 'auto',
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  63)                     marginRight: 'auto',
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  64)                     marginBottom: 5
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  65)                   }}></Avatar>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  66)               </Paper>
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500  67)             </Grid>
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  68)             <Grid item xs={4}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  69)               <Paper elevation={elevation} sx={{ minHeight: 500, padding: 4 }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  70)                 <Typography variant="h3">How do I use it?</Typography>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  71)                 <hr />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  72)                 <p style={{ fontSize: '26px' }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  73)                   Catagorize your multiple projects and add subtasks that allow you to focus on what
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  74)                   is important. Simply click on a new project and add as many subtasks as you need.
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  75)                 </p>
+f95b4882 (zmalkmus      2022-11-22 11:48:35 -0500  76)                 <img style={{ width: '100%' }} src={project1}></img>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  77)               </Paper>
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  78)             </Grid>
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500  79)             <Grid item xs={4}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  80)               <Paper elevation={elevation} sx={{ minHeight: 500, padding: 4 }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  81)                 <Typography variant="h3">Getting Started</Typography>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  82)                 <hr />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  83)                 <p style={{ fontSize: '24px' }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  84)                   Use the links below or the navigation buttons at the top of the screen to start
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  85)                   your TaskTree journey.
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  86)                 </p>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  87)                 <br />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  88)                 <Typography sx={{ fontSize: 30 }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  89)                   Need an account?
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  90)                   <br />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  91)                   <Link
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  92)                     className="existingUser"
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  93)                     href="/SignUp"
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  94)                     variant="body2"
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  95)                     sx={{ fontSize: 24 }}>
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  96)                     Sign Up
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500  97)                   </Link>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  98)                 </Typography>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500  99)                 <br />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 100)                 <br />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 101)                 <Typography sx={{ fontSize: 30 }}>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 102)                   Already an existing user?
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 103)                   <br />
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 104)                   <Link
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 105)                     className="existingUser"
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 106)                     href="/Login"
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500 107)                     variant="body2"
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 108)                     sx={{ fontSize: 24 }}>
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500 109)                     Login
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500 110)                   </Link>
+1ea85ed8 (zmalkmus      2022-11-21 17:49:14 -0500 111)                 </Typography>
+72407f77 (zmalkmus      2022-11-22 11:47:20 -0500 112)               </Paper>
+ae2235b5 (zmalkmus      2022-11-20 22:27:53 -0500 113)             </Grid>
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500 114)           </Grid>
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500 115)         </Typography>
+f95b4882 (zmalkmus      2022-11-22 11:48:35 -0500 116)         <img src={backgroundBot} style={{ opacity: 0.7, maxWidth: '100%' }}></img>
+cde57823 (zmalkmus      2022-11-20 21:33:47 -0500 117)       </Typography>
+
+
+### frontend\src\pages\login\index.ts AND frontend\src\pages\login\LoginDesktop.tsx (merged) ###
+
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500   1) import React, { FormEvent, useState } from 'react';
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500   2) import { TextField, Button, Link, Typography, Box, Alert } from '@mui/material';
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500   3) import AuthService from '../services/AuthService';
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500   4) import { useAppDispatch, useAppSelector } from '../store/hooks';
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500   5) import { setCurrentUser } from '../store/user';
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500   7) import UserService from '../services/UserService';
+2e092266 frontend/src/components/Login/LoginDesktop.tsx (zmalkmus      2022-10-06 17:47:07 -0400   8)
+5c5a82b8 frontend/src/components/Login/LoginDesktop.tsx (zmalkmus      2022-10-06 13:35:15 -0400   9) export default function LoginDesktop() {
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  12)   const [errorText, setErrorText] = useState('');
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  16)   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  17)     e.preventDefault();
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  18)
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  19)     if (!password || !username) return;
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  20)
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  21)     try {
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  22)       const token = await UserService.authenticateUser(username, password);
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  23)       AuthService.storeJWT(token);
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  24)       const user = AuthService.decodeJWT(token);
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  25)       dispatch(setCurrentUser(user));
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  26)       navigate('/');
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  27)     } catch (err) {
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  28)       setErrorText('Incorrect username or password. Please try again.');
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  29)     }
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  33)     <Typography sx={{ marginTop: 6 }}>
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  34)       <Typography component="h1" variant="h5">
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  35)         Account Log In
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  36)       </Typography>
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  37)       <br />
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  38)       <Box
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  39)         component="form"
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  40)         noValidate
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  41)         onSubmit={(e) => handleSubmit(e)}
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  42)         sx={{ width: 800, marginLeft: 'auto', marginRight: 'auto' }}>
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  43)         <TextField
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  44)           id="userIn"
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  45)           onChange={(e) => setUsername(e.target.value)}
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  46)           variant="outlined"
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  48)           autoFocus
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  49)           required
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  50)           sx={{
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  51)             width: 500,
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  52)             height: 15,
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  53)             marginBottom: 5
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  54)           }}
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  55)         />
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  56)         <br />
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  57)         <br />
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  59)         <TextField
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  60)           id="passIn"
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  61)           onChange={(e) => setPassword(e.target.value)}
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  62)           variant="outlined"
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  63)           type="password"
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  65)           autoFocus
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  66)           required
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  67)           sx={{
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  68)             width: 500,
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  69)             height: 15,
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  70)             marginBottom: 5
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  71)           }}
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  72)         />
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  73)         <br />
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  74)         <br />
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  75)
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  76)         <Button
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  77)           id="loginBtn"
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  78)           variant="contained"
+1a9a5d12 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:58:17 -0500  79)           type="submit"
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  80)           sx={{
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  81)             width: 500,
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  82)             color: 'white'
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  83)           }}>
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  84)           Log In
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  85)         </Button>
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  86)         <br />
+14ae925b frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 10:47:03 -0500  87)         <br />
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  88)
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  89)         <Typography>
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  90)           Don't have an account? &nbsp;
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  91)           <Link className="existingUser" href="/SignUp" variant="body2">
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  92)             Sign Up
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  93)           </Link>
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500  94)         </Typography>
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  95)         {errorText && errorText.length > 0 && (
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  96)           <Box sx={{ width: '100%', textAlign: 'center' }}>
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  97)             <br />
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  98)             <Alert sx={{ width: 475, marginLeft: 'auto', marginRight: 'auto' }} severity="error">
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500  99)               {errorText}
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500 100)             </Alert>
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500 101)           </Box>
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500 102)         )}
+ba2288d3 frontend/src/pages/login.tsx                   (zmalkmus      2022-11-22 15:16:04 -0500 103)       </Box>
+18a3c661 frontend/src/pages/login/LoginDesktop.tsx      (zmalkmus      2022-11-21 18:24:36 -0500 104)     </Typography>
+2e092266 frontend/src/components/Login/LoginDesktop.tsx (zmalkmus      2022-10-06 17:47:07 -0400 106) }
+
+### frontend\src\assets\background_bot.png ###
+### frontend\src\assets\background_top.png ###
+### frontend\src\assets\project_example1.png ###
