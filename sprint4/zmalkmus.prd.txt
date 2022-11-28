@@ -24,7 +24,7 @@ Features:
 
 Technology:
 * Typescript
-*	C#
+* C#
 * Mui
 * mySql database
 * docker (not essential but nice for dev)
