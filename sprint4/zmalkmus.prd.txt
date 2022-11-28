@@ -11,21 +11,17 @@ Product Overview:
   will overall have a landing, log in, sign up, home, and projects page to be navigated by the end user.
 
 Features:
-* As a customer I want to define a project and list of tasks to manage my productivity.
-* As a customer I want to define a weight for each task so that I am able to specify and view the importance each task later.
-* As a customer I want to visually see how much of my project is completed as I complete tasks so I can be motivated to finish my goals.
-* As a customer I want to keep track of multiple projects and swap between them seamlessly so I can improve productivity and get what I need to do finished.
-* As a customer I want to create an account so that I can keep track of my progress and access it from anywhere.
-* As a customer I want to have a landing page so I can get an overview of what TaskTree is about and learn how to get started.
-* As a developer I want to have form validation so the user doesn't accidentally create an account or task that is not correct and will cause issues.
-* As a customer I want to have loading indicators so that I know my actions are being completed.
-* As a customer I want to be able to edit projects and tasks so I can update the information being stored in my project.
-
+  As a customer I want to define a project and list of tasks to manage my productivity.
+  As a customer I want to define a weight for each task so that I am able to specify and view the importance each task later.
+  As a customer I want to visually see how much of my project is completed as I complete tasks so I can be motivated to finish my goals.
+  As a customer I want to keep track of multiple projects and swap between them seamlessly so I can improve productivity and get what I need to do finished.
+  As a customer I want to create an account so that I can keep track of my progress and access it from anywhere.
+  As a customer I want to have a landing page so I can get an overview of what TaskTree is about and learn how to get started.
+  As a developer I want to have form validation so the user doesn't accidentally create an account or task that is not correct and will cause issues.
+  As a customer I want to have loading indicators so that I know my actions are being completed.
+  As a customer I want to be able to edit projects and tasks so I can update the information being stored in my project.
 
 Technology:
-* Typescript
-* C#
-* Mui
-* mySql database
-* docker (not essential but nice for dev)
-* npm
+  TaskTree will use Typescript for the frontend, C# for the backend, and mySql for the database. For development, using docker will make running the backend and database
+  much easier. Npm will be used to import packages and run the frontend. The main library we will be using is mui which will allow us to spend less time on the css and
+  more time on the features while still being visually satisfying.
