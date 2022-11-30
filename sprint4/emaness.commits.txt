@@ -1,0 +1,71 @@
+### frontend/src/components/ProjectItem/index.tsx ###
+
+46427f9c (emaness-utk    2022-11-28 17:48:17 -0500  24) import { showSnackbar } from '../../store/snackbar';
+a9968c22 (emaness-utk    2022-11-28 20:35:45 -0500 135)           props.onEditSubmit(formData);
+46427f9c (emaness-utk    2022-11-28 17:48:17 -0500 136)           if (formData.name == "") {
+46427f9c (emaness-utk    2022-11-28 17:48:17 -0500 137)             return;
+46427f9c (emaness-utk    2022-11-28 17:48:17 -0500 138)           }
+
+### frontend/src/components/ProjectList/index.tsx ###
+
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500 19)     if (formData.name == "") {
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500 20)       data.dispatch(showSnackbar({ message: 'Name is required', severity: 'error' }));
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500 21)       return;
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500 22)     }
+
+### frontend/src/components/TaskItem/index.tsx ###
+
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 193)             if (formData.name == "") {
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 194)               dispatch(showSnackbar({ message: 'Name is required', severity: 'error' }));
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 195)               return;
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 196)             }
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 197)             else if (formData.weight <= 0) {
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 198)               dispatch(showSnackbar({ message: 'Weight must be positive', severity: 'error' }));
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 199)               return;
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 200)             }
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 216)             if (formData.name == "") {
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 217)               dispatch(showSnackbar({ message: 'Name is required', severity: 'error' }));
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 218)               return;
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 219)             }
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 220)             else if (formData.weight <= 0) {
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 221)               dispatch(showSnackbar({ message: 'Weight must be positive', severity: 'error' }));
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 222)               return;
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 223)             }
+80292e25 (emaness-utk    2022-11-28 17:58:19 -0500 231)       </div>
+
+### frontend/src/pages/projects.tsx ###
+
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500  33)     if (data.name == "") {
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500  34)       dispatch(showSnackbar({ message: 'Name is required', severity: 'error' }));
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500  35)       return;
+46427f9c (emaness-utk   2022-11-28 17:48:17 -0500  36)     }
+
+### frontend/src/pages/login.tsx
+
+05aa2f08 (emaness-utk   2022-11-28 13:32:12 -0500   2) import { TextField, Button, Link, Typography, Box, Alert, CircularProgress, Hidden } from '@mui/material';
+05aa2f08 (emaness-utk   2022-11-28 13:32:12 -0500   8) import { Visibility } from '@mui/icons-material';
+1fde61ec (emaness-utk   2022-11-28 20:45:14 -0500  14)   const [loading, setLoading] = useState(false);
+8f7980c7 (emaness-utk   2022-11-28 18:00:59 -0500  21)     if (!password || !username) {
+8f7980c7 (emaness-utk   2022-11-28 18:00:59 -0500  22)       setErrorText('All fields are required.');
+8f7980c7 (emaness-utk   2022-11-28 18:00:59 -0500  23)       return;
+8f7980c7 (emaness-utk   2022-11-28 18:00:59 -0500  24)     }
+1fde61ec (emaness-utk   2022-11-28 20:45:14 -0500  27)       setLoading(true);
+1fde61ec (emaness-utk   2022-11-28 20:45:14 -0500  34)       setLoading(false);
+1fde61ec (emaness-utk   2022-11-28 20:45:14 -0500  37)     setLoading(false);
+1fde61ec (emaness-utk   2022-11-28 20:45:14 -0500  92)           {loading ? <CircularProgress size={24} color="inherit" /> : 'Log Up'}
+
+### frontend/src/pages/signup.tsx ###
+
+05aa2f08 (emaness-utk            2022-11-28 13:32:12 -0500   1) import { Alert, Box, Button, CircularProgress, Grid, Link, TextField, Typography } from '@mui/material';
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500  23)   const [loading, setLoading] = useState(false);
+05aa2f08 (emaness-utk            2022-11-28 13:32:12 -0500  26)   const signupProgress = document.getElementById("signupProgress");
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500  40)     setLoading(true);
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500  53)         setLoading(false);
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500  63)       setLoading(false);
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500  66)     setLoading(false);
+05aa2f08 (emaness-utk            2022-11-28 13:32:12 -0500 182)                       ? 'Password must be at least 8 characters'
+05aa2f08 (emaness-utk            2022-11-28 13:32:12 -0500 183)                       : ''
+05aa2f08 (emaness-utk            2022-11-28 13:32:12 -0500 205)                       ? 'Passwords do not match'
+05aa2f08 (emaness-utk            2022-11-28 13:32:12 -0500 206)                       : ''
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500 212)           <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+1fde61ec (emaness-utk            2022-11-28 20:45:14 -0500 213)             {loading ? <CircularProgress size={24} color="inherit" /> : 'Sign Up'}
