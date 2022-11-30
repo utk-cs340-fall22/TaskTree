@@ -1,0 +1,447 @@
+### frontend/src/App.tsx ###
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  15) import { Alert, Snackbar } from '@mui/material';
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  16) import { SnackbarState } from './store/types';
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  17) import { clearSnackbar } from './store/snackbar';
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  21)   const snackbar = useAppSelector((state) => state.snackbar);
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  25)   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  26)     if (reason === 'clickaway') {
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  27)       return;
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  28)     }
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  29)
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  30)     dispatch(clearSnackbar());
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  31)   };
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  32)
+811f8f31 frontend/src/App.tsx (Zavier Miller          2022-11-11 16:11:30 -0500  81)       <Snackbar open={snackbar.open} autoHideDuration={6000} onClose={handleClose}>
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  82)         <Alert onClose={handleClose} severity={snackbar.severity} sx={{ width: '100%' }}>
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  83)           {snackbar.message}
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  84)         </Alert>
+a562d43e frontend/src/App.tsx (Zavier Miller          2022-11-09 10:27:53 -0500  85)       </Snackbar>
+
+
+### frontend/src/components/ProjectList/index.tsx ###
+2a2f6628 frontend/src/components/ProjectList/index.tsx (Zavier Miller 2022-11-11 16:12:25 -0500  4) import { useAppDispatch } from '../../store/hooks';
+2a2f6628 frontend/src/components/ProjectList/index.tsx (Zavier Miller 2022-11-11 16:12:25 -0500  5) import { showSnackbar } from '../../store/snackbar';
+2a2f6628 frontend/src/components/ProjectList/index.tsx (Zavier Miller 2022-11-11 16:12:25 -0500 35)     data.dispatch(showSnackbar({ message: 'Project deleted successfully', severity: 'success' }));
+2a2f6628 frontend/src/components/ProjectList/index.tsx (Zavier Miller 2022-11-11 16:12:25 -0500 48)   const dispatch = useAppDispatch();
+2a2f6628 frontend/src/components/ProjectList/index.tsx (Zavier Miller 2022-11-11 16:12:25 -0500 56)       itemData={{ projects: props.projects, setProjects: props.setProjects, dispatch }}>
+
+
+### frontend/src/components/TaskItem/index.tsx ###
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  17) import { useAppDispatch } from '../../store/hooks';
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  18) import { showSnackbar } from '../../store/snackbar';
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  25)   reloadProject: () => void;
+7a26926a frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-08 07:14:29 -0500  57)     reloadProject: () => void;
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  58)     dispatch: any;
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  72)         <>
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  73)           <IconButton
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  74)             onClick={(e) => {
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  75)               e.stopPropagation();
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  76)               e.preventDefault();
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  77)               props.setEditDialogOpen(true);
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  78)             }}>
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  79)             <EditIcon />
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  80)           </IconButton>
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  81)           <IconButton
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  82)             onClick={(e) => {
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  83)               e.stopPropagation();
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  84)               e.preventDefault();
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  85)               if (confirm(`Are you sure you want to delete task "${props.task.name}"?`)) {
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  86)                 TaskService.deleteTask(props.task.id!).then(() => {
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  87)                   props.reloadProject();
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  88)                   props.dispatch(
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  89)                     showSnackbar({ message: 'Task deleted successfully', severity: 'success' })
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  90)                   );
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  91)                 });
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  92)               }
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  93)             }}>
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  94)             <DeleteIcon />
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  95)           </IconButton>
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500  96)         </>
+2e3ee2af frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-11 16:13:03 -0500 103)   const dispatch = useAppDispatch();
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 107)   const [showIcons, setShowIcons] = React.useState(false);
+c489066d frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-15 08:58:45 -0500 110)     <>
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 112)         <ListItem
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 113)           button={!!props.onClick as false}
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 114)           onClick={props.onClick}
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 115)           onMouseEnter={() => setShowIcons(true)}
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 116)           onMouseLeave={() => setShowIcons(false)}>
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 125)                       confirm(
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 126)                         `Mark task "${props.task.name}" and all of its sub-tasks as complete?`
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 127)                       )
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 145)                     <CheckCircleOutlineIcon
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 146)                       color={props.task.completedAt ? 'success' : 'primary'}
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 147)                     />
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 162)               {(props.task.completedAt || !showIcons) && (
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 163)                 <Grid xs={2} container justifyContent="center"></Grid>
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 164)               )}
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 165)               {!props.task.completedAt && showIcons && (
+c489066d frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-15 08:58:45 -0500 174)             </Grid>
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 179)           <Typography
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 180)             sx={{
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 181)               textDecoration: props.task.completedAt ? 'line-through' : '',
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 182)               color: props.task.completedAt ? 'gray' : ''
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 183)             }}
+4901fca7 frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-27 19:07:12 -0500 184)             variant="subtitle2">
+c489066d frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-15 08:58:45 -0500 187)         </ListItemText>
+c489066d frontend/src/components/TaskItem/index.tsx (Zavier Miller  2022-11-15 08:58:45 -0500 232)     </>
+
+
+### frontend/src/pages/home.tsx ###
+8206af21 frontend/src/pages/home.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 85)     <>
+8206af21 frontend/src/pages/home.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 88)     </>
+
+
+### frontend/src/pages/landing.tsx ###
+8206af21 frontend/src/pages/landing.tsx (Zavier Miller 2022-11-11 13:55:26 -0500  13)     <>
+8206af21 frontend/src/pages/landing.tsx (Zavier Miller 2022-11-11 13:55:26 -0500 118)     </>
+
+
+### frontend/src/pages/project.tsx ###
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500  1) import React from 'react';
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500  2) import ProjectHeader from '../components/ProjectHeader';
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500  3) import Project, { BlankProject } from '../types/Project';
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500  4) import ExpandableTaskList from '../components/ExpandableTaskList';
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500  6) import ProjectService from '../services/ProjectService';
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500  7) import TaskListItem from '../components/TaskItem';
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 12) export default function ProjectPage() {
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 14)   const params = useParams();
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 15)   const [project, setProject] = React.useState<Project>(BlankProject);
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 18)
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 20)     ProjectService.getProject(parseInt(params.projectId!)).then((project) => {
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 21)       setProject(project);
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 26)     });
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 27)   };
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 28)
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 29)   React.useEffect(() => {
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 32)   }, []);
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 34)   const TaskListTag =
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 35)     project.root!.children && project.root!.children.length ? ExpandableTaskList : TaskListItem;
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 36)
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 37)   return (
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 38)     <>
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 46)       <ProjectHeader project={project} />
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 57)     </>
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 58)   );
+8206af21 frontend/src/pages/project.tsx (Zavier Miller  2022-11-11 13:55:26 -0500 59) }
+
+
+### frontend/src/pages/signup.tsx ###
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   2) import React, { FormEvent, useState } from 'react';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   3) import AuthService from '../services/AuthService';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   4) import UserService from '../services/UserService';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   5) import User from '../types/User';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   6) import { useNavigate } from 'react-router-dom';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   7) import { useAppDispatch } from '../store/hooks';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500   8) import { setCurrentUser } from '../store/user';
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  10) interface stateInterface {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  11)   firstName: string;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  12)   lastName: string;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  13)   username: string;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  14)   password: string;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  15)   confirmPassword: string;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  16)   submitFlag: boolean;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  17)   passwordLength: number;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  18)   errorText: string;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  21) export default function SignUpPage() {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  22)   const [values, setValues] = useState<stateInterface>({} as stateInterface);
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  24)   const navigate = useNavigate();
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  25)   const dispatch = useAppDispatch();
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  27)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  28)   /* Generic way of using useStates for state values so that one onChange can be used for
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  29)    * all values in the stateInterface */
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  30)   const onChange = (e: React.SyntheticEvent) => {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  31)     const target = e.target as HTMLInputElement;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  32)     setValues((values) => ({ ...values, [target.name]: target.value }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  33)     if (target.name === 'password')
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  34)       setValues((values) => ({ ...values, ['passwordLength']: values.password.length }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  35)   };
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  36)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  37)   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  38)     e.preventDefault();
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  39)     setValues((values) => ({ ...values, ['submitFlag']: true }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  41)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  42)     if (validateFields()) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  43)       const user: User = {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  44)         firstName: values.firstName,
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  45)         lastName: values.lastName || undefined,
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  46)         username: values.username,
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  47)         password: values.password
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  48)       };
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  49)       // Creates the user
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  50)       const res = await UserService.createUser(user);
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  51)       if (res.status != 201) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  52)         displayError(res.data);
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  54)         return;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  55)       }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  56)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  57)       // Authenticates the user and redirects to homepage
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  58)       const jwt: string = await UserService.authenticateUser(values.username, values.password);
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  59)       AuthService.storeJWT(jwt);
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  60)       dispatch(setCurrentUser(user));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  61)       navigate('/');
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  62)     } else {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  64)       return;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  65)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  67)   };
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  68)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  69)   const displayError = (errorMessage: string) => {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  70)     setValues((values) => ({ ...values, ['errorText']: errorMessage }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  71)   };
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  72)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  73)   const validateFields = () => {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  74)     let isValid = true;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  75)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  76)     // makes sure required fields are populated
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  77)     if (!values.firstName) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  78)       setValues((values) => ({ ...values, ['firstName']: '' }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  79)       isValid = false;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  80)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  81)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  82)     if (!values.username) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  83)       setValues((values) => ({ ...values, ['username']: '' }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  84)       isValid = false;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  85)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  86)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  87)     if (!values.password) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  88)       setValues((values) => ({ ...values, ['password']: '' }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  89)       isValid = false;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  90)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  91)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  92)     if (!values.confirmPassword) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  93)       setValues((values) => ({ ...values, ['confirmPassword']: '' }));
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  94)       isValid = false;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  95)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  96)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  97)     // makes sure password is 8+ characters
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  98)     if (values.passwordLength < 8) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500  99)       isValid = false;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 100)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 101)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 102)     // makes sure passwords match
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 103)     if (values.password !== values.confirmPassword) {
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 104)       isValid = false;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 105)     }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 106)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 107)     return isValid;
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 108)   };
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 109)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 110)   return (
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 111)     <>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 112)       <Box
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 113)         sx={{
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 114)           marginTop: 8,
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 115)           display: 'flex',
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 116)           flexDirection: 'column',
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 117)           alignItems: 'center'
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 118)         }}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 119)         <Typography component="h1" variant="h5">
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 120)           Sign up
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 121)         </Typography>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 122)         {values.errorText && values.errorText.length > 0 && (
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 123)           <Box>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 124)             <br />
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 125)             <Alert severity="error">{values.errorText}</Alert>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 126)           </Box>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 127)         )}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 128)         <Box component="form" noValidate onSubmit={(e) => handleSubmit(e)} sx={{ mt: 3 }}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 129)           <Grid container spacing={2}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 130)             <Grid item xs={12} sm={6}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 131)               <TextField
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 132)                 autoComplete="given-name"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 133)                 name="firstName"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 134)                 fullWidth
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 135)                 id="firstName"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 136)                 label="First Name"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 137)                 autoFocus
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 138)                 required
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 139)                 onChange={onChange}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 140)                 error={values.firstName === ''}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 141)                 helperText={values.firstName === '' ? 'Required' : ''}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 142)                 value={values.firstName}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 143)               />
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 144)             </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 145)             <Grid item xs={12} sm={6}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 146)               <TextField
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 147)                 fullWidth
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 148)                 id="lastName"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 149)                 label="Last Name"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 150)                 name="lastName"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 151)                 autoComplete="family-name"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 152)                 onChange={onChange}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 153)               />
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 154)             </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 155)             <Grid item xs={12}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 156)               <TextField
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 157)                 required
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 158)                 fullWidth
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 159)                 id="username"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 160)                 label="Username"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 161)                 name="username"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 162)                 onChange={onChange}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 163)                 error={values.username === ''}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 164)                 helperText={values.username === '' ? 'Required' : ''}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 165)                 value={values.username}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 166)               />
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 167)             </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 168)             <Grid item xs={12}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 169)               <TextField
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 170)                 required
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 171)                 fullWidth
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 172)                 name="password"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 173)                 label="Password"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 174)                 type="password"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 175)                 id="password"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 176)                 onChange={onChange}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 177)                 error={values.password === '' || (values.passwordLength < 8 && values.submitFlag)}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 178)                 helperText={
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 179)                   values.password === ''
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 180)                     ? 'Required'
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 181)                     : values.passwordLength < 8 && values.submitFlag
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 184)                 }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 185)                 value={values.password}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 186)               />
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 187)             </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 188)             <Grid item xs={12}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 189)               <TextField
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 190)                 required
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 191)                 fullWidth
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 192)                 name="confirmPassword"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 193)                 label="Confirm Password"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 194)                 type="password"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 195)                 id="confirmPassword"
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 196)                 onChange={onChange}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 197)                 error={
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 198)                   values.confirmPassword === '' ||
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 199)                   (values.password !== values.confirmPassword && values.submitFlag)
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 200)                 }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 201)                 helperText={
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 202)                   values.confirmPassword === ''
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 203)                     ? 'Required'
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 204)                     : values.password !== values.confirmPassword && values.submitFlag
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 207)                 }
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 208)                 value={values.confirmPassword}
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 209)               />
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 210)             </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 211)           </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 214)           </Button>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 215)           <Grid container justifyContent="center">
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 216)             <Grid
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 217)               item
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 218)               sx={{
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 219)                 display: 'flex',
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 220)                 flexDirection: 'row'
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 221)               }}>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 222)               <Typography variant="body2">Already have an account? &nbsp;</Typography>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 223)               <Link className="existingUser" href="/login" variant="body2">
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 224)                 Log in
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 225)               </Link>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 226)             </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 227)           </Grid>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 228)         </Box>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 229)       </Box>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 230)     </>
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 231)   );
+8206af21 frontend/src/pages/signup.tsx (Zavier Miller          2022-11-11 13:55:26 -0500 232) }
+
+
+### frontend/src/pages/projects.tsx ###
+8206af21 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 13:55:26 -0500   3) import ProjectService from '../services/ProjectService';
+8206af21 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 13:55:26 -0500   5) import CreateProjectDialog from '../components/CreateProjectDialog';
+8206af21 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 13:55:26 -0500   6) import ProjectList from '../components/ProjectList';
+e73fe413 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 16:11:58 -0500   7) import { showSnackbar } from '../store/snackbar';
+e73fe413 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 16:11:58 -0500   8) import { useAppDispatch } from '../store/hooks';
+8206af21 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 13:55:26 -0500  10) export default function ProjectsPage() {
+e73fe413 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 16:11:58 -0500  11)   const dispatch = useAppDispatch();
+fd84030d frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-21 22:05:30 -0500  14)   const [initialLoading, setInitialLoading] = React.useState(true);
+fd84030d frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-21 22:05:30 -0500  18)       setInitialLoading(true);
+fd84030d frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-21 22:05:30 -0500  20)       setInitialLoading(false);
+e73fe413 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 16:11:58 -0500  40)     dispatch(showSnackbar({ message: 'Project created successfully', severity: 'success' }));
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  44)     <>
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  49)           flexDirection: 'column',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  51)           width: '80%',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  52)           marginLeft: 'auto',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  53)           marginRight: 'auto'
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  55)         <Box
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  57)             marginTop: 8,
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  58)             display: 'flex',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  59)             flexDirection: 'row',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  60)             alignItems: 'center',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  61)             alignContent: 'space-between',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  62)             width: '100%',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  63)             padding: '10px',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  64)             paddingBottom: '20px',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  65)             borderBottom: '1px solid darkgrey',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  66)             marginBottom: '10px'
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  68)           <Typography
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  69)             component="h4"
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  70)             variant="h4"
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  71)             sx={{
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  72)               justifySelf: 'left',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  73)               marginLeft: '30px'
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  74)             }}>
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  75)             Projects
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  76)           </Typography>
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  78)           <Button
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  79)             variant="outlined"
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  80)             onClick={handleClickOpen}
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  81)             sx={{
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  82)               justifySelf: 'right',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  83)               marginLeft: 'auto',
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  84)               marginRight: '30px'
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  85)             }}>
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  86)             Create new project
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  87)           </Button>
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500  88)         </Box>
+fd84030d frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-21 22:05:30 -0500  90)         {!initialLoading ? (
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500 101)       </Box>
+6cdc46f5 frontend/src/pages/projects.tsx                   (Zavier Miller 2022-11-11 15:46:44 -0500 103)     </>
+
+
+### frontend/src/store/index.ts ###
+a562d43e frontend/src/store/index.ts (Zavier Miller 2022-11-09 10:27:53 -0500  3) import snackbarReducer from './snackbar';
+a562d43e frontend/src/store/index.ts (Zavier Miller 2022-11-09 10:27:53 -0500  4) import { SnackbarState, UserState } from './types';
+a562d43e frontend/src/store/index.ts (Zavier Miller 2022-11-09 10:27:53 -0500  9)   snackbar: SnackbarState;
+a562d43e frontend/src/store/index.ts (Zavier Miller 2022-11-09 10:27:53 -0500 15)   return { user: { current: user, isLoggedIn: !!user }, snackbar: { message: '' } };
+a562d43e frontend/src/store/index.ts (Zavier Miller 2022-11-09 10:27:53 -0500 20)     user: userReducer,
+a562d43e frontend/src/store/index.ts (Zavier Miller 2022-11-09 10:27:53 -0500 21)     snackbar: snackbarReducer
+
+
+### frontend/src/store/snackbar.ts ###
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  1) import { createSlice, current, PayloadAction } from '@reduxjs/toolkit';
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  2) import { SnackbarState } from './types';
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  3)
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  4) const initialState: SnackbarState = {
+811f8f31 frontend/src/store/snackbar.ts (Zavier Miller 2022-11-11 16:11:30 -0500  5)   open: false,
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  6)   message: ''
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  7) };
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  8)
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500  9) export const snackbarSlice = createSlice({
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 10)   name: 'snackbar',
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 11)   initialState,
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 12)   reducers: {
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 13)     showSnackbar: (state, action: PayloadAction<SnackbarState>) => {
+811f8f31 frontend/src/store/snackbar.ts (Zavier Miller 2022-11-11 16:11:30 -0500 14)       state.open = true;
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 15)       state.message = action.payload.message;
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 16)       state.severity = action.payload.severity;
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 17)     },
+811f8f31 frontend/src/store/snackbar.ts (Zavier Miller 2022-11-11 16:11:30 -0500 18)     clearSnackbar: (state) => {
+811f8f31 frontend/src/store/snackbar.ts (Zavier Miller 2022-11-11 16:11:30 -0500 19)       state.open = false;
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 20)     }
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 21)   }
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 22) });
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 23)
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 24) export const { showSnackbar, clearSnackbar } = snackbarSlice.actions;
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 25)
+a562d43e frontend/src/store/snackbar.ts (Zavier Miller 2022-11-09 10:27:53 -0500 26) export default snackbarSlice.reducer;
+
+
+### frontend/src/store/types.ts ###
+a562d43e frontend/src/store/types.ts (Zavier Miller 2022-11-09 10:27:53 -0500  7)
+a562d43e frontend/src/store/types.ts (Zavier Miller 2022-11-09 10:27:53 -0500  8) export interface SnackbarState {
+811f8f31 frontend/src/store/types.ts (Zavier Miller 2022-11-11 16:11:30 -0500  9)   open?: boolean;
+a562d43e frontend/src/store/types.ts (Zavier Miller 2022-11-09 10:27:53 -0500 10)   message: string;
+a562d43e frontend/src/store/types.ts (Zavier Miller 2022-11-09 10:27:53 -0500 11)   severity?: 'success' | 'info' | 'warning' | 'error';
+a562d43e frontend/src/store/types.ts (Zavier Miller 2022-11-09 10:27:53 -0500 12) }
+
+
+
