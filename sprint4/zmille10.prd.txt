@@ -1,0 +1,26 @@
+Background:
+  When managing large projects with tasks that need to be broken down into their component parts, it can be difficult to maintain and keep track of these various relationships.
+  This app will be developed to help reduce the amount of time spent on managing task hierarchies, allowing for projects to be completed quickly and efficiently.
+
+Product Overview:
+  The website will allow a user to create an account and add a new project to get started. They will be given the option to edit the name and description of the
+  project, and add tasks corresponding to the project according to their needs. When the user completes an item, they can mark is as complete by pressing the checkmark
+  and all subtasks will be marked as complete as well. When all subtasks are completed, or the project itself is marked as complete, the project will visually update
+  as completed for the user. The site will also feature the most recent projects being worked on, as well as another tab for an extended list of projects. The site
+  will overall have a landing, log in, sign up, home, and projects page to be navigated by the end user.
+
+Features:
+  As a user, I want to be able to create and update a project so that I can manage updating requirements.
+  As a user, I want to be able to manage many projects so that I can use the same platform for all of my work.
+  As a user, I want to create tasks in a tree-like structure to show dependencies and hierarchies of tasks so that I can increase my productivity.
+  As a user, I want to be able to assign a weight/complexity to tasks so that I can show which tasks are most impactful to the completion of a project.
+  As a user, I want to be able to view my progress on each task as well as the overall project completion so that I know how much work I have left to finish a project.
+  As a user, I want to be able to view my most recently worked on incomplete projects on the home page so that I can quickly navigate to projects I am currently working on.
+  As a potential user, I want to easily create an account so that I can get started on my work as quickly as possible.
+  As a potential user, I want to see a landing page so that I can gain information about the project without needing to sign up.
+
+Technologies:
+  For the frontend, we will use React for TypeScript. To manage our TypeScript packages, we will use the Node Package Manager (NPM). We will also use the MUI component library so that we can spend less time worrying about how the app is styled and focus more on core functionality.
+  For the backend, we will use ASP.NET Core for C# and EntityFramework to abstract away raw SQL calls.
+  For our database, we will use MySQL.
+  To create a consistent development environment across machines, we plan to use Docker.
