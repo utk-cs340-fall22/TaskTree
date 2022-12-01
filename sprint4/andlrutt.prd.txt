@@ -31,6 +31,8 @@ Like projects, all user-defined values for a task can be edited.
 6. **Edit Task.** As a user, I want to edit tasks within my projects so that I can keep my project tree up-to-date with my current plans and goals.
 7. **Weighted Tasks.** As a user, I want to assign weight values to tasks in my projects so that I can more accurately keep track of my progress when my projects consist of tasks with great variation in the effort required to complete them.
 8. **Progress Tracking.** As a user, I want my projects and tasks to keep track of and display their completion percentages so that I can easily see how much work I have done and how much work I still need to do to complete my projects.
+9. **Authorized Routes.** As a developer, I want to make sure my website is secure. To do this, I need to make sure only authorized users can call the backend api endpoints.
+10. **Landing Page.** As an unregistered user or a user, I want to know what TaskTree is, how I use it, and how to get started. To get this information, I need a descriptive landing page that supplies this information
 
 ## Technologies to be used
 The Task Tree backend will use C# with the ASP.NET Core 6.0 framework to conveniently handle entities with objects.  
