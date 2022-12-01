@@ -33,4 +33,7 @@ Like projects, all user-defined values for a task can be edited.
 8. **Progress Tracking.** As a user, I want my projects and tasks to keep track of and display their completion percentages so that I can easily see how much work I have done and how much work I still need to do to complete my projects.
 
 ## Technologies to be used
-The Task Tree backend will use C# with the ASP.NET Core 6.0 framework to conveniently handle entities with objects.  The frontend will use TypeScript pages with ReactJS for logic and Material UI for quick and visually-pleasing CSS.  The database will use MySQL to help with ease of development.  We will also make development easier by using Docker and npm to easily import packages and maintain the same development environment across devices.
+The Task Tree backend will use C# with the ASP.NET Core 6.0 framework to conveniently handle entities with objects.  
+The frontend will use TypeScript pages with ReactJS for logic and Material UI for quick and visually-pleasing CSS.  
+The database will use MySQL to help with ease of development.  
+We will also make development easier by using Docker and npm to easily import packages and maintain the same development environment across devices.
