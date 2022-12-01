@@ -1,0 +1,223 @@
+### frontend/src/components/ProjectHeader/index.tsx ###
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500  3) import Project, { BlankProject } from '../../types/Project';
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500  4) import { Skeleton } from '@mui/material';
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 13)       <Typography
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 14)         component="h3"
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 15)         variant="h3"
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 16)         sx={{
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 21)         }}>
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 44)
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 62)         }}>
+7dbac0e2 frontend/src/components/ProjectHeader/index.tsx (Andrew Rutter  2022-11-15 22:02:43 -0500 67) }
+
+
+### frontend/src/components/ProjectItem/index.tsx ###
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  33)   project: Project;
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  34) }
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  35)
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  36) function LinearProgressWithLabel(props: ProgressBarProps) {
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  40)         <LinearProgress
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  41)           variant="determinate"
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  42)           color={props.project.progress === 100 ? 'success' : 'primary'}
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  44)         />
+5784ca41 frontend/src/components/ProjectItem/index.tsx (Andrew Rutter  2022-11-14 22:51:45 -0500  48)           props.project.progress
+
+
+### frontend/src/pages/project.tsx ###
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500  8) import Confetti from 'react-confetti';
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500  9) import { useWindowSize } from '../App';
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 10) import { Grid, Skeleton } from '@mui/material';
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 13)   const windowSize = useWindowSize();
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 16)   const [displayConfetti, setDisplayConfetti] = React.useState(false);
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 17)   const [initComplete, setInitComplete] = React.useState(true);
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 19)   const loadProject = (initRender: boolean) => {
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 22)       if (project.progress === 100 && initComplete === false && !initRender) {
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 23)         setDisplayConfetti(true);
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 25)       }
+dc5a36a2 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:03:23 -0500 30)     loadProject(true);
+495fb268 frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 00:03:07 -0500 31)     setInitComplete(project.progress === 100);
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 39)       <Confetti
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 40)         width={windowSize.width}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 41)         height={windowSize.height}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 42)         run={displayConfetti}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 43)         numberOfPieces={1500}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 44)         recycle={false}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 45)       />
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 47)       {project != BlankProject ? (
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 48)         <TaskListTag task={project.root!} reloadProject={() => loadProject(false)} />
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 49)       ) : (
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 50)         <Skeleton
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 51)           variant="rounded"
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 52)           height={56}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 53)           width={'95%'}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 54)           sx={{ margin: 'auto', marginTop: '10px' }}
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 55)         />
+71b9782e frontend/src/pages/project.tsx (Andrew Rutter  2022-11-15 22:02:32 -0500 56)       )}
+
+
+### frontend/src/types/Project.ts ###
+b1fdbb4a frontend/src/types/Project.ts (Andrew Rutter 2022-11-08 00:58:00 -0500  9)   updatedAt?: Date;
+71b9782e frontend/src/types/Project.ts (Andrew Rutter 2022-11-15 22:02:32 -0500 14)   name: '',
+71b9782e frontend/src/types/Project.ts (Andrew Rutter 2022-11-15 22:02:32 -0500 15)   description: '',
+
+
+### frontend/src/pages/projects.tsx ###
+fe6b4850 frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:21:30 -0500   2) import { Box, Button, Grid, Skeleton, Typography } from '@mui/material';
+fe6b4850 frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:21:30 -0500   4) import Project from '../types/Project';
+4482e7ee frontend/src/components/DisplayProjects/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  12)   const [projects, setProjects] = React.useState<Project[]>([]);
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  91)           <ProjectList projects={projects} setProjects={setProjects} />
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  92)         ) : (
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  93)           <Grid container spacing={2} sx={{ direction: 'row', justifyContent: 'center' }}>
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  94)             {Array(4).fill(
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  95)               <Grid item xs={12}>
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  96)                 <Skeleton variant="rounded" height={64} />
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  97)               </Grid>
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  98)             )}
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500  99)           </Grid>
+82eadbbb frontend/src/pages/projects.tsx                   (Andrew Rutter 2022-11-16 00:45:21 -0500 100)         )}
+
+
+### frontend/src/pages/home.tsx ###
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500  2) import { Box, Grid, Skeleton, Typography } from '@mui/material';
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500  3) import { BlankUser } from '../types/User';
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500  5) import Project, { BlankProject } from '../types/Project';
+ce668b4e frontend/src/pages/home.tsx (Andrew Rutter          2022-11-08 01:02:55 -0500  7) import ProjectList from '../components/ProjectList';
+ce668b4e frontend/src/pages/home.tsx (Andrew Rutter          2022-11-08 01:02:55 -0500  9) function getRecentProjects(projects: Project[]) {
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 10)   projects = getOpenProjects(projects);
+ce668b4e frontend/src/pages/home.tsx (Andrew Rutter          2022-11-08 01:02:55 -0500 11)   projects.sort((a, b) => (a.updatedAt! < b.updatedAt! ? 1 : -1));
+ce668b4e frontend/src/pages/home.tsx (Andrew Rutter          2022-11-08 01:02:55 -0500 12)   return projects.slice(0, 5);
+ce668b4e frontend/src/pages/home.tsx (Andrew Rutter          2022-11-08 01:02:55 -0500 13) }
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 15) function getOpenProjects(projects: Project[]) {
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 16)   return projects.filter((project) => (project.progress < 100 ? true : false));
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 17) }
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 18)
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 19) function displayProjects(projects: Project[], setProjects: (e: Project[]) => void) {
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 20)   /* projects are still loading */
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 21)   if (projects[0] === BlankProject) {
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 22)     return (
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 23)       <Skeleton
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 24)         variant="rounded"
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 25)         sx={{ width: '500px', height: '42px', margin: 'auto', marginTop: '10px' }}
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 26)       />
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 27)     );
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 28)   }
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 29)
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 30)   /* no projects */
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 31)   if (projects.length === 0) {
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 32)     return <Typography variant="h4">You have no projects.</Typography>;
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 33)   }
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 34)
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 35)   /* no open projects */
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 36)   if (getOpenProjects(projects).length === 0) {
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 37)     return <Typography variant="h4">You have no open projects.</Typography>;
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 38)   }
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 39)
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 40)   /* some open projects */
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 41)   return (
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 42)     <>
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 43)       <Typography variant="h4">
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 44)         You have completed{' '}
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 45)         {projects.length - projects.filter((project) => project.progress < 100).length} of your{' '}
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 46)         {projects.length} projects.
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 47)       </Typography>
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 48)       <br />
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 49)       <br />
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 50)       <Typography variant="h5">Recent projects</Typography>
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 51)       <br />
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 52)       <Box sx={{ px: 12, mx: 12 }}>
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 53)         {projects.length > 0 ? (
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 54)           <ProjectList projects={getRecentProjects(projects)} setProjects={setProjects} />
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 55)         ) : (
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 56)           <Grid container spacing={2} sx={{ direction: 'row', justifyContent: 'center' }}>
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 57)             {Array(4).fill(
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 58)               <Grid item xs={12}>
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 59)                 <Skeleton variant="rounded" height={64} />
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 60)               </Grid>
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 61)             )}
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 62)           </Grid>
+fe6b4850 frontend/src/pages/home.tsx (Andrew Rutter          2022-11-16 00:21:30 -0500 63)         )}
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 64)       </Box>
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 65)     </>
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 66)   );
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 67) }
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 68)
+c8d5e0ec frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 01:38:48 -0500 71)   const [projects, setProjects] = React.useState<Project[]>([BlankProject]);
+a6ae8abb frontend/src/pages/home.tsx (Andrew Rutter          2022-11-18 00:45:06 -0500 87)       {displayProjects(projects, setProjects)}
+
+
+### frontend/src/components/ProjectList/index.tsx ###
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  1) import * as React from 'react';
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  2) import { FixedSizeList, ListChildComponentProps } from 'react-window';
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  3) import ProjectService from '../../services/ProjectService';
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  6) import Project from '../../types/Project';
+4402387e frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-20 18:19:55 -0500  7) import shallowEqual from '../../util/object-equality';
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  8) import ProjectListItem from '../ProjectItem';
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500  9)
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 10) export interface ProjectListProps {
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 11)   projects: Project[];
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 12)   setProjects: (e: Project[]) => void;
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 13) }
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 14)
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 15) function renderRow(props: ListChildComponentProps) {
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 16)   const { data, index, style } = props;
+4402387e frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-20 18:19:55 -0500 17)   var preEditProject: Project = JSON.parse(JSON.stringify(data.projects[index]));
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 18)   function onEditSubmit(formData: Project) {
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 23)     data.projects[index].name = formData.name;
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 24)     data.projects[index].description = formData.description;
+4402387e frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-20 18:19:55 -0500 25)     if (!shallowEqual(preEditProject, data.projects[index])) {
+4402387e frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-20 18:19:55 -0500 27)       data.dispatch(showSnackbar({ message: 'Project updated successfully', severity: 'success' }));
+4402387e frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-20 18:19:55 -0500 28)     }
+4402387e frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-20 18:19:55 -0500 29)     preEditProject = JSON.parse(JSON.stringify(data.projects[index]));
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 30)   }
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 31)
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 32)   function onDelete() {
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 33)     ProjectService.deleteProject(data.projects[index].id!);
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 34)     data.setProjects(data.projects.filter((project: Project) => project != data.projects[index]));
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 36)   }
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 37)
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 38)   return (
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 39)     <ProjectListItem
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 40)       onEditSubmit={onEditSubmit}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 41)       onDelete={onDelete}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 42)       project={data.projects[index]}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 43)     />
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 44)   );
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 45) }
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 46)
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 47) export default function ProjectList(props: ProjectListProps) {
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 49)   return (
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 50)     <FixedSizeList
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 51)       height={800}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 52)       width={'100%'}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 53)       itemSize={46}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 54)       itemCount={props.projects.length}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 55)       overscanCount={5}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 57)       {renderRow}
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 58)     </FixedSizeList>
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 59)   );
+4482e7ee frontend/src/components/ProjectList/index.tsx (Andrew Rutter 2022-11-08 01:01:24 -0500 60) }
+
+
+### frontend/src/components/TaskItem/index.tsx ###
+4402387e frontend/src/components/TaskItem/index.tsx (Andrew Rutter  2022-11-20 18:19:55 -0500  12) import { Box, ListItem } from '@mui/material';
+4402387e frontend/src/components/TaskItem/index.tsx (Andrew Rutter  2022-11-20 18:19:55 -0500  19) import shallowEqual from '../../util/object-equality';
+4402387e frontend/src/components/TaskItem/index.tsx (Andrew Rutter  2022-11-20 18:19:55 -0500 106)   const [preEditTask, setPreEditTask] = React.useState(props.task);
+
+
+### frontend/src/util/object-equality.ts ###
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  1) export default function shallowEqual(object1: any, object2: any) {
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  2)   const keys1 = Object.keys(object1);
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  3)   const keys2 = Object.keys(object2);
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  4)   if (keys1.length !== keys2.length) {
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  5)     return false;
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  6)   }
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  7)   for (let key of keys1) {
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  8)     if (object1[key] !== object2[key]) {
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500  9)       return false;
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500 10)     }
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500 11)   }
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500 12)   return true;
+4402387e frontend/src/util/object-equality.ts (Andrew Rutter 2022-11-20 18:19:55 -0500 13) }
+
+
+
