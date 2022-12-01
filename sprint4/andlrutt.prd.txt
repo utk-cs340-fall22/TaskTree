@@ -8,9 +8,19 @@ Product Name: Task Tree
 When working on large projects, it can be difficult to keep track of what is done, what is left, and how far along you are into the work.  Whether in a group or working alone, it can be handy to have a way to keep track of all of this.  Our product will help people plan and track their work more effectively.
 
 ## Project Overview
-Our project is a website which will allow users to create private accounts in which they can create and track projects.  The accounts will have a username and password, as well as a first and last name for cosmetic purposes.  Users will be able to view all of their projects in a dedicated page, displaying the names, descriptions, and completion percentages of each project.  While logged in, the home page will show the user's recently edited projects for navigational convenience.
+Our project is a website which will allow users to create private accounts in which they can create and track projects. 
+The accounts will have a username and password, as well as a first and last name for cosmetic purposes.  
+Users will be able to view all of their projects in a dedicated page, displaying the names, descriptions, and completion percentages of each project.  
+While logged in, the home page will show the user's recently edited projects for navigational convenience.
 
-Along with a name and a description, each project will consist of a tree structure of its component tasks.  These tasks can be standalone items or comprised of other tasks.  Tasks will have a progress bar that tracks their completion.  Tasks can be marked as complete by the user.  Whenever the completion value of any task is updated, other tasks dependent on it will also update automatically, propagating up the tree.  This automatic update will also occur when creating or deleting tasks, to ensure that the tree remains accurate at all times.  Each task will be able to have a name, description, and weight value set by the user.  This weight value determines how much the task contributes to its immediate parent's completion.  Like projects, all user-defined values for a task can be edited.
+Along with a name and a description, each project will consist of a tree structure of its component tasks.
+These tasks can be standalone items or comprised of other tasks.  Tasks will have a progress bar that tracks their completion. 
+Tasks can be marked as complete by the user.  
+Whenever the completion value of any task is updated, other tasks dependent on it will also update automatically, propagating up the tree.  
+This automatic update will also occur when creating or deleting tasks, to ensure that the tree remains accurate at all times.  
+Each task will be able to have a name, description, and weight value set by the user.  
+This weight value determines how much the task contributes to its immediate parent's completion.  
+Like projects, all user-defined values for a task can be edited.
 
 ## Features
 1. **Create Account.** As a new user, I want to register by creating a username and password so that the system can remember me and my data
