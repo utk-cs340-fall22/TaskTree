@@ -1,0 +1,26 @@
+
+# Product Requirements Document
+Name: Andrew Rutter
+
+Product Name: Task Tree
+
+## Background
+When working on large projects, it can be difficult to keep track of what is done, what is left, and how far along you are into the work.  Whether in a group or working alone, it can be handy to have a way to keep track of all of this.  Our product will help people plan and track their work more effectively.
+
+## Project Overview
+Our project is a website which will allow users to create private accounts in which they can create and track projects.  The accounts will have a username and password, as well as a first and last name for cosmetic purposes.  Users will be able to view all of their projects in a dedicated page, displaying the names, descriptions, and completion percentages of each project.  While logged in, the home page will show the user's recently edited projects for navigational convenience.
+
+Along with a name and a description, each project will consist of a tree structure of its component tasks.  These tasks can be standalone items or comprised of other tasks.  Tasks will have a progress bar that tracks their completion.  Tasks can be marked as complete by the user.  Whenever the completion value of any task is updated, other tasks dependent on it will also update automatically, propagating up the tree.  This automatic update will also occur when creating or deleting tasks, to ensure that the tree remains accurate at all times.  Each task will be able to have a name, description, and weight value set by the user.  This weight value determines how much the task contributes to its immediate parent's completion.  Like projects, all user-defined values for a task can be edited.
+
+## Features
+1. **Create Account.** As a new user, I want to register by creating a username and password so that the system can remember me and my data
+2. **Log In To Account.** As a user, I want to log in to my account using my username and password so that I can access my projects.
+3. **Create Project.** As a user, I want to create projects with names and descriptions that will help me keep track of what I am working on.
+4. **Edit Project.** As a user, I want to edit the names and descriptions of my projects as I go to keep them up-to-date with my current plans and goals.
+5. **Create Task.** As a user, I want to create new tasks within my projects that will help me keep track of things I need to do, or things that I have done.
+6. **Edit Task.** As a user, I want to edit tasks within my projects so that I can keep my project tree up-to-date with my current plans and goals.
+7. **Weighted Tasks.** As a user, I want to assign weight values to tasks in my projects so that I can more accurately keep track of my progress when my projects consist of tasks with great variation in the effort required to complete them.
+8. **Progress Tracking.** As a user, I want my projects and tasks to keep track of and display their completion percentages so that I can easily see how much work I have done and how much work I still need to do to complete my projects.
+
+## Technologies to be used
+The Task Tree backend will use C# with the ASP.NET Core 6.0 framework to conveniently handle entities with objects.  The frontend will use TypeScript pages with ReactJS for logic and Material UI for quick and visually-pleasing CSS.  The database will use MySQL to help with ease of development.  We will also make development easier by using Docker and npm to easily import packages and maintain the same development environment across devices.
