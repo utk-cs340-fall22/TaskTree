@@ -14,6 +14,8 @@
 * frontend/src/components/ProjectList/index.tsx
 * frontend/src/components/TaskItem/index.tsx
 * frontend/src/util/object-equality.ts
+* frontend/package-lock.json
+* frontend/package.json
 
 ### What you accomplished
 This sprint was mainly putting the finishing touches on the website -- it would have been presentable without these changes, but I worked on improving the user experience.
