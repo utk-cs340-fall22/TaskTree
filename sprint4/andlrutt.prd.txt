@@ -5,7 +5,9 @@ Name: Andrew Rutter
 Product Name: Task Tree
 
 ## Background
-When working on large projects, it can be difficult to keep track of what is done, what is left, and how far along you are into the work.  Whether in a group or working alone, it can be handy to have a way to keep track of all of this.  Our product will help people plan and track their work more effectively.
+When working on large projects, it can be difficult to keep track of what is done, what is left, and how far along you are into the work.  
+Whether in a group or working alone, it can be handy to have a way to keep track of all of this.  
+Our product will help people plan and track their work more effectively.
 
 ## Project Overview
 Our project is a website which will allow users to create private accounts in which they can create and track projects. 
