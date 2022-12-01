@@ -1,0 +1,225 @@
+### frontend\src\components\ProjectDescPopUp\index.tsx ###
+
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   1) import * as React from 'react';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   2) import DeleteIcon from '@mui/icons-material/Delete';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   3) import IconButton from '@mui/material/IconButton';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   4) import EditIcon from '@mui/icons-material/Edit';
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500   5) import MessageIcon from '@mui/icons-material/Message';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   6) import ListItemButton from '@mui/material/ListItemButton';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   7) import Typography from '@mui/material/Typography';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   8) import Project from '../../types/Project';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400   9) import ListItemText from '@mui/material/ListItemText';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  10) import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress';
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  20) import Grid from '@mui/material/Unstable_Grid2';
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  23) import ProjectDescPopUp from '../ProjectDescPopUp';
+58b222b3 (Tyler Nitzsche 2022-11-04 17:33:13 -0400  25) interface GetProjectFormProps {
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  26)   project: Project;
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  29) }
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  30)
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  36)   return (
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  37)     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  38)       <Box sx={{ width: '100%', mr: 1 }}>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  44)       </Box>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  45)       <Box sx={{ minWidth: 35 }}>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  46)         <Typography variant="body2" color="text.secondary">{`${Math.round(
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  48)         )}%`}</Typography>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  49)       </Box>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  50)     </Box>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  51)   );
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  52) }
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  53)
+58b222b3 (Tyler Nitzsche 2022-11-04 17:33:13 -0400  54) export default function ProjectListItem(props: GetProjectFormProps) {
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  56)   const [openDesc, setOpenDesc] = React.useState(false);
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400  58)   return (
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  78)                 <IconButton
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  79)                   onClick={(e) => {
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  80)                     e.stopPropagation();
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  81)                     e.preventDefault();
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  82)                     setOpenDesc(true);
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  83)                   }}>
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  84)                   <MessageIcon />
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  85)                 </IconButton>
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400 111)             </Grid>
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 125)       {/* Edit project popup */}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 126)       <ProjectDescPopUp
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 127)         open={openDesc}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 128)         project={props.project}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 129)         onClose={() => setOpenDesc(false)}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 130)       />
+46293d97 (Tyler Nitzsche 2022-11-04 00:15:38 -0400 132)   );
+
+### frontend\src\components\ProjectHeader\index.tsx ###
+
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  1) import * as React from 'react';
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  2) import Typography from '@mui/material/Typography';
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  5)
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  6) interface GetProjectFormProps {
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  7)   project: Project;
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  8) }
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500  9)
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500 10) export default function ProjectHeader(props: GetProjectFormProps) {
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500 11)   return (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 12)     <div>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 17)           marginTop: 8,
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 18)           display: 'flex',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 19)           flexDirection: 'row',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 20)           width: '100%'
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 22)         <Typography
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 23)           align="left"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 24)           component="h3"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 25)           variant="h3"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 26)           sx={{
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 27)             justifySelf: 'left',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 28)             marginRight: 'auto',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 29)             marginLeft: '30px'
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 30)           }}>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 31)           {props.project !== BlankProject ? (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 32)             props.project.name
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 33)           ) : (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 34)             <Skeleton variant="rounded" sx={{ width: 300, height: 56 }} />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 35)           )}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 36)         </Typography>
+e1702f36 (Tyler Nitzsche 2022-11-07 21:25:06 -0500 37)
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 38)         <Typography
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 39)           align="center"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 40)           component="h3"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 41)           variant="h3"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 42)           sx={{
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 43)             justifySelf: 'center',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 45)             marginRight: 'auto'
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 46)           }}>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 47)           {props.project !== BlankProject ? (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 48)             `${Math.round(props.project.progress)}% completed`
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 49)           ) : (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 50)             <Skeleton variant="rounded" sx={{ width: 300, height: 56 }} />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 51)           )}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 52)         </Typography>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 53)       </Typography>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 54)       <Typography
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 55)         align = "left"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 56)         variant="h6"
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 57)         sx={{
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 58)           marginBottom: 2,
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 59)           justifySelf: 'left',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 60)           marginRight: 'auto',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 61)           marginLeft: '30px'
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 63)         {props.project.description}
+e1702f36 (Tyler Nitzsche 2022-11-07 21:25:06 -0500 64)       </Typography>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 65)     </div>
+3b6a90cb (Tyler Nitzsche 2022-11-07 19:54:52 -0500 66)   );
+
+### frontend\src\components\ProjectItem\index.tsx ###
+
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500   5) import MessageIcon from '@mui/icons-material/Message';
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  23) import ProjectDescPopUp from '../ProjectDescPopUp';
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  56)   const [openDesc, setOpenDesc] = React.useState(false);
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  78)                 <IconButton
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  79)                   onClick={(e) => {
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  80)                     e.stopPropagation();
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  81)                     e.preventDefault();
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  82)                     setOpenDesc(true);
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  83)                   }}>
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  84)                   <MessageIcon />
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500  85)                 </IconButton>
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 125)       {/* Edit project popup */}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 126)       <ProjectDescPopUp
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 127)         open={openDesc}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 128)         project={props.project}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 129)         onClose={() => setOpenDesc(false)}
+598f264f (Tyler Nitzsche 2022-11-26 15:59:57 -0500 130)       />
+
+### frontend\src\components\TaskItem\index.tsx ###
+
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 121)       <div>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 122)         <ListItem button={!!props.onClick as false} onClick={props.onClick}>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 123)           <ListItemText disableTypography>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 124)             <Grid container spacing={2} alignItems="center" justifyContent="space-between">
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 125)               <Grid xs={2} sx={{ display: 'flex', alignItems: 'center' }}>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 126)                 <IconButton
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 127)                   onClick={(e) => {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 128)                     e.stopPropagation();
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 129)                     e.preventDefault();
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 130)                     if (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 131)                       confirm(`Mark task "${props.task.name}" and all of its sub-tasks as complete?`)
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 132)                     ) {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 133)                       props.task.completedAt = new Date();
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 134)                       TaskService.updateTask(props.task, props.task.id!).then(() => {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 135)                         props.reloadProject();
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 136)                         dispatch(
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 137)                           showSnackbar({
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 138)                             message: 'Task completed successfully',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 139)                             severity: 'success'
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 140)                           })
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 141)                         );
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 142)                       });
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 143)                     }
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 144)                   }}>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 145)                   {props.task.completedAt && (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 146)                     <CheckCircleIcon color={props.task.completedAt ? 'success' : 'primary'} />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 147)                   )}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 148)                   {!props.task.completedAt && (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 149)                     <CheckCircleOutlineIcon color={props.task.completedAt ? 'success' : 'primary'} />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 150)                   )}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 151)                 </IconButton>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 152)                 <Typography
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 153)                   sx={{
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 154)                     textDecoration: props.task.completedAt ? 'line-through' : '',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 155)                     color: props.task.completedAt ? 'gray' : ''
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 156)                   }}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 157)                   variant="h6">
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 158)                   {props.task.name}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 159)                 </Typography>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 160)               </Grid>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 161)               <Grid xs={8}>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 162)                 <LinearProgressWithLabel variant="determinate" task={props.task} />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 163)               </Grid>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 164)               {props.task.completedAt && <Grid xs={2} container justifyContent="center"></Grid>}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 165)               {!props.task.completedAt && (
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 166)                 <IconGrid
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 167)                   task={props.task}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 168)                   setSnackbarOpen={setOpenSnackbar}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 169)                   setCreateDialogOpen={setOpenCreate}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 170)                   setEditDialogOpen={setOpenEdit}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 171)                   reloadProject={props.reloadProject}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 172)                   dispatch={dispatch}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 173)                 />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 174)               )}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 176)           </ListItemText>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 177)           {props.children}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 178)         </ListItem>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 179)         <ListItemText>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 180)           <Typography sx={{
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 181)                     textDecoration: props.task.completedAt ? 'line-through' : '',
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 182)                     color: props.task.completedAt ? 'gray' : ''
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 183)                   }} variant = "h6">
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 184)
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 185)             {props.task.description}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 186)           </Typography>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 188)         <EditTaskDialog
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 189)           open={openEdit}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 190)           task={props.task}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 191)           onClose={() => setOpenEdit(false)}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 192)           onSubmit={(formData) => {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 193)             setOpenEdit(false);
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 194)             if (!shallowEqual(formData, preEditTask)) {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 195)               TaskService.updateTask(formData, props.task.id!).then(() => {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 196)                 props.reloadProject();
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 197)               });
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 198)               dispatch(showSnackbar({ message: 'Task updated successfully', severity: 'success' }));
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 199)               setPreEditTask(formData);
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 200)             }
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 201)           }}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 202)         />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 204)         <CreateTaskDialog
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 205)           open={openCreate}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 206)           onClose={() => setOpenCreate(false)}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 207)           onSubmit={(formData) => {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 208)             TaskService.createTask(formData, props.task.id!).then(() => {
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 210)               dispatch(showSnackbar({ message: 'Task created successfully', severity: 'success' }));
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 212)             setOpenCreate(false);
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 213)           }}
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 214)         />
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 215)       </div>
+5c8957a7 (Tyler Nitzsche 2022-11-26 14:30:02 -0500 217)
+1d29e7ec (Tyler Nitzsche 2022-11-03 23:09:29 -0400 218)   );
+1d29e7ec (Tyler Nitzsche 2022-11-03 23:09:29 -0400 219) }
